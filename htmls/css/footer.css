@@ -1,0 +1,20 @@
+/*footer*/
+.footer{
+    width: 1076px;
+    margin: 20px auto 0 auto;
+    padding:15px 2px 80px 2px;
+    overflow:hidden;
+}
+.footer a{
+    color:#666;
+}
+.footer-about{
+    float:left;
+}
+.footer-about a{
+    margin-right:15px;
+}
+.footer-copyright{
+    float:right;
+    color:#666;
+}
