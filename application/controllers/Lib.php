@@ -12,12 +12,31 @@
  * @author	yp
  * @version	$Revision: 1.1 $
  */
-class IndexController extends BasicController {
+class LibController extends BasicController {
 
-    public function indexAction() {
-       
+    public function headerAction() {
+        
     }
 
+    public function homeAction() {
+        
+    }
+
+    public function likeAction() {
+        
+    }
+
+    public function pagingAction() {
+        
+    }
+
+    public function commentAction() {
+        
+    }
+
+    public function footerAction() {
+        
+    }
 
 }
 
