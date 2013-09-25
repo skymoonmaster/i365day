@@ -13,7 +13,6 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
     public function _initSmarty(Yaf_Dispatcher $dispatcher) {
         $smarty = new Smarty_Adapter(null, Yaf_Application::app()->getConfig()->get("smarty")->toArray());
         Yaf_Dispatcher::getInstance()->setView($smarty);
-        ExportModel::getInstance()->setView($smarty);
     }
 
     public function _initSessionStart() {
@@ -21,7 +20,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
     }
 
     public function _initLoginCheck() {
-        LoginModel::getInstance()->checkLogin();
+        #LoginModel::getInstance()->checkLogin();
     }
     public function _initRegistCheck(){
         #RegisterModel::getInstance()->checkRegSteps();

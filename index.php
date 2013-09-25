@@ -13,22 +13,22 @@ try {
     Util_CLog::setFile(basename($e->getFile()));
     Util_CLog::setLine($e->getLine());
     Util_CLog::warning($e->getMessage());
-    header("Location: /error/");
+    #header("Location: /error/");
 } catch (Exception_Login $e) {
     Util_CLog::setFile(basename($e->getFile()));
     Util_CLog::setLine($e->getLine());
     Util_CLog::warning($e->getMessage());
-    header("Location: /login/index/error/show");
+    #header("Location: /login/index/error/show");
 } catch (Exception_Ajax $e) {
     Util_CLog::setFile(basename($e->getFile()));
     Util_CLog::setLine($e->getLine());
     Util_CLog::warning($e->getLogMsg());
-    echo $e->getoutPutMsg();
+    #echo $e->getoutPutMsg();
 } catch (Exception $e) {
     Util_CLog::setFile(basename($e->getFile()));
     Util_CLog::setLine($e->getLine());
     Util_CLog::warning($e->getMessage());
-    header("Location: /error/");
+    #header("Location: /error/");
 }
 /**
  * The file and line should been cleared for the log without exception
