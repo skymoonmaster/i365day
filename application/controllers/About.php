@@ -12,11 +12,12 @@
  * @author	yp
  * @version	$Revision: 1.1 $
  */
-class BasicController extends Yaf_Controller_Abstract {
+class AboutController extends BasicController {
 
-    protected function init() {
+    public function indexAction() {
+       
     }
-
 }
 
+/* vim: set ts=4 sw=4 sts=4 tw=100 noet: */
 ?>
