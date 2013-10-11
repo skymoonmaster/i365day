@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.3, created on 2013-09-25 10:48:51
+<?php /* Smarty version Smarty-3.1.3, created on 2013-10-08 10:40:54
          compiled from "/home/sid/project/php/cngtotools/trunk/i365day/application/views/lib/header.phtml" */ ?>
 <?php /*%%SmartyHeaderCode:63027461852424f138e57d0-61273658%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'f895d987c2169cb4b4c1b1379ccebc4b9a2c0c68' => 
     array (
       0 => '/home/sid/project/php/cngtotools/trunk/i365day/application/views/lib/header.phtml',
-      1 => 1380076994,
+      1 => 1381200054,
       2 => 'file',
     ),
   ),
@@ -15,9 +15,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.3',
   'unifunc' => 'content_52424f139064f',
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_52424f139064f')) {function content_52424f139064f($_smarty_tpl) {?><!doctype html>
 <html lang="en">
@@ -36,9 +36,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                 <strong class="logo"><a class="clearword" href="index.html" title="365每天记">365每天记</a></strong>
                 <nav>
                     <ul class="nav-wrap clearfix">
-                        <li class="nav-item current"><a href="myhome.html" title="我的首页">我的首页</a></li>
-                        <li class="nav-item"><a href="friend.html" title="小伙伴">小伙伴</a></li>
-                        <li class="nav-item"><a href="news.html" title="黑板报">黑板报</a></li>
+                        <li class="nav-item current"><a href="/home" title="我的首页">我的首页</a></li>
+                        <li class="nav-item"><a href="/friend" title="小伙伴">小伙伴</a></li>
+                        <li class="nav-item"><a href="/news" title="黑板报">黑板报</a></li>
                     </ul>
                 </nav>
             </div>
@@ -49,8 +49,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                     <b></b>
                     <ul class="user-menu">
                         <li><a class="menu-item menu-message" href="#" title="查看消息">消息</a></li>
-                        <li><a class="menu-item menu-setting" href="setting.html" title="修改设置">设置</a></li>
-                        <li><a class="menu-item menu-invite" href="invite.html" title="邀请朋友">邀请</a></li>
+                        <li><a class="menu-item menu-setting" href="setting" title="修改设置">设置</a></li>
+                        <li><a class="menu-item menu-invite" href="invite" title="邀请朋友">邀请</a></li>
                         <li><a class="menu-item menu-logout" href="#" title="明天见!">退出</a></li>
                     </ul>
                 </div>

@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.3, created on 2013-09-25 11:30:29
+<?php /* Smarty version Smarty-3.1.3, created on 2013-10-10 14:40:36
          compiled from "/home/sid/project/php/cngtotools/trunk/i365day/application/views/setting/index.phtml" */ ?>
 <?php /*%%SmartyHeaderCode:1922317195524258d52e9214-50376844%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '63f7f5f46f6ca5fe52d5d76aed86fc35316ed8d5' => 
     array (
       0 => '/home/sid/project/php/cngtotools/trunk/i365day/application/views/setting/index.phtml',
-      1 => 1380079368,
+      1 => 1381387223,
       2 => 'file',
     ),
   ),
@@ -15,9 +15,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.3',
   'unifunc' => 'content_524258d5326ef',
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_524258d5326ef')) {function content_524258d5326ef($_smarty_tpl) {?><!doctype html>
 <html lang="en">
@@ -39,7 +39,10 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                     <li class="setting-item">
                         <h2 class="setting-item-title">头像</h2>
                         <div class="setting-item-content">
-                            <div class="setting-head-wrap"></div>
+                            <div class="setting-head-wrap">
+                                <div class="setting-head-clipwindow"></div>
+                                <img class="setting-head-image" width="222" height="167" src="../statics/images/friend.gif">
+                            </div>
                             <input type="file" class="setting-head-upload">
                             <button class="setting-head-update clearword">更新头像</button>
                             <button class="setting-head-cancel clearword">取消</button>

@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.3, created on 2013-09-25 11:07:04
+<?php /* Smarty version Smarty-3.1.3, created on 2013-10-09 16:12:50
          compiled from "/home/sid/project/php/cngtotools/trunk/i365day/application/views/home/index.phtml" */ ?>
 <?php /*%%SmartyHeaderCode:9564798995242535858f727-92098557%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '948ff6d0c44192cebfa385915c50be705585fe1d' => 
     array (
       0 => '/home/sid/project/php/cngtotools/trunk/i365day/application/views/home/index.phtml',
-      1 => 1380078367,
+      1 => 1381306362,
       2 => 'file',
     ),
   ),
@@ -15,9 +15,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.3',
   'unifunc' => 'content_52425358625cd',
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_52425358625cd')) {function content_52425358625cd($_smarty_tpl) {?><!doctype html>
 <html lang="en">
@@ -36,14 +36,14 @@ $_valid = $_smarty_tpl->decodeProperties(array (
         <section class="home-note-wrap">
             <div class="home-nav-wrap clearfix">
                 <ul class="home-tab-wrap clearfix">
-                    <li class="home-tab-item current"><a href="/home" title="我的365">我的365</a></li>
-                    <li class="home-tab-item"><a href="/like" title="喜欢">喜欢</a></li>
-                    <li class="home-tab-item"><a href="/msg" title="留言板">留言板</a></li>
+                    <li class="home-tab-item current"><a href="myhome.html" title="我的365">我的365</a></li>
+                    <li class="home-tab-item"><a href="like.html" title="喜欢">喜欢</a></li>
+                    <li class="home-tab-item"><a href="message.html" title="留言板">留言板</a></li>
                 </ul>
-                <a class="write-now clearword" href="/diary/create" title="记录今天">记录今天</a>
+                <a class="write-now clearword" href="newnote.html" title="记录今天">记录今天</a>
             </div>
             <div class="home-note-list">
-                <h2 class="home-note-month">2013年<em>01月</em></h2>
+                <h2 class="home-note-month">2013年<em>1月</em></h2>
                 <a href="#" class="home-date-btn clearword">选择年月</a>
                 <div class="home-date-wrap">
                     <div class="home-year-wrap">
@@ -87,7 +87,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                         </li>
                         <li class="home-list-item note-empty">
                             <p class="note-empty-text">放空的1月7日</p>
-                            <a class="fill-in-note" href="/diary/create" title="补日记">+补日记</a>
+                            <a class="fill-in-note" href="newnote.html" title="补日记">+补日记</a>
                         </li>
                         <li class="home-list-item">
                             <img src="../statics/images/home_img_note.jpg" alt="" class="home-note-img">
@@ -99,7 +99,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                         </li>
                         <li class="home-list-item note-empty">
                             <p class="note-empty-text">放空的1月7日</p>
-                            <a class="fill-in-note" href="/diary/create" title="补日记">+补日记</a>
+                            <a class="fill-in-note" href="newnote.html" title="补日记">+补日记</a>
                         </li>
                         <li class="home-list-item">
                             <img src="../statics/images/home_img_note.jpg" alt="" class="home-note-img">
@@ -111,7 +111,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                         </li>
                         <li class="home-list-item note-empty">
                             <p class="note-empty-text">放空的1月7日</p>
-                            <a class="fill-in-note" href="/diary/create" title="补日记">+补日记</a>
+                            <a class="fill-in-note" href="newnote.html" title="补日记">+补日记</a>
                         </li>
                         <li class="home-list-item">
                             <img src="../statics/images/home_img_note.jpg" alt="" class="home-note-img">
@@ -123,7 +123,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                         </li>
                         <li class="home-list-item note-empty">
                             <p class="note-empty-text">放空的1月7日</p>
-                            <a class="fill-in-note" href="/diary/create" title="补日记">+补日记</a>
+                            <a class="fill-in-note" href="newnote.html" title="补日记">+补日记</a>
                         </li>
                         <li class="home-list-item">
                             <img src="../statics/images/home_img_note.jpg" alt="" class="home-note-img">
@@ -133,10 +133,10 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                                 <time class="home-note-date">1月1日</time>
                             </a>
                         </li>
-                        <li class="home-list-item note-add" title="记录今天"><a class="clearword" href="/diary/create" title="记录今天">记录今天</a></li>
+                        <li class="home-list-item note-add" title="记录今天"><a class="clearword" href="newnote.html" title="记录今天">记录今天</a></li>
                     </ul>
                     <a href="#" class="home-list-prev clearword" title="上个月份">上个月份</a>
-                    <a href="#" class="home-list-next clearword disable" title="下个月份">下个月份</a>
+                    <a href="#" class="home-list-next clearword" title="下个月份">下个月份</a>
                 </div>     
             </div>
         </section>

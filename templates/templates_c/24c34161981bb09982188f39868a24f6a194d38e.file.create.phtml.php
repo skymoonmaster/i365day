@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.3, created on 2013-09-25 10:59:10
+<?php /* Smarty version Smarty-3.1.3, created on 2013-10-11 15:11:22
          compiled from "/home/sid/project/php/cngtotools/trunk/i365day/application/views/diary/create.phtml" */ ?>
 <?php /*%%SmartyHeaderCode:2517066385242517e0ca2d7-78132851%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '24c34161981bb09982188f39868a24f6a194d38e' => 
     array (
       0 => '/home/sid/project/php/cngtotools/trunk/i365day/application/views/diary/create.phtml',
-      1 => 1380077726,
+      1 => 1381475480,
       2 => 'file',
     ),
   ),
@@ -15,9 +15,13 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.3',
   'unifunc' => 'content_5242517e0ecd8',
+  'variables' => 
+  array (
+    'date' => 0,
+  ),
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_5242517e0ecd8')) {function content_5242517e0ecd8($_smarty_tpl) {?><!doctype html>
 <html lang="en">
@@ -32,7 +36,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <body>
     <div class="header-load"></div>
     <div class="main">
-        <form action="">
+        <form action="/diary/docreate" method="post" enctype="multipart/form-data">
             <h1 class="main-title-icon">发布新日记</h1>
             <div class="note-content line">
                 <div class="note-form">
@@ -50,19 +54,20 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                                 <p>目前仅支持jpg、png格式</p>
                             </div>
                             <img class="note-img"  src="" alt="">
-                            <input type="file" class="note-img-upload" title="点击选择文件">
+                            <input type="file" class="note-img-upload" name="pic" title="点击选择文件">
                         </div>
-                        <input type="text" class="note-img-description" placeholder="图片说明...(可选)">
+                        <input type="text" class="note-img-description" name="pic_desc" placeholder="图片说明...(可选)">
                     </div>
                     <div class="note-text-wrap">
-                        <input type="text" class="note-text-title" placeholder="填写标题...(可选)">
-                        <textarea class="note-text"></textarea>
-                        <input type="text" class="note-text-label" placeholder="#标签">
+                        <input type="text" class="note-text-title" name="title" placeholder="填写标题...(可选)">
+                        <textarea class="note-text" name="content"></textarea>
+                        <!-- <input type="text" class="note-text-label" placeholder="#标签"> -->
+                        <ul class="extendinputwrap"><li class="otheritem"><input id="city" name="tags[]" type="text" placeholder="#标签" maxlength="20" /></li></ul>
                     </div>
                 </div>
                 <div class="note-btn-wrap">
-                    <button class="note-send clearword" type="button" title="写好了,发布">写好了,发布</button>
-                    <label><input type="checkbox" class="note-secret">仅自己可见</label>
+                    <button class="note-send clearword" type="submit" title="写好了,发布">写好了,发布</button>
+                    <label><input type="checkbox" class="note-secret" name="private" />仅自己可见</label>
                     <div class="note-sync-wrap">
                         <span class="note-sync-text">同步到:</span>
                         <a href="#" title="sina" class="login-sina">新浪登录</a>
@@ -70,6 +75,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                     </div>
                 </div>
             </div>
+            <input type ="hidden" name ='date' value ="<?php echo $_smarty_tpl->tpl_vars['date']->value;?>
+"/>
         </form>
     </div>
     <div class="footer-load"></div>

@@ -1,0 +1,166 @@
+<?php
+
+Class FileModel extends BasicModel {
+
+    public static $cnt = 0;
+
+    /**
+     * @var FileModel
+     */
+    protected static $instances;
+
+    /**
+     * @return FileModel
+     */
+    public static function getInstance() {
+        if (!isset(self::$instances)) {
+            self::$instances = new FileModel();
+        }
+        return self::$instances;
+    }
+
+    public function processUpload($filename, $carrierId, $accountCutOffDate, $isDemo = 0) {
+        $chargeModel = BasicChargeModel::getChargeModelInstance($carrierId);
+        $timeStamp = $chargeModel->getRawDataChargeTimestamp($filename, $accountCutOffDate);
+        if (!$timeStamp || intval($timeStamp) < 0) {
+            Util_CLog::warning("get timeStamp from rawdata fail!");
+            return -2;
+        }
+        $date = $isDemo ? date("Ym") : date("Ym", $timeStamp);
+        $companyId = $_SESSION['co_id'];
+        if (!$chargeModel->processRawData($filename, $date, $companyId, true)) {
+            Util_CLog::warning("process charge rawData fail!");
+            return -3;
+        }
+        $params = array('is_demo' => $isDemo);
+        $missionInfo = ImportRawDataMissionModel::getInstance()->buildMissionInfo($companyId, $filename, $carrierId, $params, $date);
+        return ImportRawDataMissionModel::getInstance()->replaceMission($missionInfo);
+    }
+
+    public function generateRawDataFilename() {
+        $time = date('Ymdhis');
+        $targetDir = CHARGE_RAWDATA_STORE_DIR . "/company_" . $_SESSION['co_id'] . "/";
+        is_dir($targetDir) or mkdir($targetDir, 0777);
+        chmod($targetDir, 0777);
+        return $targetDir . $time . ".csv";
+    }
+
+    public function generateUserDeviceFilename() {
+        $time = date('Ymdhis');
+        $companyId = $_SESSION['co_id'];
+        $targetDir = USER_DEVICE_STORE_DIR . "/company_$companyId/";
+        $fileName = "user_device[$time].csv";
+        is_dir($targetDir) or mkdir($targetDir, 0777);
+        chmod($targetDir, 0777);
+        return $targetDir . $fileName . ".csv";
+    }
+
+    public function uploadUserDevice() {
+        $target = $this->generateUserDeviceFilename();
+        return $this->upload($target);
+    }
+
+    public function uploadRawData() {
+        $target = $this->generateRawDataFilename();
+        return $this->upload($target);
+    }
+
+    private function upload($target) {
+        $uploaded_size = $_FILES ['uploaded_file'] ['size'];
+        $fname = $_FILES ['uploaded_file'] ['name'];
+        if (empty($fname)) {
+            throw new Exception("Filename is empty");
+        }
+        //This is our size condition
+        if ($uploaded_size > 50 * 1024 * 1024) {
+            throw new Exception("Filename is too large");
+        }
+        //Writes the photo to the server 
+        if (move_uploaded_file($_FILES ['uploaded_file'] ['tmp_name'], $target)) {
+            return $target;
+        } else {
+            throw new Exception("Filename upload failed");
+        }
+    }
+
+    public function zipReport($companyId, $timeStamp) {
+        list($requiredSortItem, $optionalSortItem) = SortItemModel::getInstance()->getAssociateSortItemsByCompanyId($companyId);
+        $newFinancalTargetFilename = 'new_finance.zip';
+        $financalTargetFilename = 'finance' . date('Ym', $timeStamp) . '.zip';
+        $newDepartmentalTargetFilename = 'new_' . (isset($requiredSortItem['sort_item_name']) ? $requiredSortItem['sort_item_name'] . '.zip' : 'department.zip');
+        $departmentalTargetFilename = isset($requiredSortItem['sort_item_name']) ? $requiredSortItem['sort_item_name'] . '.zip' : 'department.zip';
+        $newPersonalTargetFilename = 'new_individual.zip';
+        $personalTargetFilename = 'individual.zip';
+        $financeDir = PDF_STORE_DIR . DIRECTORY_SEPARATOR . 'finance\[' . $companyId . '\]';
+        $departmentalDir = PDF_STORE_DIR . DIRECTORY_SEPARATOR . 'department\[' . $companyId . '\]' . DIRECTORY_SEPARATOR . date('Y-m', $timeStamp);
+        $personalDir = PDF_STORE_DIR . DIRECTORY_SEPARATOR . 'personal\[' . $companyId . '\]' . DIRECTORY_SEPARATOR . date('Y-m', $timeStamp);
+
+        $financalTargetFilename = 'finance' . date('Ym', $timeStamp) . '.zip';
+        $financeCommand = "cd $financeDir && zip -r $newFinancalTargetFilename   ./finance\[" . date('Ym', $timeStamp) . "\].pdf && mv $newFinancalTargetFilename $financalTargetFilename ";
+        $departmentCommand = "cd $departmentalDir && zip -r $newDepartmentalTargetFilename ./*.pdf && mv $newDepartmentalTargetFilename $departmentalTargetFilename";
+        $personalCommand = "cd $personalDir && zip -r $newPersonalTargetFilename ./*.pdf && mv $newPersonalTargetFilename $personalTargetFilename";
+
+
+        system($financeCommand);
+        system($departmentCommand);
+        system($personalCommand);
+    }
+
+    public function cleanReport($companyId, $timeStamp) {
+        $chargeList = ChargeModel::getInstance()->sortByCompanyId($companyId);
+        $departmentList = DepartmentModel::getInstance()->getAllDepartmentListByCompanyId($companyId);
+        foreach ($departmentList as $department) {
+            $departmentChargeList = ChargeLogicModel::getInstance()->filterChargeListByItem($chargeList, 'department_id', $department['department_id']);
+            $condition = array('department_id' => $department['department_id'], 'date' => date('Ym', $timeStamp));
+            $adjustmentFeeList = AdjustmentFeeModel::getInstance()->getAdjustmentListByCondition($condition);
+
+            $pdfReportFilename = PdfModel::getInstance()->generatePdfFilenameForDepartment($department, $companyId, $timeStamp);
+
+            if (empty($departmentChargeList) && empty($adjustmentFeeList) && file_exists($pdfReportFilename)) {
+                $this->cleanDepartmentReport($companyId, $timeStamp, $pdfReportFilename);
+            }
+        }
+        return true;
+    }
+
+    private function cleanDepartmentReport($companyId, $timeStamp, $pdfReportFilename) {
+        if (!file_exists($pdfReportFilename)) {
+            return true;
+        }
+        $departmentalDelDir = PDF_DEL_DIR . DIRECTORY_SEPARATOR . 'department[' . $companyId . ']' . DIRECTORY_SEPARATOR . date('Y-m', $timeStamp);
+        if (!is_dir($departmentalDelDir)) {
+            mkdir($departmentalDelDir, 0777, true);
+            chmod($departmentalDelDir, 0777);
+        }
+
+        $pdfReportFilename = str_replace(' ', '\ ', escapeshellcmd($pdfReportFilename));
+        $departmentalDelDir = str_replace(' ', '\ ', escapeshellcmd($departmentalDelDir));
+        $cleanDepartmentCommand = "mv  $pdfReportFilename $departmentalDelDir";
+
+        system($cleanDepartmentCommand);
+    }
+    
+    public function deldir($dir) {
+        $dh = opendir($dir);
+        while ($file = readdir($dh)) {
+            if ($file != "." && $file != "..") {
+                $fullpath = $dir . "/" . $file;
+                if (!is_dir($fullpath)) {
+                    unlink($fullpath);
+                } else {
+                    deldir($fullpath);
+                }
+            }
+        }
+        closedir($dh);
+        if (rmdir($dir)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+}
+
+/* vim: set ts=4 sw=4 sts=4 tw=100 noet: */
+?>
