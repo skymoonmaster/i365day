@@ -650,6 +650,7 @@ body{
 .article-img{
     display: block;
     margin: 27px auto;
+    width: 493px;
 }
 .article-content{
     position: relative;

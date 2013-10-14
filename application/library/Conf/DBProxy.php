@@ -40,9 +40,7 @@ class Conf_DBProxy
 	 * @var array
 	 */
 	static $arrDatabaseMap = array(
-		'cost_platform'         => array(self::DBPROXY_COSTPLATFORM_INDEX, 'utf8'),
-		'cost_platform_mis'	=> array(self::DBPROXY_COSTPLATFORM_INDEX, 'utf8'),
-		'test'			=> array(self::DBPROXY_COSTPLATFORM_INDEX, 'utf8'),
+		'i365day'         => array(self::DBPROXY_COSTPLATFORM_INDEX, 'utf8'),
 	);
 
 	/**

@@ -17,21 +17,35 @@ class DiaryController extends BasicController {
     public function createAction() {
         $defaultDate = date('Ymd');
         $date = $this->getOptionalParam('date', $defaultDate);
-        
+
         $this->getView()->assign('date', intval($date));
     }
 
     public function detailAction() {
+        $diaryId = $this->getRequiredParam('diary_id');
+        $diaryInfo = DiaryModel::getInstance()->getDiaryById($diaryId);
+        $diaryExtInfo = DiaryExtModel::getInstance()->getDiaryExtByDiaryId($diaryId);
+        if (!is_array($diaryInfo) || !is_array($diaryExtInfo)) {
+            throw new Exception("can not find diary by id $diaryId");
+        }
+        $diaryInfo['tags'] = json_decode($diaryInfo['tags'], true);
+        $diaryInfo = array_merge($diaryInfo, $diaryExtInfo);
+        $userInfo = UserModel::getInstance()->getUserInfoById($diaryInfo['user_id']);
         
+        $this->getView()->assign('diary', $diaryInfo);
+        $this->getView()->assign('user', $userInfo);
     }
 
     public function doCreateAction() {
         $diaryInfo = $this->getDiaryInfo();
         $retUploadFile = FileModel::getInstance()->uploadDiaryPic($diaryInfo['create_time'], 'pic');
-        $diaryInfo['pic'] = $retUploadFile;
-        
-        var_dump($diaryInfo);exit;
+        if ($retUploadFile) {
+            $diaryInfo['pic'] = FileModel::getInstance()->generateSrcForDiaryPic($diaryInfo['create_time'], 'pic');
+        }
+
         $diaryId = DiaryModel::getInstance()->createDiary($diaryInfo);
+        var_dump($diaryInfo);
+        exit;
         if (!$diaryId) {
             throw new Exception('create diray error');
         }
@@ -61,18 +75,19 @@ class DiaryController extends BasicController {
             'date' => $date,
             'tags' => json_encode($this->filterTags($tags)),
             'visibility' => $private ? 1 : 0,
+            'user_id' => $userInfo['user_id'],
             'pic_desc' => $picDesc,
             'create_time' => time()
         );
     }
-    
-    private function filterTags($tags){
+
+    private function filterTags($tags) {
         $ret = array();
-        if(!is_array($tags) || count($tags) == 0){
+        if (!is_array($tags) || count($tags) == 0) {
             return array();
         }
-        foreach ($tags as $key => $tag){
-            if(strlen($tag) == 0){
+        foreach ($tags as $tag) {
+            if (strlen($tag) == 0) {
                 continue;
             }
             $ret[] = $tag;

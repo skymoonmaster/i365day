@@ -12,23 +12,41 @@ Class BasicModel {
         $this->db = DB_ProxyWrapper::getInstance(I365DAY);
     }
 
-    public function create($data) {
+    protected function create($data) {
         if (!is_array($data) || count($data) == 0) {
             return false;
         }
-        
-        return $this->db->insert($data, $this->table);
+        $ret = $this->db->insert($data, $this->table);
+        if (!$ret) {
+            return false;
+        }
+        return $this->db->getLastInsertID();
     }
-    
-    public function createWithTimestamp($data) {
+
+    protected function createWithTimestamp($data) {
         if (!is_array($data) || count($data) == 0) {
             return false;
         }
-        if(!isset($data['create_time'])){
+        if (!isset($data['create_time'])) {
             $data['create_time'] = time();
         }
         $data['update_time'] = time();
-        return $this->db->insert($data, $this->table);
+        $ret = $this->db->insert($data, $this->table);
+        if (!$ret) {
+            return false;
+        }
+        return $this->db->getLastInsertID();
+    }
+
+    protected function getSingleDiaryByConditions($columnKeyToValues) {
+        $sqlFormat = "SELECT * FROM $this->table WHERE 1=1 ";
+        foreach ($columnKeyToValues as $key => $value) {
+            if (!$key) {
+                continue;
+            }
+            $sqlFormat .= " AND $key = '" . $this->db->realEscapeString($value) . "'";
+        }
+        return $this->db->queryFirstRow($sqlFormat);
     }
 
 }

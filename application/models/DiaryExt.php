@@ -26,6 +26,13 @@ Class DiaryExtModel extends BasicModel {
         $sqlUpdateDiary .= " WHERE diary_id = {$data['diary_id']}";
         return $this->db->update($sqlUpdateDiary);
     }
+    
+    public function getDiaryExtByDiaryId($diaryId) {
+        if (!$diaryId || intval($diaryId) == 0) {
+            throw new Exception_BadInput("bad input diary id");
+        }
+        return $this->getSingleDiaryByConditions(array('diary_id' => $diaryId));
+    }
 
 }
 
