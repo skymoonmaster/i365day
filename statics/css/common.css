@@ -450,7 +450,7 @@ body{
     margin-right:10px;
     text-indent:-99999px;
 }
-.login-sina:hover{
+.login-sina:hover,.login-sina-close{
     background-position:-86px -162px;
 }
 .login-dou{
@@ -458,9 +458,22 @@ body{
     width:19px;
     text-indent:-99999px;
 }
-.login-dou:hover{
+.login-dou:hover,.login-dou-close{
     background-position:-114px -162px;
 }
+.note-sync-wrap .login-sina:hover{
+    background-position:-26px -162px
+}
+.note-sync-wrap .login-dou:hover{
+    background-position:-54px -162px;
+}
+.note-sync-wrap .login-sina-close:hover{
+    background-position:-86px -162px
+}
+.note-sync-wrap .login-dou-close:hover{
+    background-position:-114px -162px;
+}
+
 
 /*setting*/
 .settine-title{
@@ -495,6 +508,33 @@ body{
     height: 165px;
     border: 1px solid #dedede;
     margin: 20px auto 0 auto;
+    position: relative;
+}
+.setting-head-clipwindow{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    border: 2px solid orange;
+    z-index: 1;
+    overflow: hidden;
+    cursor: move;
+}
+.clip-mask{
+    background: #000;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+}
+.clipedImg{
+    position: absolute;
+    left: -2px;
+    top: -2px;
 }
 .setting-head-update{
     width: 83px;
@@ -590,7 +630,7 @@ body{
 /*detail*/
 .article-detail{
     margin-top: 30px;
-    width: 698px;
+    width: 738px;
     float: left;
 }
 .article-title{
@@ -610,6 +650,7 @@ body{
 .article-img{
     display: block;
     margin: 27px auto;
+    width: 493px;
 }
 .article-content{
     position: relative;
@@ -619,7 +660,7 @@ body{
 }
 .article-content p{
     color: #333;
-    margin: 0 80px;
+    margin: 0 60px;
 }
 .article-label-wrap{
     margin: 40px 0 20px 40px;
@@ -662,6 +703,13 @@ body{
 .article-aside{
     float: right;
     margin-top: 80px;
+    margin-right: 20px;
+}
+.article-share{
+    display: none;
+    position: absolute;
+    right: 28px;
+    bottom: 50px;
 }
 .last-year,
 .last-prev-year{
@@ -800,8 +848,9 @@ body{
 .index-img-list{
     width: 99999px;
     position: relative;
-    left: 0;
+    left: -560px;
     top: 0;
+    padding-left: 560px;
 }
 .index-img-item{
     float: left;
@@ -872,6 +921,9 @@ body{
     width:1080px;
     margin:0 auto;
     padding:44px 0 55px;
+}
+.logo-email{
+    float: left;
 }
 .bind-email{
     color:#7ab42a;
@@ -1078,7 +1130,13 @@ body{
     display:block;
     width:275px;
     height:40px;
-    background-position:-388px -886px;
+    background-position:-388px -885px;
+}
+.apply-present:hover{
+    background-position:-388px -935px;
+}
+.apply-present:active{
+    background-position:-388px -985px;
 }
 /*关于我们*/
 .container{
@@ -1087,14 +1145,17 @@ body{
 }
 #main{
     float:left;
-    padding:43px 0 130px
 }
-#main h1,#main h2,#sidebar h2{
+#main h1,#main h2{
     margin:0 0 20px 20px;
     font: 18px "微软雅黑";
 }
-#main .aboutus-title{
-    margin:0 0 20px 77px;
+#sidebar h2{
+    margin:0 0 20px 0;
+    font: 18px "微软雅黑";
+}
+.aboutus-title{
+    margin:33px 0 20px 77px;
     font: 18px "微软雅黑";
 }
 .main-content{
@@ -1108,12 +1169,11 @@ body{
 .aboutus-content p{
     width:565px;
     text-indent:2em;
-    line-height:23px;
+    line-height:30px;
 }
 
 #about-sidebar{
     float:left;
-    padding:87px 0 0 0;
     width:220px;
 }
 .sidebartop{
@@ -1160,17 +1220,29 @@ body{
 /*好朋友*/
 /*好友的全部新鲜事*/
 #friend-content{
-    padding:0 10px;
+    width: 1080px;
+    margin: 0 auto;
+    position: relative;
+}
+.white-bg{
+    position: absolute;
+    background: #fff;
+    width: 100px;
+    height: 100%;
+    left: -100px;
+    top: 0;
 }
 #friend-content .friend{
     background:#fff;
-    padding:43px 35px 0 120px;
-    width:732px;
+    width:770px;
+}
+#main.friend h1{
+    margin-top: 40px;
 }
 .friend-state{
     position:relative;
     padding-left:80px;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 .friend-pic{
     position:absolute;
@@ -1179,11 +1251,12 @@ body{
 }
 .friend-name{
     color:#4b8100;
-    margin:0 5px;
+    margin-right: 5px;
 }
-.record,.like{
-    padding-bottom:30px;
+.record,.like-friend{
+    padding-bottom:10px;
     border-bottom:1px dashed #e7e9ea;
+    width: 600px;
 }
 .record-content{
     background:#fafafa;
@@ -1191,6 +1264,9 @@ body{
     border-bottom:2px solid #eaeaea;
     width:600px;
     height: 100px;
+}
+.record-content a{
+    text-decoration: none;
 }
 .pic{
     float:left;
@@ -1200,23 +1276,21 @@ body{
     width:460px;
     float:left;
 }
-.info h3 a{
+.info h3{
     font-size:14px;
     color:#4b8100;
 }
 .info p{
     text-indent:2em;
-}
-.info a{
     color:#999;
-
 }
 .publish-date{
-    float:right;
+    text-align: right;
     line-height:30px;
     color:#999;
+    width: 600px;
 }
-.like{
+.like-friend{
     margin-top:10px;
 }
 .like-content{
@@ -1227,18 +1301,19 @@ body{
     padding:10px 0 10px 10px;
     height: 70px;
 }
-.like .info{
+.like-friend .info{
     padding:0 20px;
 }
 .make-friend{
+    width: 600px;
     height:30px;
     line-height:30px;
     border-bottom:1px dashed #e7e9ea;
 }
 /*我的关注*/
 #sidebar{
-    float:left;
-    padding:43px 0 0 60px;
+    float:right;
+    padding-top:43px;
     width:250px;
 }
 .myfocus-num{
@@ -1285,7 +1360,6 @@ body{
     float: left;
     width: 171px;
     height: 51px;
-    margin-left: 20px;
 }
 .logo a{
     display: block;
@@ -1311,6 +1385,7 @@ nav{
     float: right;
     position: relative;
     height: 53px;
+    margin-right: 10px;
 }
 .message-num{
     background: #ff9710;
@@ -1370,7 +1445,7 @@ nav{
     position: absolute;
     top: 51px;
     right: 0;
-    z-index: 1;
+    z-index: 1020;
     width: 133px;
     line-height: 36px;
     display: none;
@@ -1394,14 +1469,15 @@ nav{
 /*message*/
 .message{
     position: absolute;
-    top: 53px;
+    top: 51px;
     right: 0px;
     z-index: 1010;
-    min-width: 363px;
-    min-height: 260px;
+    min-width: 350px;
     padding: 10px 30px;
     background: #fff;
-    box-shadow: 2px 3px 4px #666;
+    border: 1px solid #dedede;
+    border-top: 0;
+    /* box-shadow: 2px 3px 4px #666; */
     display: none;
 }
 .message-title{
@@ -1565,6 +1641,10 @@ nav{
 .modify-description{
     background-position: -688px -144px;
 }
+.modify-textarea{
+    width: 100%;
+    height: 100%;
+}
 .user-fans-wrap{
     width: 170px;
 }
@@ -1689,6 +1769,7 @@ nav{
 }
 .home-list-item:hover .home-note-link{
     display: block;
+    text-decoration: none;
 }
 .note-empty{
     background: #ccc;
@@ -1721,6 +1802,7 @@ nav{
     background-position: -22px -396px;
 }
 .home-list-next{
+    display: none;
     right: -33px;
     background-position: -172px -396px;
 }
@@ -1775,6 +1857,7 @@ nav{
     box-shadow: 1px 1px 1px #dedede;
     position: absolute;
     z-index: 1;
+    display: none;
 }
 .home-year-wrap{
     text-align: center;
@@ -1782,7 +1865,7 @@ nav{
     color: #333;
 }
 .home-year-num{
-    margin: 0 40px;
+    margin: 0 20px;
     line-height: 2.5;
 }
 .home-year-prev,
@@ -1790,6 +1873,7 @@ nav{
     display: inline-block;
     color: #aaa;
     font-size: 16px;
+    width: 40px;
 }
 .home-month-item{
     float: left;
@@ -2093,4 +2177,49 @@ nav{
 }
 .copy-btn:active{
     background-position:-571px -814px;
+}
+
+/*自动扩展文本框*/
+.extendinputwrap{
+    max-height:28px;
+    overflow: auto;
+    border:1px solid #dedede;
+    margin:5px 0;
+    background:#fff;
+}
+.extenditem{
+    height:24px;
+    line-height:24px;
+    background:#ccc;
+    float:left;
+    padding-left:10px;
+    color:#fff;
+    margin:2px;
+    border-radius: 4px;
+    box-shadow:1px 1px 1px rgba(0,0,0,0.5);
+}
+.extenditem label{
+    float:left;
+    height:24px;
+    line-height:24px;
+}
+.extendclose{
+    float:left;
+    width:20px;
+    height:24px;
+    margin-left:10px;
+    background:url(../images/nse_icon_extendclose.png) no-repeat center center;
+}
+.otheritem input{
+    height:28px;
+    border:none;
+    outline:none;
+    width:95px;
+    padding-left:5px;
+}
+.extendinputwrap{
+    margin-top: -7px;
+}
+.otheritem{
+    cursor: text;
 }

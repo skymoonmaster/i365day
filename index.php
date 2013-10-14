@@ -13,21 +13,25 @@ try {
     Util_CLog::setFile(basename($e->getFile()));
     Util_CLog::setLine($e->getLine());
     Util_CLog::warning($e->getMessage());
+    var_dump($e->getMessage());
     #header("Location: /error/");
 } catch (Exception_Login $e) {
     Util_CLog::setFile(basename($e->getFile()));
     Util_CLog::setLine($e->getLine());
     Util_CLog::warning($e->getMessage());
+    var_dump($e->getMessage());
     #header("Location: /login/index/error/show");
 } catch (Exception_Ajax $e) {
     Util_CLog::setFile(basename($e->getFile()));
     Util_CLog::setLine($e->getLine());
     Util_CLog::warning($e->getLogMsg());
+    var_dump($e->getMessage());
     #echo $e->getoutPutMsg();
 } catch (Exception $e) {
     Util_CLog::setFile(basename($e->getFile()));
     Util_CLog::setLine($e->getLine());
     Util_CLog::warning($e->getMessage());
+    var_dump($e->getMessage());
     #header("Location: /error/");
 }
 /**
