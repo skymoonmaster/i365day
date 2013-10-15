@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>发布新日记--365每天记</title>
-    <link rel="stylesheet" href="../statics/css/common.css">
+    <link rel="stylesheet" href="/statics/css/common.css">
     <!--[if lt IE 9]>
-    <script src="../statics/js/html5shiv.js"></script>
+    <script src="/statics/js/html5shiv.js"></script>
     <![endif]-->
 </head>
 <body>
     <div class="header-load"></div>
     <div class="main">
-        <form action="">
+        <form action="/diary/docreate" method="post" enctype="multipart/form-data">
             <h1 class="main-title-icon">发布新日记</h1>
             <div class="note-content line">
                 <div class="note-form">
@@ -29,19 +29,20 @@
                                 <p>目前仅支持jpg、png格式</p>
                             </div>
                             <img class="note-img"  src="" alt="">
-                            <input type="file" class="note-img-upload" title="点击选择文件">
+                            <input type="file" class="note-img-upload" name="pic" title="点击选择文件">
                         </div>
-                        <input type="text" class="note-img-description" placeholder="图片说明...(可选)">
+                        <input type="text" class="note-img-description" name="pic_desc" placeholder="图片说明...(可选)">
                     </div>
                     <div class="note-text-wrap">
-                        <input type="text" class="note-text-title" placeholder="填写标题...(可选)">
-                        <textarea class="note-text"></textarea>
-                        <input type="text" class="note-text-label" placeholder="#标签">
+                        <input type="text" class="note-text-title" name="title" placeholder="填写标题...(可选)">
+                        <textarea class="note-text" name="content"></textarea>
+                        <!-- <input type="text" class="note-text-label" placeholder="#标签"> -->
+                        <ul class="extendinputwrap"><li class="otheritem"><input id="city" name="tags[]" type="text" placeholder="#标签" maxlength="20" /></li></ul>
                     </div>
                 </div>
                 <div class="note-btn-wrap">
-                    <button class="note-send clearword" type="button" title="写好了,发布">写好了,发布</button>
-                    <label><input type="checkbox" class="note-secret">仅自己可见</label>
+                    <button class="note-send clearword" type="submit" title="写好了,发布">写好了,发布</button>
+                    <label><input type="checkbox" class="note-secret" name="private" />仅自己可见</label>
                     <div class="note-sync-wrap">
                         <span class="note-sync-text">同步到:</span>
                         <a href="#" title="sina" class="login-sina">新浪登录</a>
@@ -49,11 +50,12 @@
                     </div>
                 </div>
             </div>
+            <input type ="hidden" name ='date' value ="{{$date}}"/>
         </form>
     </div>
     <div class="footer-load"></div>
-    <script src="../statics/js/jquery-1.10.1.min.js"></script>
-    <script src="../statics/js/temp-ajax-load.js"></script>
-    <script src="../statics/js/common.js"></script>
+    <script src="/statics/js/jquery-1.10.1.min.js"></script>
+    <script src="/statics/js/temp-ajax-load.js"></script>
+    <script src="/statics/js/common.js"></script>
 </body>
 </html>

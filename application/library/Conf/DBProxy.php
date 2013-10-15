@@ -40,9 +40,7 @@ class Conf_DBProxy
 	 * @var array
 	 */
 	static $arrDatabaseMap = array(
-		'cost_platform'         => array(self::DBPROXY_COSTPLATFORM_INDEX, 'utf8'),
-		'cost_platform_mis'	=> array(self::DBPROXY_COSTPLATFORM_INDEX, 'utf8'),
-		'test'			=> array(self::DBPROXY_COSTPLATFORM_INDEX, 'utf8'),
+		'i365day'         => array(self::DBPROXY_COSTPLATFORM_INDEX, 'utf8'),
 	);
 
 	/**
@@ -51,14 +49,14 @@ class Conf_DBProxy
 	 */
 	static $arrDBProxyServer = array(
 		self::DBPROXY_COSTPLATFORM_INDEX => array(	//cost-platform dbproxy集群
-			'username' => 'avm',
-			'password' => 'sdlf1n4',
+			'username' => 'root',
+			'password' => 'YhblSqt',
 			'port' => 3306,
 			'dx' => array(
-				'viewmobile-db-01.active.tan',
+				'127.0.0.1',
 				),
 			'lt' => array(
-				'viewmobile-db-01.active.tan',
+				'127.0.0.1',
 				),
 		),
 	);
