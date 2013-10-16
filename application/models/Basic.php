@@ -7,12 +7,14 @@ Class BasicModel {
      */
     protected $db;
     protected $table = '';
+    protected $primaryKey = '';
 
+    public static $statusDel = -1;
     protected function __construct() {
         $this->db = DB_ProxyWrapper::getInstance(I365DAY);
     }
 
-    protected function create($data) {
+    public function create($data) {
         if (!is_array($data) || count($data) == 0) {
             return false;
         }
@@ -22,8 +24,15 @@ Class BasicModel {
         }
         return $this->db->getLastInsertID();
     }
-
-    protected function createWithTimestamp($data) {
+    public function update($data) {
+        if (!$data || !is_array($data) || !isset($data[$this->primaryKey]) || !$data[$this->primaryKey]) {
+            throw new Exception_BadInput("bad input data for $this->table");
+        }
+        $sqlUpdateDiary = $this->db->buildUpdateSqlStr($data, $this->table);
+        $sqlUpdateDiary .= " WHERE $this->primaryKey = {$data[$this->primaryKey]}";
+        return $this->db->update($sqlUpdateDiary);
+    }
+    public function createWithTimestamp($data) {
         if (!is_array($data) || count($data) == 0) {
             return false;
         }
@@ -38,7 +47,7 @@ Class BasicModel {
         return $this->db->getLastInsertID();
     }
 
-    protected function getSingleDiaryByConditions($columnKeyToValues) {
+    public function getSingleDataByConditions($columnKeyToValues) {
         $sqlFormat = "SELECT * FROM $this->table WHERE 1=1 ";
         foreach ($columnKeyToValues as $key => $value) {
             if (!$key) {
@@ -47,6 +56,17 @@ Class BasicModel {
             $sqlFormat .= " AND $key = '" . $this->db->realEscapeString($value) . "'";
         }
         return $this->db->queryFirstRow($sqlFormat);
+    }
+    
+    public function getDataListByConditions($columnKeyToValues) {
+        $sqlFormat = "SELECT * FROM $this->table WHERE 1=1 ";
+        foreach ($columnKeyToValues as $key => $value) {
+            if (!$key) {
+                continue;
+            }
+            $sqlFormat .= " AND $key = '" . $this->db->realEscapeString($value) . "'";
+        }
+        return $this->db->queryAllRows($sqlFormat);
     }
 
 }

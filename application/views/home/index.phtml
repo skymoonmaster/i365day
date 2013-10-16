@@ -22,27 +22,15 @@
                 <a class="write-now clearword" href="/diary/create" title="记录今天">记录今天</a>
             </div>
             <div class="home-note-list">
-                <h2 class="home-note-month">2013年<em>1月</em></h2>
+                <h2 class="home-note-month"><em></em></h2>
                 <a href="#" class="home-date-btn clearword">选择年月</a>
                 <div class="home-date-wrap">
                     <div class="home-year-wrap">
                         <a class="home-year-prev" href="#" title="前一年">&lt;</a>
-                        <span class="home-year-num">2013年</span>
+                        <span class="home-year-num"></span>
                         <a class="home-year-next" href="#" title="后一年">&gt;</a>
                     </div>
                     <ul class="home-month-wrap clearfix">
-                        <li class="home-month-item"><a href="#" class="home-month-num home-month-selectable" title="1月">1月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num home-month-selectable" title="2月">2月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num home-month-selectable" title="3月">3月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num home-month-selectable" title="4月">4月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num home-month-selected" title="5月">5月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num home-month-selectable" title="6月">6月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num home-month-selectable" title="7月">7月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num" title="8月">8月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num" title="9月">9月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num" title="10月">10月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num" title="11月">11月</a></li>
-                        <li class="home-month-item"><a href="#" class="home-month-num" title="12月">12月</a></li>
                     </ul>
                 </div>
                 <ul class="home-week-wrap">
@@ -56,63 +44,24 @@
                 </ul>
                 <div class="home-list">
                     <ul class="home-list-wrap clearfix">
-                        <li class="home-list-item">
-                            <img src="/statics/images/home_img_note.jpg" alt="" class="home-note-img">
-                            <div class="home-note-link-mask"></div>
-                            <a href="detail.html" class="home-note-link" title="查看日记">
-                                <span class="home-note-the">第<em class="home-note-days">367</em>日</span>
-                                <time class="home-note-date">1月1日</time>
-                            </a>
-                        </li>
-                        <li class="home-list-item note-empty">
-                            <p class="note-empty-text">放空的1月7日</p>
-                            <a class="fill-in-note" href="newnote.html" title="补日记">+补日记</a>
-                        </li>
-                        <li class="home-list-item">
-                            <img src="/statics/images/home_img_note.jpg" alt="" class="home-note-img">
-                            <div class="home-note-link-mask"></div>
-                            <a href="detail.html" class="home-note-link" title="查看日记">
-                                <span class="home-note-the">第<em class="home-note-days">367</em>日</span>
-                                <time class="home-note-date">1月1日</time>
-                            </a>
-                        </li>
-                        <li class="home-list-item note-empty">
-                            <p class="note-empty-text">放空的1月7日</p>
-                            <a class="fill-in-note" href="newnote.html" title="补日记">+补日记</a>
-                        </li>
-                        <li class="home-list-item">
-                            <img src="/statics/images/home_img_note.jpg" alt="" class="home-note-img">
-                            <div class="home-note-link-mask"></div>
-                            <a href="detail.html" class="home-note-link" title="查看日记">
-                                <span class="home-note-the">第<em class="home-note-days">367</em>日</span>
-                                <time class="home-note-date">1月1日</time>
-                            </a>
-                        </li>
-                        <li class="home-list-item note-empty">
-                            <p class="note-empty-text">放空的1月7日</p>
-                            <a class="fill-in-note" href="newnote.html" title="补日记">+补日记</a>
-                        </li>
-                        <li class="home-list-item">
-                            <img src="/statics/images/home_img_note.jpg" alt="" class="home-note-img">
-                            <div class="home-note-link-mask"></div>
-                            <a href="detail.html" class="home-note-link" title="查看日记">
-                                <span class="home-note-the">第<em class="home-note-days">367</em>日</span>
-                                <time class="home-note-date">1月1日</time>
-                            </a>
-                        </li>
-                        <li class="home-list-item note-empty">
-                            <p class="note-empty-text">放空的1月7日</p>
-                            <a class="fill-in-note" href="newnote.html" title="补日记">+补日记</a>
-                        </li>
-                        <li class="home-list-item">
-                            <img src="/statics/images/home_img_note.jpg" alt="" class="home-note-img">
-                            <div class="home-note-link-mask"></div>
-                            <a href="detail.html" class="home-note-link" title="查看日记">
-                                <span class="home-note-the">第<em class="home-note-days">367</em>日</span>
-                                <time class="home-note-date">1月1日</time>
-                            </a>
-                        </li>
-                        <li class="home-list-item note-add" title="记录今天"><a class="clearword" href="newnote.html" title="记录今天">记录今天</a></li>
+                        {{foreach from=$diary_list item=diary}}
+                            {{if isset($diary.diary_id)}}
+                                <li class="home-list-item">
+                                    <img src="{{$diary.pic}}" alt="" class="home-note-img">
+                                    <div class="home-note-link-mask"></div>
+                                    <a href="/diary/detail/diary_id/{{$diary.diary_id}}" class="home-note-link" title="查看日记">
+                                        <span class="home-note-the">第<em class="home-note-days">{{$diary.days}}</em>日</span>
+                                        <time class="home-note-date">{{$diary.create_time|date_format:"%m月%d日"}}</time>
+                                    </a>
+                                </li>
+                            {{else}}
+                                <li class="home-list-item note-empty">
+                                    <p class="note-empty-text">放空的{{$diary.date|date_format:"%m月%d日"}}</p>
+                                    <a class="fill-in-note" href="/diary/create/date/{{$diary.date|date_format:"%Y%m%d"}}" title="补日记">+补日记</a>
+                                </li>
+                            {{/if}}
+                        {{/foreach}}
+                        {{if $is_record_today_show}}<li class="home-list-item note-add" title="记录今天"><a class="clearword" href="newnote.html" title="记录今天">记录今天</a></li>{{/if}}
                     </ul>
                     <a href="#" class="home-list-prev clearword" title="上个月份">上个月份</a>
                     <a href="#" class="home-list-next clearword" title="下个月份">下个月份</a>

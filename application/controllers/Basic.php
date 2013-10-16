@@ -16,9 +16,14 @@ class BasicController extends Yaf_Controller_Abstract {
 
     const ERROR_EMPTY = 1;
     const ERROR_INPUT_LENGTH = 10;
+    protected $userInfo = array();
 
     protected function init() {
         $_SESSION['user_id'] = 1;
+        if(isset($_SESSION['user_id']) && intval($_SESSION['user_id']) != 0){
+            $this->userInfo = UserModel::getInstance()->getUserInfoById($_SESSION['user_id']);
+        }
+        //$this->userInfo = UserModel::getInstance()->getUserInfoById($_SESSION['user_id']);
     }
 
     protected function getAjaxParam($key) {
