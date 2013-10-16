@@ -1,25 +1,25 @@
 <?php
 
-Class DiaryExtModel extends BasicModel {
+Class CommentModel extends BasicModel {
 
     /**
-     * @var DiaryExtModel
+     * @var CommentModel
      */
     protected static $instances;
-    protected $table = 'diary_ext';
-    protected $primaryKey = 'diary_ext_id';
+    protected $table = 'comment';
+    protected $primaryKey = 'comment_id';
 
     /**
-     * @return DiaryExtModel
+     * @return CommentModel
      */
     public static function getInstance() {
         if (!isset(self::$instances)) {
-            self::$instances = new DiaryExtModel();
+            self::$instances = new CommentModel();
         }
         return self::$instances;
     }
-    
-    public function getDiaryExtByDiaryId($diaryId) {
+
+    public function getCommentByDiaryId($diaryId) {
         if (!$diaryId || intval($diaryId) == 0) {
             throw new Exception_BadInput("bad input diary id");
         }

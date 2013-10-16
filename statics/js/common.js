@@ -179,8 +179,8 @@
             year: maxYear,
             month: maxMonth
         };
-
     $('.home-note-month').html(selectedDate.year + '年<em>' + selectedDate.month + '月</em>');
+    $('.home-year-num').text(selectedDate.year + '年');
 
     $('.home-year-next').on('click',function(e){
         e.preventDefault();
@@ -212,6 +212,10 @@
         }else{
             $('.home-list-next:hidden').show();
         }
+        var monthAsParam = selectedDate.month > 9 ? selectedDate.month : '0' + selectedDate.month;
+        debugger;
+        location.href = '/home/index/month/' + selectedDate.year + monthAsParam;
+
     });
 
     $('.home-list-prev').on('click',function(e){
