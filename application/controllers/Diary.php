@@ -30,10 +30,9 @@ class DiaryController extends BasicController {
         }
         $diaryInfo['tags'] = json_decode($diaryInfo['tags'], true);
         $diaryInfo = array_merge($diaryInfo, $diaryExtInfo);
-        $userInfo = UserModel::getInstance()->getUserInfoById($diaryInfo['user_id']);
-        
+
         $this->getView()->assign('diary', $diaryInfo);
-        $this->getView()->assign('user', $userInfo);
+        $this->getView()->assign('user', $this->userInfo);
     }
 
     public function doCreateAction() {
@@ -44,8 +43,6 @@ class DiaryController extends BasicController {
         }
 
         $diaryId = DiaryModel::getInstance()->createDiary($diaryInfo);
-        var_dump($diaryInfo);
-        exit;
         if (!$diaryId) {
             throw new Exception('create diray error');
         }
@@ -64,20 +61,22 @@ class DiaryController extends BasicController {
         $tags = $this->getOptionalParam('tags', array());
         $private = $this->getOptionalParam('private', 0);
         $picDesc = $this->getOptionalParam('pic_desc', 0);
-        $userInfo = UserModel::getInstance()->getUserInfoById($_SESSION['user_id']);
-        if (!$userInfo) {
+        if (!$this->userInfo) {
             throw new Exception_Login("invalid user");
         }
+        $createTime = time() - 3 * 86400;
         return array(
             'diary_id' => $diaryId,
             'title' => $title,
             'content' => $content,
-            'date' => $date,
             'tags' => json_encode($this->filterTags($tags)),
             'visibility' => $private ? 1 : 0,
-            'user_id' => $userInfo['user_id'],
+            'date' => $date,
+            'ym' => substr($date, 0, -2),
+            'days' => $this->getDiaryDays($createTime),
+            'user_id' => $this->userInfo['user_id'],
             'pic_desc' => $picDesc,
-            'create_time' => time()
+            'create_time' => $createTime
         );
     }
 
@@ -93,6 +92,17 @@ class DiaryController extends BasicController {
             $ret[] = $tag;
         }
         return $ret;
+    }
+
+    private function getDiaryDays($createTime) {
+        return 7;
+        $firstDiary = DiaryModel::getInstance()->getFirstDairy($_SESSION['user_id']);
+        if (!$firstDiary) {
+            return 1;
+        }
+        var_dump(($createTime - $firstDiary['create_time']) / 86400);
+        exit;
+        return ceil(($createTime - $firstDiary['create_time']) / 86400) + 1;
     }
 
 }

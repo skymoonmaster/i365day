@@ -8,7 +8,7 @@ Class DiaryModel extends BasicModel {
     protected static $instances;
     protected $table = 'diary';
     protected $primaryKey = 'diary_id';
-    protected $basicInfoKeys = array('diary_id', 'title', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date');
+    protected $basicInfoKeys = array('diary_id', 'title', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date', 'ym', 'days');
     protected $extInfoKeys = array('diary_id', 'pic', 'content');
 
     /**
@@ -88,7 +88,7 @@ Class DiaryModel extends BasicModel {
         if (!$diaryId || intval($diaryId) == 0) {
             throw new Exception_BadInput("bad input diary id");
         }
-        return $this->getSingleDiaryByConditions(array('diary_id' => $diaryId));
+        return $this->getSingleDataByConditions(array('diary_id' => $diaryId));
     }
 
     public function getFirstDairy($userId) {
@@ -96,8 +96,18 @@ Class DiaryModel extends BasicModel {
             throw new Exception_BadInput("bad input user id");
         }
         $sqlFormat = "SELECT * FROM $this->table WHERE user_id = %d ORDER BY date DESC LIMIT 1";
-        var_dump($sqlFormat, $userId);
         return $this->db->queryFirstRow($sqlFormat, $userId);
+    }
+    
+    public function getDataListByDateSectionAndConditions($columnKeyToValues, $startDate, $endDate) {
+        $sqlFormat = "SELECT * FROM $this->table WHERE date >= %d AND date <= %d ";
+        foreach ($columnKeyToValues as $key => $value) {
+            if (!$key) {
+                continue;
+            }
+            $sqlFormat .= " AND $key = '" . $this->db->realEscapeString($value) . "'";
+        }
+        return $this->db->queryAllRows($sqlFormat, $startDate, $endDate);
     }
 
 }
