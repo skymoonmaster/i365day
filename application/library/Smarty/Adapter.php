@@ -21,7 +21,6 @@ class Smarty_Adapter implements Yaf_View_Interface {
      */
     public function __construct($tmplPath = null, $extraParams = array()) {
 
-
         Yaf_Loader::import (APPLICATION_PATH . DIRECTORY_SEPARATOR . "application/library/Smarty/libs/Smarty.class.php");
         Yaf_Loader::import (SMARTY_SYSPLUGINS_DIR . "smarty_internal_templatecompilerbase.php");
         Yaf_Loader::import (SMARTY_SYSPLUGINS_DIR . "smarty_internal_templatelexer.php");
@@ -29,9 +28,8 @@ class Smarty_Adapter implements Yaf_View_Interface {
         Yaf_Loader::import (SMARTY_SYSPLUGINS_DIR . "smarty_internal_compilebase.php");
         Yaf_Loader::import (SMARTY_SYSPLUGINS_DIR . "smarty_internal_write_file.php");
         $this->_smarty = new Smarty;
-
         if (null !== $tmplPath) {
-            $this->setScriptPath($tmplPath);
+           $this->setScriptPath($tmplPath);
         }
         if (is_array($extraParams) && count($extraParams) > 0) {
             foreach ($extraParams as $key => $value) {

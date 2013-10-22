@@ -1,33 +1,53 @@
 <?php
 
+/* * *************************************************************************
+ * 
+ * Copyright (c) 2013 i365.com, Inc. All Rights Reserved
+ * 
+ * ************************************************************************ */
+
+/**
+ * 
+ * @package	controllers
+ * @author	yp
+ * @version	$Revision: 1.1 $
+ */
 class BasicController extends Yaf_Controller_Abstract {
 
-    protected function ajaxParam($value) {
+    const ERROR_EMPTY = 1;
+    const ERROR_INPUT_LENGTH = 10;
+    protected $userInfo = array();
+
+    protected function init() {
+        $_SESSION['user_id'] = 1;
+        if(isset($_SESSION['user_id']) && intval($_SESSION['user_id']) != 0){
+            $this->userInfo = UserModel::getInstance()->getUserInfoById($_SESSION['user_id']);
+        }
+        //$this->userInfo = UserModel::getInstance()->getUserInfoById($_SESSION['user_id']);
+    }
+
+    protected function getAjaxParam($key) {
+        $value = $this->getRequest()->get($key);
         if (!empty($value)) {
             $value = trim(urldecode($value));
         }
         return $value;
     }
-
-    protected function setLoginInfo() {
-        $companyAccount = CompanyAccountModel::getInstance()->getCompanAccountById($_SESSION['user_id']);
-        $cominfo = CompanyinfoModel::getInstance()->getCompanyInfoByCid($_SESSION['co_id']);
-        $lincenseInfo = LicenseModel::getInstance()->getLincenseInfoByCompanyId($_SESSION['co_id']);
-        $this->getView()->assign('cominfo', $cominfo);
-       
-        $this->getView()->assign('companyAccountInfo', $companyAccount);
-
-        if (is_array($lincenseInfo) && count($lincenseInfo) > 0) {
-            $this->getView()->assign('lincenseInfo', $lincenseInfo);
-        } else {
-            $this->getView()->assign('lincenseInfo', array('license_level' => 0));
+    
+    protected function getRequiredParam($key){
+        $value = $this->getRequest()->get($key);
+        if (!$value) {
+            throw new Exception_BadInput("$key can not be empty");
         }
+        return $value;
     }
-
-    protected function init() {
-        if (LoginModel::getInstance()->isLogin()) {
-            $this->setLoginInfo();
+    
+    protected function getOptionalParam($key, $default){
+        $value = $this->getRequest()->get($key);
+        if (!$value) {
+            $value = $default;
         }
+        return $value;
     }
 
 }
