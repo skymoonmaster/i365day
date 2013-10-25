@@ -15,9 +15,10 @@
 class LikeController extends BasicController {
 
     public function indexAction() {
-       
+        $inputUserId = $this->getOptionalParam('p', $_SESSION['user_id']);
+        $userDiaryList = UserDiaryModel::getInstance()->getListExtByUserId($inputUserId);
+        $this->getView()->assign('user_diary_list', $userDiaryList ? $userDiaryList : array());
     }
-
 
 }
 

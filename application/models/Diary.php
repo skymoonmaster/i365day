@@ -8,7 +8,7 @@ Class DiaryModel extends BasicModel {
     protected static $instances;
     protected $table = 'diary';
     protected $primaryKey = 'diary_id';
-    protected $basicInfoKeys = array('diary_id', 'title', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date', 'ym', 'days');
+    protected $basicInfoKeys = array('diary_id', 'title', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date', 'date_ts');
     protected $extInfoKeys = array('diary_id', 'pic', 'content');
 
     /**
@@ -95,7 +95,7 @@ Class DiaryModel extends BasicModel {
         if (!$userId || intval($userId) == 0) {
             throw new Exception_BadInput("bad input user id");
         }
-        $sqlFormat = "SELECT * FROM $this->table WHERE user_id = %d ORDER BY date DESC LIMIT 1";
+        $sqlFormat = "SELECT * FROM $this->table WHERE user_id = %d ORDER BY date ASC LIMIT 1";
         return $this->db->queryFirstRow($sqlFormat, $userId);
     }
     
@@ -108,6 +108,24 @@ Class DiaryModel extends BasicModel {
             $sqlFormat .= " AND $key = '" . $this->db->realEscapeString($value) . "'";
         }
         return $this->db->queryAllRows($sqlFormat, $startDate, $endDate);
+    }
+    
+    public function addFavNumById($diaryId){
+        if (!$diaryId || intval($diaryId) == 0) {
+            throw new Exception_BadInput("bad input diary id");
+        }
+        $sqlFormat = "UPDATE $this->table SET fav_num = fav_num + 1 WHERE diary_id = %d";
+        $sqlStr = $this->db->buildSqlStr($sqlFormat, $diaryId);
+        return $this->db->update($sqlStr);
+    }
+    
+    public function addCommentNumById($diaryId){
+        if (!$diaryId || intval($diaryId) == 0) {
+            throw new Exception_BadInput("bad input diary id");
+        }
+        $sqlFormat = "UPDATE $this->table SET comment_num = comment_num + 1 WHERE diary_id = %d";
+        $sqlStr = $this->db->buildSqlStr($sqlFormat, $diaryId);
+        return $this->db->update($sqlStr);
     }
 
 }

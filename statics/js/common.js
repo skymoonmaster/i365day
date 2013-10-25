@@ -213,7 +213,7 @@
             $('.home-list-next:hidden').show();
         }
         var monthAsParam = selectedDate.month > 9 ? selectedDate.month : '0' + selectedDate.month;
-        debugger;
+       
         location.href = '/home/index/month/' + selectedDate.year + monthAsParam;
 
     });
@@ -312,7 +312,23 @@
     //留言板+评论的回复按钮
     $('.article-detail,.leave-message-wrap').on('click','.reply',function(e){
         e.preventDefault();
+        debugger;
         $('.comment-text').val('回复 ' + $(this).closest('.comment-item').find('.article-author').html());
+        $('#follow_id').val($(this).attr('alt'));
+    });
+    //留言板的删除按钮
+    $('.article-detail').on('click','.delete',function(e){
+        e.preventDefault();
+        debugger;
+        $('.comment-text').val('回复 ' + $(this).closest('.comment-item').find('.article-author').html());
+        $('#follow_id').val($(this).attr('alt'));
+    });
+    //评论的删除按钮
+    $('.article-detail,.leave-message-wrap').on('click','.reply',function(e){
+        e.preventDefault();
+        debugger;
+        $('.comment-text').val('回复 ' + $(this).closest('.comment-item').find('.article-author').html());
+        $('#follow_id').val($(this).attr('alt'));
     });
 
 
@@ -389,6 +405,21 @@
     $('.article-icon-other').on('click',function(e){
         e.preventDefault();
         $('.article-share').fadeToggle();
+    });
+
+      //日记分享按钮
+    $('.article-icon-zan').on('click',function(e){
+        e.preventDefault();
+        var diaryId = $(this).attr('alt');
+        $.ajax({
+            url: encodeURI('/userdiary/replaceRelation/relation/1/diary_id/'+diaryId), 
+            type:'GET',
+            dataType:'json',
+            async:false,
+            success:function (json) {
+                
+            }
+        });
     });
 
 

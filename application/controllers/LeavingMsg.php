@@ -15,27 +15,33 @@
 class LeavingMsgController extends BasicController {
 
     public function doCreateAction() {
-        $diaryId = $this->getRequiredParam('diary_id');
+        Yaf_Dispatcher::getInstance()->autoRender(false);
+        $followId = $this->getRequiredParam('follow_id');
+        $hostId = $this->getRequiredParam('host_id');
         $content = $this->getRequiredParam('content');
         $comment = array(
-            'diary_id' => intval($diaryId),
+            'follow_id' => intval($followId),
+            'host_id' => intval($hostId),
             'content' => $content,
-            'user_id' => $_SESSION['user_id']
+            'vistor_id' => $this->userInfo['user_id'],
+            'vistor_name' => $this->userInfo['nick_name']
         );
-        $ret = CommentModel::getInstance()->createWithTimestamp($comment);
+        $ret = LeavingMsgModel::getInstance()->createWithTimestamp($comment);
         if (!$ret) {
-            throw new Exception('create comment error');
+            throw new Exception('create leaving msg error');
         }
+        $this->redirect("/coinfo/index");
     }
     public function doDelAction() {
-        $commentId = $this->getRequiredParam('leaving_msg_id');
-        $comment = array(
-            'leaving_msg_id' => $commentId,
+        Yaf_Dispatcher::getInstance()->autoRender(false);
+        $leavingMsgId = $this->getRequiredParam('leaving_msg_id');
+        $leavingMsg = array(
+            'leaving_msg_id' => $leavingMsgId,
             'status' => CommentModel::$statusDel
         );
-        $ret = CommentModel::getInstance()->update($comment);
+        $ret = LeavingMsgModel::getInstance()->update($leavingMsg);
         if (!$ret) {
-            throw new Exception('del comment error');
+            throw new Exception('del leaving msg error');
         }
     }
 
