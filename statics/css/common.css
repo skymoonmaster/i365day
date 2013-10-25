@@ -1742,6 +1742,13 @@ nav{
     margin: 1px 0 0 1px;
     position: relative;
 }
+.home-note-img{
+    float: left;
+    width: 150px;
+    height: 150px;
+    margin: 1px 0 0 1px;
+    position: relative;
+}
 .home-list-item:hover .home-note-img{
 }
 .home-note-link-mask{

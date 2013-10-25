@@ -19,7 +19,7 @@
                     <li class="home-tab-item"><a href="/like" title="喜欢">喜欢</a></li>
                     <li class="home-tab-item"><a href="/msg" title="留言板">留言板</a></li>
                 </ul>
-                <a class="write-now clearword" href="/diary/create" title="记录今天">记录今天</a>
+                {{if $is_record_today_show}}<a class="write-now clearword" href="/diary/create" title="记录今天">记录今天</a>{{/if}}
             </div>
             <div class="home-note-list">
                 <h2 class="home-note-month"><em></em></h2>
@@ -47,11 +47,11 @@
                         {{foreach from=$diary_list item=diary}}
                             {{if isset($diary.diary_id)}}
                                 <li class="home-list-item">
-                                    <img src="{{$diary.pic}}" alt="" class="home-note-img">
+                                    <img src="{{$diary.thumbnail}}" alt="" class="home-note-img">
                                     <div class="home-note-link-mask"></div>
                                     <a href="/diary/detail/diary_id/{{$diary.diary_id}}" class="home-note-link" title="查看日记">
-                                        <span class="home-note-the">第<em class="home-note-days">{{$diary.days}}</em>日</span>
-                                        <time class="home-note-date">{{$diary.create_time|date_format:"%m月%d日"}}</time>
+                                        <span class="home-note-the">第<em class="home-note-days">{{($diary.date_ts - $first_date_ts)/86400 + 1}}</em>日</span>
+                                        <time class="home-note-date">{{$diary.date_ts|date_format:"%m月%d日"}}</time>
                                     </a>
                                 </li>
                             {{else}}
@@ -61,7 +61,7 @@
                                 </li>
                             {{/if}}
                         {{/foreach}}
-                        {{if $is_record_today_show}}<li class="home-list-item note-add" title="记录今天"><a class="clearword" href="newnote.html" title="记录今天">记录今天</a></li>{{/if}}
+                        {{if $is_record_today_show}}<li class="home-list-item note-add" title="记录今天"><a class="clearword" href="/diary/create" title="记录今天">记录今天</a></li>{{/if}}
                     </ul>
                     <a href="#" class="home-list-prev clearword" title="上个月份">上个月份</a>
                     <a href="#" class="home-list-next clearword" title="下个月份">下个月份</a>

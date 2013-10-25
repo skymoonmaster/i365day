@@ -14,6 +14,7 @@
  */
 class BasicController extends Yaf_Controller_Abstract {
 
+    const ERROR_OK = 0;
     const ERROR_EMPTY = 1;
     const ERROR_INPUT_LENGTH = 10;
     protected $userInfo = array();
@@ -36,7 +37,7 @@ class BasicController extends Yaf_Controller_Abstract {
     
     protected function getRequiredParam($key){
         $value = $this->getRequest()->get($key);
-        if (!$value) {
+        if (is_null($value) || (!$value && $value != 0)) {
             throw new Exception_BadInput("$key can not be empty");
         }
         return $value;

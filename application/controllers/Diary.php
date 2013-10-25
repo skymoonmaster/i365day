@@ -36,10 +36,13 @@ class DiaryController extends BasicController {
     }
 
     public function doCreateAction() {
+        Yaf_Dispatcher::getInstance()->autoRender(false);
         $diaryInfo = $this->getDiaryInfo();
         $retUploadFile = FileModel::getInstance()->uploadDiaryPic($diaryInfo['create_time'], 'pic');
         if ($retUploadFile) {
-            $diaryInfo['pic'] = FileModel::getInstance()->generateSrcForDiaryPic($diaryInfo['create_time'], 'pic');
+            $picSrc = FileModel::getInstance()->generateSrcForDiaryPic($diaryInfo['create_time'], 'pic');
+            $diaryInfo['pic'] = $picSrc;
+            $diaryInfo['thumbnail'] = $picSrc;
         }
 
         $diaryId = DiaryModel::getInstance()->createDiary($diaryInfo);
@@ -49,6 +52,7 @@ class DiaryController extends BasicController {
         if (!isset($_FILES['pic'])) {
             throw new Exception_BadInput('pic is empty');
         }
+        $this->redirect("/home");
     }
 
     private function getDiaryInfo() {
@@ -64,7 +68,7 @@ class DiaryController extends BasicController {
         if (!$this->userInfo) {
             throw new Exception_Login("invalid user");
         }
-        $createTime = time() - 3 * 86400;
+        $createTime = time();
         return array(
             'diary_id' => $diaryId,
             'title' => $title,
@@ -72,8 +76,7 @@ class DiaryController extends BasicController {
             'tags' => json_encode($this->filterTags($tags)),
             'visibility' => $private ? 1 : 0,
             'date' => $date,
-            'ym' => substr($date, 0, -2),
-            'days' => $this->getDiaryDays($createTime),
+            'date_ts' => strtotime($date),
             'user_id' => $this->userInfo['user_id'],
             'pic_desc' => $picDesc,
             'create_time' => $createTime
@@ -93,18 +96,6 @@ class DiaryController extends BasicController {
         }
         return $ret;
     }
-
-    private function getDiaryDays($createTime) {
-        return 7;
-        $firstDiary = DiaryModel::getInstance()->getFirstDairy($_SESSION['user_id']);
-        if (!$firstDiary) {
-            return 1;
-        }
-        var_dump(($createTime - $firstDiary['create_time']) / 86400);
-        exit;
-        return ceil(($createTime - $firstDiary['create_time']) / 86400) + 1;
-    }
-
 }
 
 /* vim: set ts=4 sw=4 sts=4 tw=100 noet: */
