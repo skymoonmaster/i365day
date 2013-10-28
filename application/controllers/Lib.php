@@ -15,19 +15,32 @@
 class LibController extends BasicController {
 
     public function headerAction() {
+        $referer = $_SERVER['HTTP_REFERER'];
+        $refererInfo = parse_url($referer);
+        if(isset($refererInfo['path']) && $refererInfo['path'] == '/friend'){
+            $currentTab = 'friend';
+        }else if(isset($refererInfo['path']) && $refererInfo['path'] == '/news'){
+            $currentTab = 'news';
+        }else {
+            $currentTab = 'home';
+        }
         $this->getView()->assign('user', $this->userInfo);
+        
+        $this->getView()->assign('current_tab', htmlspecialchars($currentTab));
     }
 
     public function homeAction() {
         $inputUserId = $this->getOptionalParam('p', $_SESSION['user_id']);
         $firstDiary = DiaryModel::getInstance()->getFirstDairy($inputUserId);
+
         $duration = 1;
-        if(isset($firstDiary['date_ts']) && intval($firstDiary['date_ts']) != 0){
+        if (isset($firstDiary['date_ts']) && intval($firstDiary['date_ts']) != 0) {
             $duration = ceil((time() - $firstDiary['date_ts']) / 86400) + 1;
         }
         $this->getView()->assign('user', $this->userInfo);
         $this->getView()->assign('duration', $duration);
     }
+
     public function pagingAction() {
         
     }

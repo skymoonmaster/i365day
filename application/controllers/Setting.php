@@ -15,7 +15,7 @@
 class SettingController extends BasicController {
 
     public function indexAction() {
-       
+       $this->getView()->assign('user', $this->userInfo);
     }
 }
 

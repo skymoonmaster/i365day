@@ -483,7 +483,7 @@
             return window.parseInt(dom.getCss(elem, cssProperty),10)
         }
     };
-
+    
     commonImageClip({
         formatChage: false,
         imgScale: false,
