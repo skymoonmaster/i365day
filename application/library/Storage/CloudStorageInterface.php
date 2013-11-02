@@ -7,6 +7,7 @@
  */
 interface  CloudStorageInterface {
 	public function upload();
+	public function generateThumbnail();
 }
 
 ?>

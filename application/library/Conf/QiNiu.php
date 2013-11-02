@@ -10,5 +10,12 @@ class Conf_QiNiu {
 	const SECRET_KEY = 'QLFBWMDhoTbfRlJVHEM8zqOCZa8fLa0dAY4KWWtn';
 
 	const BUCKET = 'day365i';		
+
+	const PIC_FORMAT = array('jpg', 'png', 'gif');
+
+	const DOMAIN = 'http://day365i.qiniudn.com/';
+
+	const IS_PUBLIC_RESOURCE = TRUE;
 }
+
 ?>
