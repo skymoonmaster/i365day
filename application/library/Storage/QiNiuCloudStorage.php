@@ -2,6 +2,7 @@
 
 /*
  * 七牛云存储
+ * 
  */
 
 class QiNiuCloudStorage implements CloudStorageInterface {
@@ -21,6 +22,8 @@ class QiNiuCloudStorage implements CloudStorageInterface {
 	 * @param string $picName
 	 * @param type $picContent
 	 * @return boolean
+	 * 
+	 * @link http://docs.qiniu.com/php-sdk/v6/index.html#upload 七牛上传接口文档
 	 */
 	public static function upload($picName, $picContent) {
 		QiNiuCloudStorage::initQiNiu();
@@ -32,7 +35,6 @@ class QiNiuCloudStorage implements CloudStorageInterface {
 		list($return, $error) = Qiniu_PutFile($upToken, $picName, $picContent, null);
 
 		if ($error !== null) {
-			//TODO log
 			return FALSE;
 		}		
 
@@ -106,7 +108,7 @@ class QiNiuCloudStorage implements CloudStorageInterface {
 	/**
 	 * 获取图片URL
 	 * 
-	 * URL根据Bucket的属性不同
+	 * 图片URL根据Bucket开放属性设置的不同而不同
 	 * 公共资源URL形如：http://<domain>/<key>
 	 * 私有资源URL形如：http://<domain>/<key>?e=<deadline>&token=<downloadToken>
 	 * 
