@@ -84,7 +84,7 @@ class QiNiuCloudStorage implements CloudStorageInterface {
 		if ($isCrop) {
 			$mode = 1;
 		}
-		$requestUrl .= $mode;	
+		$requestUrl .= "/$mode";	
 
 		if (!empty($width)) {
 			$requestUrl .= "/w/{$width}";
