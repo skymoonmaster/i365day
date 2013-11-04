@@ -71,7 +71,7 @@ class QiNiuCloudStorage implements CloudStorageInterface {
 			throw new Exception_BadInput("The quality is invalid.");
 		}
 
-		if (!empty($format) && !in_array($format, Conf_QiNiu::PIC_FORMAT)) {
+		if (!empty($format) && !in_array($format, Conf_QiNiu::$picFormats)) {
 			throw new Exception_BadInput("The pic format is invalid.");	
 		}	
 
