@@ -9,7 +9,7 @@ CREATE TABLE `user` (
   `camera_brand` char(64) NOT NULL COMMENT '相机品牌',
   `camera_model` char(64) NOT NULL COMMENT '相机型号',
   `fans` int(11) NOT NULL DEFAULT '0' COMMENT '粉丝数',
-  `fellows` int(11) NOT NULL DEFAULT '0' COMMENT '关注数',
+  `follows` int(11) NOT NULL DEFAULT '0' COMMENT '关注数',
   `create_time` int(11) NOT NULL COMMENT '创建时间',
   `create_time` int(11) NOT NULL COMMENT '创建时间',
   `update_time` int(11) NOT NULL COMMENT '更新时间',
