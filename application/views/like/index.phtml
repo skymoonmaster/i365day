@@ -1,60 +1,47 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>我的喜欢--365每天记</title>
-    <link rel="stylesheet" href="/statics/css/common.css">
-    <!--[if lt IE 9]>
-    <script src="/statics/js/html5shiv.js"></script>
-    <![endif]-->
-</head>
-<body>
-    <div class="header-load"></div>
-    <div class="main">
-        <div class="home-load"></div>
-        <section class="home-note-wrap">
-            <div class="home-nav-wrap clearfix">
-                <ul class="home-tab-wrap clearfix">
-                    <li class="home-tab-item"><a href="/home" title="我的365">我的365</a></li>
-                    <li class="home-tab-item current"><a href="/like" title="喜欢">喜欢</a></li>
-                    <li class="home-tab-item"><a href="/msg" title="留言板">留言板</a></li>
+    <head>
+        <meta charset="UTF-8">
+        <title>我的喜欢--365每天记</title>
+        <link rel="stylesheet" href="/statics/css/common.css">
+        <!--[if lt IE 9]>
+        <script src="/statics/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="header-load"></div>
+        <div class="main">
+            <div class="home-load"></div>
+            <section class="like">
+                <ul class="like-list clearfix">
+                    {{foreach from=$user_diary_list item=diary}}
+                    <li class="like-item">
+                        <div class="all-hot-content clearfix">
+                            <img src="{{$diary.thumbnail}}"  width="251" height="251" class="all-hot-image">
+                            <div class="all-hot-article">
+                                <h3 class="all-hot-article-title"><a href="/diary/detail/diary_id/{{$diary.diary_id}}" title="在家煮了砂锅粥">{{$diary.title}}</a></h3>
+                                <a class="article-author" href="/home/index/p/{{$diary.user_id}}" title="{{$diary.nick_name}}">{{$diary.nick_name}}</a><span class="article-time">{{$diary.date_ts|date_format:"%Y-%m-%d"}}</span>
+                            </div>
+                            <div class="all-hot-evaluate">
+                                <div>
+                                    <a href="#" class="evaluate-good clearword" title="喜欢">喜欢</a><em>{{$diary.fav_num}}</em>
+                                </div>
+                                <div>
+                                    <a href="#" class="evaluate-weak clearword" title="comment">评论</a><em>{{$diary.comment_num}}</em>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    {{/foreach}}
+
                 </ul>
-                <a class="write-now clearword" href="newnote.html" title="记录今天">记录今天</a>
-            </div>
-        </section>
-        <section class="like">
-            <ul class="like-list clearfix">
-                <li class="like-item">
-                    <div class="like-load"></div>
-                </li>
-                <li class="like-item">
-                    <div class="like-load"></div>
-                </li>
-                <li class="like-item">
-                    <div class="like-load"></div>
-                </li>
-                <li class="like-item">
-                    <div class="like-load"></div>
-                </li>
-                <li class="like-item">
-                    <div class="like-load"></div>
-                </li>
-                <li class="like-item">
-                    <div class="like-load"></div>
-                </li>
-                <li class="like-item">
-                    <div class="like-load"></div>
-                </li>
-                <li class="like-item">
-                    <div class="like-load"></div>
-                </li>
-            </ul>
-        </section>
-        <div class="paging-load"></div>
-    </div>
-    <div class="footer-load"></div>
-    <script src="/statics/js/jquery-1.10.1.min.js"></script>
-    <script src="/statics/js/temp-ajax-load.js"></script>
-    <script src="/statics/js/common.js"></script>
-</body>
+            </section>
+            <div class="paging-load"></div>
+        </div>
+        <div class="footer-load"></div>
+        <script src="/statics/js/jquery-1.10.1.min.js"></script>
+        <script src="/statics/js/temp-ajax-load.js"></script>
+        <script src="/statics/js/common.js"></script>
+    </body>
 </html>

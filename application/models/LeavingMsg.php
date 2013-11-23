@@ -19,11 +19,12 @@ Class LeavingMsgModel extends BasicModel {
         return self::$instances;
     }
 
-    public function getLeavingMsgByOwnerId($ownerId) {
-        if (!$ownerId || intval($ownerId) == 0) {
-            throw new Exception_BadInput("bad input owner id");
+    public function getLeavingMsgByOwnerId($hostId) {
+        if (!$hostId || intval($hostId) == 0) {
+            throw new Exception_BadInput("bad input host id");
         }
-        return $this->getSingleDataByConditions(array('owner_id' => $ownerId));
+        $sqlFormat = "SELECT * FROM $this->table WHERE host_id = %d ORDER BY create_time DESC ";
+        return $this->db->queryAllRows($sqlFormat, $hostId);
     }
 
 }

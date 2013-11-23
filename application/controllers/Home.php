@@ -16,14 +16,19 @@ class HomeController extends BasicController {
 
     public function indexAction() {
         $isRecordTodayShow = false;
-        $inputMonth = $this->getOptionalParam('month', date('Ym'));
-        $diaryList = DiaryLogicModel::getInstance()->fillDiaryListForHomepage($inputMonth);
-        if($inputMonth == date('Ym')){
-            $conditions = array('user_id' => $_SESSION['user_id'], 'date' => date('Ymd'));
+        $inputMonth = $this->getOptionalParam('month', date('Ym'), true);
+        $inputUserId = $this->getOptionalParam('p', $_SESSION['user_id'], true);
+        $diaryList = DiaryLogicModel::getInstance()->fillDiaryListForHomepage($inputMonth, $inputUserId);
+        if ($inputMonth == date('Ym')) {
+            $conditions = array('user_id' => $inputUserId, 'date' => date('Ymd'));
             $diaryInfo = DiaryModel::getInstance()->getSingleDataByConditions($conditions);
             $isRecordTodayShow = $diaryInfo ? false : true;
         }
+        $firstDiary = DiaryModel::getInstance()->getFirstDairy($_SESSION['user_id']);
+        $userInfo = UserModel::getInstance()->getUserInfoById($inputUserId);
+        $this->getView()->assign('user', $userInfo);
         $this->getView()->assign('diary_list', $diaryList);
+        $this->getView()->assign('first_date_ts', $firstDiary['date_ts']);
         $this->getView()->assign('is_record_today_show', $isRecordTodayShow);
     }
 

@@ -6,7 +6,7 @@ define('WWW_ROOT', '/opt/active/viewmobile/wwwroot/i365day');
 define('PROCESS_START_TIME', microtime(true) * 1000);
 define('HTTP_DOMAIN', 'http://' . DOMAIN);
 define('STATIC_DOMAIN', HTTP_DOMAIN . '/statics');
-define('LOG_PATH', '/data/logs');
+define('LOG_PATH', '/opt/active/logs');
 define('I365DAY', 'i365day');
 define('DIARY_PIC_DIR', WWW_ROOT . DIRECTORY_SEPARATOR . 'statics' . DIRECTORY_SEPARATOR . 'kvt');
 define('DIARY_PIC_SRC', HTTP_DOMAIN . DIRECTORY_SEPARATOR . 'statics' . DIRECTORY_SEPARATOR . 'kvt');

@@ -15,9 +15,9 @@
                 <strong class="logo"><a class="clearword" href="index.html" title="365每天记">365每天记</a></strong>
                 <nav>
                     <ul class="nav-wrap clearfix">
-                        <li class="nav-item current"><a href="/home" title="我的首页">我的首页</a></li>
-                        <li class="nav-item"><a href="/friend" title="小伙伴">小伙伴</a></li>
-                        <li class="nav-item"><a href="/news" title="黑板报">黑板报</a></li>
+                        <li class="nav-item {{if $current_page == 'home' || $current_page == 'like' || $current_page == 'msg'}}current{{/if}}"><a href="/home" title="我的首页">我的首页</a></li>
+                        <li class="nav-item {{if $current_page == 'friend'}}current{{/if}}"><a href="/friend" title="小伙伴">小伙伴</a></li>
+                        <li class="nav-item {{if $current_page == 'news'}}current{{/if}}"><a href="/news" title="黑板报">黑板报</a></li>
                     </ul>
                 </nav>
             </div>

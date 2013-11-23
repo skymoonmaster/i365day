@@ -17,13 +17,13 @@ Class DiaryLogicModel extends BasicModel {
         return self::$instances;
     }
 
-    public function fillDiaryListForHomepage($inputMonth) {
+    public function fillDiaryListForHomepage($inputMonth, $inputUserId) {
         $startDate = $this->getStartDate($inputMonth);
         $endDate = $this->getEndDate($inputMonth, $startDate);
         $startDateTS = strtotime($startDate);
         $endDateTS = strtotime($endDate);
         $filledDiaryList = array();
-        $condition = array('user_id', $_SESSION['user_id']);
+        $condition = array('user_id', $inputUserId);
         $diaryList = DiaryModel::getInstance()->getDataListByDateSectionAndConditions($condition, $startDate, $endDate);
         foreach ($diaryList as $diary) {
             $diaryListByDate[$diary['date']] = $diary;
