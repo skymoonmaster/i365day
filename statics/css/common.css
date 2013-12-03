@@ -1221,7 +1221,7 @@ body{
 /*好友的全部新鲜事*/
 #friend-content{
     width: 1080px;
-    margin: 0 auto;
+    margin: 15px auto 0 auto;
     position: relative;
 }
 .white-bg{
@@ -1977,7 +1977,7 @@ nav{
 }
 .news-wrap{
     width: 766px;
-    margin-top: 30px;
+    margin-top: 15px;
     float: left;
 }
 .news-banner{
@@ -2050,7 +2050,7 @@ nav{
 .news-aside{
     width: 253px;
     float: right;
-    margin-top: 30px;
+    margin-top: 15px;
 }
 .big-logo-wrap{
     height: 259px;
