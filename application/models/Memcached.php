@@ -81,5 +81,9 @@ class MemcachedModel {
         }
         return $ret;
     }
-
+	
+	public function increment($key, $value = 1) {
+		$mc = Memcache_Handler::getInstance(CACHE_CLUSTER);
+		return $mc->increment($key, $value);
+	}
 }
