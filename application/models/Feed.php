@@ -24,7 +24,7 @@ Class FeedModel extends BasicModel {
 	
 	const DEFAULT_USER_LATEST_QUERY_TIME = "half year ago";
 	/**
-     * @return UserModel
+     * @return FeedModel
      */
     public static function getInstance() {
         if (!isset(self::$instances)) {
