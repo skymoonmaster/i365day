@@ -16,7 +16,7 @@
                     <div class="article-title-wrap">
                         <div class="note-date-label">
                             <strong class="note-date-text">DAY</strong>
-                            <em class="note-date-days">212</em>
+                            <em class="note-date-days">{{($diary.date_ts - $first_date_ts)/86400 + 1}}</em>
                         </div>
                         <div class="article-title-detail">
                             <h1 class="article-title">{{$diary.title}}</h1>
@@ -58,7 +58,7 @@
                     <div class="clearfix">
                         <img src="/statics/images/home_img_head.jpg" alt="头像" width="90" height="90" class="head-sculpture">
                         <a class="username" href="myhome.html" title="{{$user.nick_name}}">{{$user.nick_name}}</a>
-                        <p class="detail-days">123个日子</p>
+                        <p class="detail-days">{{$duration}}个日子</p>
                         <p class="user-info-guanzhu">
                             <a href="#" class="guanzhu" title="关注他">关注他</a>
                             <a href="#" class="quxiao-guanzhu hide" title="取消关注">取消关注</a>

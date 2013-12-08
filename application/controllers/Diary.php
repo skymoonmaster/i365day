@@ -28,11 +28,18 @@ class DiaryController extends BasicController {
         if (!is_array($diaryInfo) || !is_array($diaryExtInfo)) {
             throw new Exception("can not find diary by id $diaryId");
         }
+        $firstDiary = DiaryModel::getInstance()->getFirstDairy($_SESSION['user_id']);
+        $duration = 1;
+        if (isset($firstDiary['date_ts']) && intval($firstDiary['date_ts']) != 0) {
+            $duration = ceil((time() - $firstDiary['date_ts']) / 86400) + 1;
+        }
         $diaryInfo['tags'] = json_decode($diaryInfo['tags'], true);
         $diaryInfo = array_merge($diaryInfo, $diaryExtInfo);
 
         $this->getView()->assign('diary', $diaryInfo);
         $this->getView()->assign('user', $this->userInfo);
+        $this->getView()->assign('first_date_ts', $firstDiary['date_ts']);
+        $this->getView()->assign('duration', $duration);
     }
 
     public function doCreateAction() {

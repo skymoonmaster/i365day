@@ -419,11 +419,15 @@
     $(document).on('click','.extendclose',function(e){
         e.preventDefault();
         $(this).parent().remove();
+        $('.otheritem input').show();
     });
     //文本框内容转换扩展项
     function addExtendItem(_this){
         _this.parent().before('<li class="extenditem"><label>' + _this.val() + '</label><a class="extendclose" href="#" title="移除此项"></a><input name="' + _this.attr('name')+'" value="' + _this.val() + '" style="display:none;"></li>')
         setTimeout(function(){_this.val('')},0);
+        if($('.extenditem').length >= 5){
+            _this.hide();
+        }
     }
     //$('.note-text-label')
 
