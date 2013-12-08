@@ -24,30 +24,94 @@
     var messageId,
         menuId;
 
-    $(document).on('mouseenter','.message-num',function(e){
-        e.preventDefault();
+    $(document).on('mouseenter','.message-num', renderMessagesBoard).on('mouseleave','.message-num', function(e) {
+		e.preventDefault();	
+        clearTimeout(messageId);
+        messageId = window.setTimeout(function(){
+            $('.j-message').stop().slideUp();
+        }, 200);
+	});
+
+    $(document).on('mouseenter','.j-message', function() {
+        clearTimeout(messageId);
+        messageId = window.setTimeout(function(){
+            $('.j-message').stop().slideDown();
+        }, 200);	
+	});
+    $(document).on('mouseleave','.j-message',function() {
+        clearTimeout(messageId);
+        messageId = window.setTimeout(function(){
+            $('.j-message').stop().slideUp();
+        }, 200);
+	});
+	
+	function renderMessagesBoard(e) {
+		var url = "/msg/getNewMessage";
+
+		$.get(url, renderMessages, 'json');		
+		
+		e.preventDefault();
         clearTimeout(messageId);
         messageId = window.setTimeout(function(){
             $('.j-message').stop().slideDown();
         }, 200);
-    }).on('mouseleave','.message-num',function(e){
-        e.preventDefault();
-        clearTimeout(messageId);
-        messageId = window.setTimeout(function(){
-            $('.j-message').stop().slideUp();
-        }, 200);
-    });
+	}
+	
+	function renderMessages(data) {
+		if (data.code !== 0) {
+			return ;
+		}
+		
+		var messageList = $('#message-list');
+		messageList.empty();
 
-    $(document).on('mouseenter','.j-message',function(){
-        clearTimeout(messageId);
-        $('.j-message').stop().slideDown();
-    });
-    $(document).on('mouseleave','.j-message',function(){
-        clearTimeout(messageId);
-        messageId = window.setTimeout(function(){
-            $('.j-message').stop().slideUp();
-        }, 200);
-    });
+		var messages = data.data.message;
+		var messageAmount = data.data.messageCount;	
+
+		$.each(messages, function(index, message) {
+			if (message.count > 1) {
+				message.senderName = message.senderName + '等' + message.count + '人';
+			}
+
+			if (message.messageType == 1) {
+				var li = $('<li class="message-item">' + message.senderName + '喜欢了你的日记<a href="" title="' + message.diaryTitle + '">' + message.diaryTitle + '</a></li>');
+			} else if (message.messageType == 2) {
+				var li = $('<li class="message-item"><a href="" title="' + message.diaryTitle + '">' + message.diaryTitle + '</a>有了' + message.count + '条评论</li>');
+			} else if (message.messageType == 3) {
+				var li = $('<li class="message-item">' + message.senderName + '给你<a href="#" title="留言">留言</a>了</li>');	
+			} else if (message.messageType == 4) {
+				var li = $('<li class="message-item">' + message.senderName + '<a href="#" title="fond">关注</a>了你</li>');
+			}
+
+			messageList.append(li);
+		});
+		
+		if (messageAmount > 0) {
+			$('.message-num').text(messageAmount).attr('title', messageAmount + '条新消息').css('background', '#ff9710');	
+		}
+	}	
+
+	$(document).ready(checkNewMessage);
+	
+	function checkNewMessage() {
+		var url = "/msg/checkNewMessage";
+
+		$.get(url, renderMesssageAmount, 'json');
+	}
+	
+	function renderMesssageAmount(data) {
+		if (data.code !== 0) {
+			return ;
+		}
+		
+		var msgAmount = data.data;
+		if (msgAmount <= 0) {
+			$('.message-num').text(0).attr('title', 0 + '条新消息').css('background', '#fff');		
+			return ;
+		}	 	
+
+		$('.message-num').text(msgAmount).attr('title', msgAmount + '条新消息').css('background', '#ff9710');
+	}	
 
     //申请内测表单显隐
     $('.choose input').on('click',function(){

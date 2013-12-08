@@ -22,7 +22,7 @@
                 </nav>
             </div>
             <div class="login-info clearfix">
-                <a class="message-num" href="#" title="2条新消息">2</a>
+                <a class="message-num" href="#" title="">0</a>
                 <div class="info-username clearfix">
                     <a class="info-userlink" href="#" title="meixiaofang">{{$user.nick_name}}</a>
                     <b></b>
@@ -33,17 +33,11 @@
                         <li><a class="menu-item menu-logout" href="#" title="明天见!">退出</a></li>
                     </ul>
                 </div>
-                <div class="message j-message">
+                <div class="message j-message" id="message-board">
                     <strong class="message-title">消息中心</strong>
-                    <ul class="message-wrap">
-                        <li class="message-item"><a href="#" title="fond">fond</a>、<a href="#" title="麦子老师">麦子老师</a>喜欢了你的日记<a href="#" title="《百望山秋游》">《百望山秋游》</li>
-                        <li class="message-item"><a href="#" title="fond">fond</a>给你<a href="#" title="留言">留言</a>了</li>
-                        <li class="message-item"><a href="#" title="2013年8月13日的日记">2013年8月13日的日记</a>有了一条评论</li>
-                        <li class="message-item"><a href="#" title="《百望山秋游》">《百望山秋游》</a>有了一条评论</li>
-                        <li class="message-item"><a href="#" title="fond">fond</a>给你<a href="#" title="留言">留言</a>了</li>
-                        <li class="message-item"><a href="#" title="2013年8月13日的日记">2013年8月13日的日记</a>有了一条评论</li>
+                    <ul class="message-wrap" id="message-list">
                     </ul>
-                    <a href="#" class="message-close clearword j-message-close" title="关闭消息中心">关闭消息中心</a>
+                    <!--a href="#" class="message-close clearword j-message-close" id="message-close" title="关闭消息中心">关闭消息中心</a-->
                 </div>
             </div>
         </div>
