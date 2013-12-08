@@ -5,7 +5,8 @@ class MessageModel extends BasicModel {
 	protected static $instances;
 	
 	protected $table = 'message';
-	
+	protected $primaryKey = "message_id";
+
 	public static $messageType = array(
 		'likeDiary' => 1,
 		'DiaryComment' => 2,
@@ -73,7 +74,7 @@ class MessageModel extends BasicModel {
 			$messageCacheKeyIndex[] = $messageCacheKey;
 			
 			//将消息内容写进缓存
-			$messageContentCacheKey = self::getMessageContentCacheKey();		
+			$messageContentCacheKey = self::getMessageContentCacheKey($receiverId, $messageCacheKey);		
 			$messageContent = json_encode(array($messageId, $messageType, $senderId, $senderName, $receiverId, $diaryId, $diaryTitle));
 			$memcache->set($messageContentCacheKey, $messageContent, self::$cacheExpire);
 		
@@ -86,10 +87,38 @@ class MessageModel extends BasicModel {
 		if (!$existedKey) {
 			$memcache->set($messageNumCacheKey, 1, self::$cacheExpire);
 		} else {
-			$memcache->increment($messageNumCacheKey);
+			$memcache->increase($messageNumCacheKey);
 		}
 	} 
 	
+	public function readMessage($receiverId, $messageId, $messageType, $diaryId) {
+		$updateData = array(
+			'message_id' => $messageId,
+			'is_read' => self::$messageReadStatus['read']
+		); 
+			
+		$this->update($updateData);	
+
+		$this->decreaseMessageAmountToCache($receiverId);	
+
+		$messageCacheKey = empty($diaryId) ? $messageType : $messageType . '_' . $diaryId;		
+		MemcachedModel::getInstance()->delete(self::getMessageNumCacheKey($receiverId, $messageCacheKey));			
+		MemcachedModel::getInstance()->delete(self::getMessageContentCacheKey($receiverId, $messageCacheKey));	
+		
+		$key = McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId, '');
+		$messageCacheKeyIndex = MemcachedModel::getInstance()->get($key);	
+		$messageCacheKeyIndex = empty($messageCacheKeyIndex) ? array() : json_decode($messageCacheKeyIndex, true);	
+
+		$index = array_search($messageCacheKeyIndex, $messageCacheKeyIndex);		
+		if ($index === FALSE) {
+			return ;
+		}
+
+		array_splice($messageCacheKeyIndex, $index, 1);
+		
+		MemcachedModel::getInstance()->set($key, json_encode($messageCacheKeyIndex), self::$cacheExpire);		
+	}
+
 	public function getMessage($receiverId) {
 		$messageCache = $this->getMessageFromCache($receiverId);				
 		$messageAmount = $this->getMessageAmountFromCache($receiverId);	
@@ -173,10 +202,16 @@ class MessageModel extends BasicModel {
 		MemcachedModel::getInstance()->set($key, $amount, 0);	
 	}
 	
+	private function decreaseMessageAmountToCache($receiverId) {
+		$key = self::getMessageAmountCacheKey($receiverId);
+
+		MemcachedModel::getInstance()->decrease($key);	
+	}
+
 	private function increaseMessageAmountToCache($receiverId) {
 		$key = self::getMessageAmountCacheKey($receiverId);	
 
-		MemcachedModel::getInstance()->increment($key);	
+		MemcachedModel::getInstance()->increase($key);	
 	}
 
 	private function getMessageAmountFromCache($receiverId) {

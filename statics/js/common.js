@@ -82,7 +82,9 @@
 			} else if (message.messageType == 4) {
 				var li = $('<li class="message-item">' + message.senderName + '<a href="#" title="fond">关注</a>了你</li>');
 			}
-
+			
+			li.attr({'message-id': message.messageId, 'diary-id': message.diaryId, 'message-type': message.messageType});
+			li.bind('click', {messageId:messageId, diaryId:message.diaryId, messageType:message.messageType}, readMessage);
 			messageList.append(li);
 		});
 		
@@ -90,6 +92,12 @@
 			$('.message-num').text(messageAmount).attr('title', messageAmount + '条新消息').css('background', '#ff9710');	
 		}
 	}	
+	
+	function readMessage(event) {
+		var url = "/msg/readMessage";
+
+		$.post(url, event.data);
+	}
 
 	$(document).ready(checkNewMessage);
 	

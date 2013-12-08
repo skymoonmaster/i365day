@@ -20,6 +20,16 @@ class MsgController extends BasicController {
         $this->getView()->assign('user', $userInfo);
     }
 	
+	public function readMessage() {
+		Yaf_Dispatcher::getInstance()->autoRender(false);	
+
+		$messageId = $this->getAjaxParam('messageId');	
+		$diaryId = $this->getAjaxParam('diaryId');	
+		$messageType = $this->getAjaxParam('messageType');	
+
+		MessageModel::getInstance()->readMessage($messageId, $messageType, $diaryId);	
+	}
+
 	public function checkNewMessageAction() {
 		Yaf_Dispatcher::getInstance()->autoRender(false);	
 //		$amount = MessageModel::getInstance()->getMessageAmount($receiverId);
@@ -44,6 +54,7 @@ class MsgController extends BasicController {
 					'messageType' => 2,
 					'senderName' => 'zhangyuyi',
 					'diaryTitle' => '这是谁的小孩子',
+					'diaryId' => 123,
 					'count' => 5,
 				),
 				array(
@@ -51,6 +62,7 @@ class MsgController extends BasicController {
 					'messageType' => 3,
 					'senderName' => 'zhyy',
 					'diaryTitle' => '谁家的小睡',
+					'diaryId' => 0,
 					'count' => 4,		
 				),
 				array(
@@ -58,6 +70,7 @@ class MsgController extends BasicController {
 					'messageType' => 1,
 					'senderName' => 'wushuang',
 					'diaryTitle' => '谁家的小睡',
+					'diaryId' => 456,
 					'count' => 3,		
 				),
 			),
