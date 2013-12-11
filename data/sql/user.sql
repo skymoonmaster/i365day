@@ -11,7 +11,6 @@ CREATE TABLE `user` (
   `fans` int(11) NOT NULL DEFAULT '0' COMMENT '粉丝数',
   `follows` int(11) NOT NULL DEFAULT '0' COMMENT '关注数',
   `create_time` int(11) NOT NULL COMMENT '创建时间',
-  `create_time` int(11) NOT NULL COMMENT '创建时间',
   `update_time` int(11) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
