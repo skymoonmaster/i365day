@@ -28,7 +28,7 @@ Class FeedModel extends BasicModel {
      */
     public static function getInstance() {
         if (!isset(self::$instances)) {
-            self::$instances = new UserModel();
+            self::$instances = new FeedModel();
         }
 
         return self::$instances;
@@ -88,7 +88,7 @@ Class FeedModel extends BasicModel {
 
 	private function _getUserLatestQueryTimeFromCache($userId) {
 		$key = McKeyModel::getInstance()->forCompanyInfo('user_latest_query_time_', $userId, '');
-		return MemcachedModel::getInstance()->set($key);
+		return MemcachedModel::getInstance()->get($key);
 	}
 	
 	/**
@@ -196,9 +196,9 @@ Class FeedModel extends BasicModel {
 		
 		$feedInfos = array_slice($feedInfos, $offset, $limit);
 
-		$feeds = $FeedContentModel::getInstance()->getFeedContent($feedInfos);	
+		$feeds = FeedContentModel::getInstance()->getFeedContent($feedInfos);
 		
-		return $feed;
+		return $feeds;
 	}	
 }
 

@@ -52,7 +52,7 @@ class MessageModel extends BasicModel {
 		$this->db->update($sql);
 		$messageId = $this->db->getLastInsertID();
 		
-		$this->setMessageToCache($messageId, $messageType, $senderId, $receiverId, $diaryId);	
+		$this->setMessageToCache($messageId, $messageType, $senderId, $senderName, $receiverId, $diaryId, $diaryTitle);
 		$this->increaseMessageAmountToCache($receiverId);	
 		
 		return $messageId;	
@@ -182,7 +182,7 @@ class MessageModel extends BasicModel {
 			return $amount;	
 		}
 
-		$amount = $this->getMessageAmountFromDb();
+		$amount = $this->getMessageAmountFromDb($receiverId);
 		$this->setMessageAmountToCache($receiverId, $amount);
 
 		return $amount;
