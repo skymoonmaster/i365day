@@ -6,8 +6,8 @@
  */
 
 class Conf_QiNiu {
-	const ACCESS_KEY = '-ADyWaRMa2fL81ZQ6H0y1X5HjZiDtvO80H50fUxd';	
-	const SECRET_KEY = 'QLFBWMDhoTbfRlJVHEM8zqOCZa8fLa0dAY4KWWtn';
+	const ACCESS_KEY = '';
+	const SECRET_KEY = '';
 
 	const BUCKET = 'day365i';		
 

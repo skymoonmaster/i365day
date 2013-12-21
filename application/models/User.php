@@ -54,6 +54,28 @@ Class UserModel extends BasicModel {
         return $user;
     }
 
+    public function getUserInfos(array $uids) {
+        if (empty($uids)) {
+            throw new Exception_BadInput("Empty params error");
+        }
+
+        $sql = "SELECT * FROM `user` WHERE `user_id` IN (";
+        $sql .= implode(',', $uids);
+        $sql .= ");";
+
+        $rows = $this->db->queryAllRows($sql);
+
+        if (empty($rows)) {
+            return array();
+        }
+
+        $userInfos = array();
+        foreach($rows as $rows) {
+            $userInfos[$rows['user_id']] = $row;
+        }
+
+        return $userInfos;
+    }
 }
 
 /* vim: set ts=4 sw=4 sts=4 tw=100 noet: */

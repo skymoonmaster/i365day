@@ -5,11 +5,13 @@ class MessageModel extends BasicModel {
 	protected static $instances;
 	
 	protected $table = 'message';
-	
+	protected $primaryKey = "message_id";
+
 	public static $messageType = array(
 		'likeDiary' => 1,
 		'DiaryComment' => 2,
-		'leavingMessage' => 3
+		'leavingMessage' => 3,
+		'follow' => 4
 	);
 	
 	public static $messageReadStatus = array(
@@ -17,12 +19,14 @@ class MessageModel extends BasicModel {
 		'unread' => 2
 	);
 
+	private static $cacheExpire = 0;
+
 	/**
      * @return MessageModel
      */
     public static function getInstance() {
         if (!isset(self::$instances)) {
-            self::$instances = new UserModel();
+            self::$instances = new MessageModel();
         }
 
         return self::$instances;
@@ -48,8 +52,9 @@ class MessageModel extends BasicModel {
 		$this->db->update($sql);
 		$messageId = $this->db->getLastInsertID();
 		
-		$this->setMessageToCache($messageId, $messageType, $senderId, $receiverId, $diaryId);	
-
+		$this->setMessageToCache($messageId, $messageType, $senderId, $senderName, $receiverId, $diaryId, $diaryTitle);
+		$this->increaseMessageAmountToCache($receiverId);	
+		
 		return $messageId;	
 	}
 
@@ -65,57 +70,78 @@ class MessageModel extends BasicModel {
 		$messageCacheKey = empty($diaryId) ? $messageType : $messageType . '_' . $diaryId;	
 		$existedKey = in_array($messageCacheKey, $messageCacheKeyIndex);
 		
-		$expire = strtotime('+24 week');
-
 		if (!$existedKey) {
 			$messageCacheKeyIndex[] = $messageCacheKey;
 			
 			//将消息内容写进缓存
-			$messageContentCacheKey = self::getMessageContentCacheKey();		
+			$messageContentCacheKey = self::getMessageContentCacheKey($receiverId, $messageCacheKey);		
 			$messageContent = json_encode(array($messageId, $messageType, $senderId, $senderName, $receiverId, $diaryId, $diaryTitle));
-			$memcache->set($messageContentCacheKey, $messageContent, $expire);
+			$memcache->set($messageContentCacheKey, $messageContent, self::$cacheExpire);
 		
 			//将消息缓存key的索引写入缓存
-			$memcache->set($messageCacheKeyIndex, json_encode($messageCacheKeyIndex), $expire);			
+			$memcache->set($messageCacheKeyIndex, json_encode($messageCacheKeyIndex), self::$cacheExpire);			
 		}
 		
 		//消息内计数。譬如：“n人给你留言”、“n人评论了你的日志”等；
 		$messageNumCacheKey = self::getMessageNumCacheKey($receiverId, $messageCacheKey);
 		if (!$existedKey) {
-			$memcache->set($messageNumCacheKey, 1, $expire);
+			$memcache->set($messageNumCacheKey, 1, self::$cacheExpire);
 		} else {
-			$memcache->increment($messageNumCacheKey);
+			$memcache->increase($messageNumCacheKey);
 		}
 	} 
 	
-	private static function getMessageContentCacheKey($receiverId, $messageCacheKey) {
-		return McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId . '_' . $messageCacheKey . '_content', '');
-	}
-	
-	private static function getMessageNumCacheKey($receiverId, $messageCacheKey) {
-		return McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId . '_' . $messageCacheKey . '_num', '');	
+	public function readMessage($receiverId, $messageId, $messageType, $diaryId) {
+		$updateData = array(
+			'message_id' => $messageId,
+			'is_read' => self::$messageReadStatus['read']
+		); 
+			
+		$this->update($updateData);	
+
+		$this->decreaseMessageAmountToCache($receiverId);	
+
+		$messageCacheKey = empty($diaryId) ? $messageType : $messageType . '_' . $diaryId;		
+		MemcachedModel::getInstance()->delete(self::getMessageNumCacheKey($receiverId, $messageCacheKey));			
+		MemcachedModel::getInstance()->delete(self::getMessageContentCacheKey($receiverId, $messageCacheKey));	
+		
+		$key = McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId, '');
+		$messageCacheKeyIndex = MemcachedModel::getInstance()->get($key);	
+		$messageCacheKeyIndex = empty($messageCacheKeyIndex) ? array() : json_decode($messageCacheKeyIndex, true);	
+
+		$index = array_search($messageCacheKeyIndex, $messageCacheKeyIndex);		
+		if ($index === FALSE) {
+			return ;
+		}
+
+		array_splice($messageCacheKeyIndex, $index, 1);
+		
+		MemcachedModel::getInstance()->set($key, json_encode($messageCacheKeyIndex), self::$cacheExpire);		
 	}
 
 	public function getMessage($receiverId) {
 		$messageCache = $this->getMessageFromCache($receiverId);				
-
-		if (!empty($messageCache)) {
-			return array('message' => $messageCache, 'messageCount' => count($messageCache));	
+		$messageAmount = $this->getMessageAmountFromCache($receiverId);	
+		
+		if (!empty($messageCache) && $messageAmount !== FALSE) {
+			return array('message' => $messageCache, 'messageCount' => $messageAmount);	
 		}
 
 		$sql = "SELECT * FROM message WHERE `receiver_id`={$receiverId} AND `is_read`=" . self::$messageReadStatus['unread'];	
 		$messages = $this->db->queryAllRows($sql);
 		
+		if ($messages === FALSE) {
+			return FALSE;	
+		}
+		//TODO 写缓存
 		return array('message' => $messages, 'messageCount' => count($messages));			
 	}
 
 	private function getMessageFromCache($receiverId) {
-		$mcKey = McKeyModel::getInstance();
-		$key = $mcKey->forCompanyInfo('msg', $receiverId, '');	
+		$key = self::getMessageCacheKeyIndex($receiverId);
 
 		$memcache = MemcachedModel::getInstance(); 
 		$messageCacheKeyIndex = $memcache->get($key);		
-		
 		$messageCacheKeyIndex = json_decode($messageCacheKeyIndex, true);	
 
 		if (empty($messageCacheKeyIndex)) {
@@ -142,10 +168,75 @@ class MessageModel extends BasicModel {
 			$messageContent = json_decode($caches[$messageContentCacheKeys[$cacheKey]], true);
 			
 			$messageContent['count'] = empty($caches[$messageNumCacheKeys[$cacheKey]]) ? 1 : $caches[$messageNumCacheKeys[$cacheKey]];
-
+			
 			$messages[] = $messageContent;	
 		}
 
 		return $messages;
+	}
+
+	public function getMessageAmount($receiverId) {
+		$amount = $this->getMessageAmountFromCache($receiverId);
+
+		if ($amount !== FALSE) {
+			return $amount;	
+		}
+
+		$amount = $this->getMessageAmountFromDb($receiverId);
+		$this->setMessageAmountToCache($receiverId, $amount);
+
+		return $amount;
+	}
+	
+	private function getMessageAmountFromDb($receiverId) {
+		$sql = "SELECT COUNT(*) as count FROM message WHERE `receiver_id`={$receiverId} AND `is_read`=" . self::$messageReadStatus['unread'];		
+		
+		$result = $this->db->queryFirstRow($sql);
+
+		return $result['count'];
+	}
+	
+	private function setMessageAmountToCache($receiverId, $amount) {
+		$key = self::getMessageAmountCacheKey($receiverId);	
+
+		MemcachedModel::getInstance()->set($key, $amount, 0);	
+	}
+	
+	private function decreaseMessageAmountToCache($receiverId) {
+		$key = self::getMessageAmountCacheKey($receiverId);
+
+		MemcachedModel::getInstance()->decrease($key);	
+	}
+
+	private function increaseMessageAmountToCache($receiverId) {
+		$key = self::getMessageAmountCacheKey($receiverId);	
+
+		MemcachedModel::getInstance()->increase($key);	
+	}
+
+	private function getMessageAmountFromCache($receiverId) {
+		$key = self::getMessageAmountCacheKey($receiverId);
+		$amount = MemcachedModel::getInstance()->get($key);	
+		if ($amount === FALSE) {
+			return FALSE;
+		}
+
+		return $amount;				
+	}
+	
+	private static function getMessageAmountCacheKey($receiverId) {
+		return McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId . '_amount', '');
+	}	
+
+	private static function getMessageCacheKeyIndex($receiverId) {
+		return McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId, ''); 
+	}
+
+	private static function getMessageContentCacheKey($receiverId, $messageCacheKey) {
+		return McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId . '_' . $messageCacheKey . '_content', '');
+	}
+	
+	private static function getMessageNumCacheKey($receiverId, $messageCacheKey) {
+		return McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId . '_' . $messageCacheKey . '_num', '');	
 	}
 }
