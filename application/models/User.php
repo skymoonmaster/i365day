@@ -40,6 +40,13 @@ Class UserModel extends BasicModel {
         }
     }
 
+    public function getUserInfoByConditions(array $conditions) {
+        if (empty($conditions)) {
+            throw new Exception_BadInput("empty params");
+        }
+
+        return $this->getSingleDataByConditions($conditions);
+    }
 
     public function getUserInfo($columKey, $columValue) {
         $user = array();

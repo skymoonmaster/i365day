@@ -18,7 +18,7 @@ class CallbackController extends BasicController {
         Yaf_Dispatcher::getInstance()->autoRender(false);
         $douban = Oauth_Adapter::getInstance()->createOauthModel('douban');
         // 如果没有authorizeCode，跳转到用户授权页面
-        if ( ! isset($_GET['code'])) {
+        if (!isset($_GET['code'])) {
             $douban->requestAuthorizeCode();
             exit;
         }
@@ -28,7 +28,12 @@ class CallbackController extends BasicController {
         $douban->requestAccessToken();
         
         $userInfo = $douban->api('User.me.GET')->makeRequest();
-        var_dump($userInfo);
+        $userInfo['app_id'] = Conf_Oauth::$appIds['douban'];
+        $userInfo['app_uid'] = $userInfo['id'];
+
+        $_SESSION['oauth_user_info'] = $userInfo;
+
+        $this->redirect("/login/doLogin");
     }
 
 }

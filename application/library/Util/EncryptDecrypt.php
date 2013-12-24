@@ -104,7 +104,7 @@ Class Util_EncryptDecrypt {
         if (strlen($string) == 0) {
             return '';
         }
-        $ckey_length = 0;
+        $ckey_length = 16;
         // 随机密钥长度 取值 0-32;
         // 加入随机密钥，可以令密文无任何规律，即便是原文和密钥完全相同，加密结果也会每次不同，增大破解难度。
         // 取值越大，密文变动规律越大，密文变化 = 16 的 $ckey_length 次方

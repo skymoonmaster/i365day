@@ -7,7 +7,7 @@
  */
 class AttentionModel extends BasicModel {
 	protected static $instances;
-	
+
 	protected $table = 'attention';
 
     private static $_cacheLimit = 500;
@@ -33,7 +33,7 @@ class AttentionModel extends BasicModel {
 			throw new Exception_BadInput("Empty params error");
 		}
 
-		$ret = $this->createWithTimestamp(array('fans_uid' => $fansUid, 'follow_uid' => $followUid));	
+		$ret = $this->createWithTimestamp(array('fans_uid' => $fansUid, 'follow_uid' => $followUid));
 		if (empty($ret)) {
 			throw new Exception("Failed to write attention data to db");
 		}
@@ -63,14 +63,42 @@ class AttentionModel extends BasicModel {
         $this->decreaseFansNumToCache($followUid);
     }
 
-    public function isFollow($followUid, $fansUid) {
-        $followUids = $this->getFollowUidsFromCache($fansUid);
+    public function isFollows($fansUid, $uids) {
+        $followNum = $this->getFollowNumFromCache($fansUid);
+
+        if ($followNum <= self::$_cacheLimit) {
+            $followUids = $this->getFollowUidsFromCache($fansUid);
+
+            return array_intersect($uids, $followUids);
+        }
+
+        $sql = "SELECT `follow_id` FROM `attention` WHERE `fans_uid`={$fansUid} AND `follow_id` IN (";
+        $sql .= implode(',', $uids);
+        $sql .= ")";
+
+        $rows = $this->db->queryAllRows($sql);
+
+        $followUids = array();
+        foreach ($rows as $row) {
+            $followUids[] = $row['follow_id'];
+        }
+
+        $isFollows = array();
+        foreach ($uids as $uid) {
+            $isFollows[$uid] = in_array($uid, $followUids);
+        }
+
+        return $isFollows;
+    }
+
+    public function isFollow($uid, $followUid) {
+        $followUids = $this->getFollowUidsFromCache($uid);
 
         if (in_array($followUid, $followUids)) {
             return TRUE;
         }
 
-        $followNum = $this->getFollowNumFromCache($fansUid);
+        $followNum = $this->getFollowNumFromCache($uid);
 
         if ($followNum <= self::$_cacheLimit) {
             return FALSE;
@@ -78,7 +106,7 @@ class AttentionModel extends BasicModel {
 
         $sqlConditions = array(
             'follow_uid' => $followUid,
-            'fans_uid' => $fansUid
+            'fans_uid' => $uid
         );
 
         $result = $this->getSingleDataByConditions($sqlConditions);
@@ -89,8 +117,55 @@ class AttentionModel extends BasicModel {
         return TRUE;
     }
 
-    public function getFollows($uid) {
+    public function getFollowUids($uid, $offset = self::DEFAULT_OFFSET, $limit = self::DEFAULT_LIMIT) {
+        if (empty($uid)) {
+            throw new Exception_BadInput("Empty params error");
+        }
 
+        if ($offset + $limit <= self::$_cacheLimit) {
+            $followUids = $this->getFollowUidsFromCache($uid);
+
+            if (empty($followUids)) {
+                $followUids = $this->getFollowUidsFromDb($uid, 0, self::$_cacheLimit);
+
+                if (empty($followUids)) {
+                    return array();
+                }
+
+                $this->setFollowUidsToCache($uid, $followUids);
+
+                $followUids = array_slice($followUids, $offset, $limit);
+
+                return $followUids;
+            }
+        }
+
+        $followUids = $this->getFollowUidsFromDb($uid, $offset, $limit);
+        if (empty($followUids)) {
+            return array();
+        }
+
+        return $followUids;
+    }
+
+    public function getFansNum(array $uids) {
+        if (empty($uids)) {
+            throw new Exception_BadInput("Empty params error");
+        }
+
+        $multiKey = array();
+        foreach ($uids as $uid) {
+            $multiKey[$this->getFansNumCacheKey($uid)] = $uid;
+        }
+
+        $fanNums = array();
+
+        $results = MemcachedModel::getInstance()->get(array_keys($multiKey));
+        foreach ($results as $key => $num) {
+            $fanNums[$multiKey[$key]] = $num;
+        }
+
+        return $fanNums;
     }
 
     public function getFanUids($uid, $offset = self::DEFAULT_OFFSET, $limit = self::DEFAULT_LIMIT) {
@@ -124,12 +199,28 @@ class AttentionModel extends BasicModel {
         return $fansUids;
     }
 
+    private function getFollowUidsFromDb($uid, $offset, $limit) {
+        $sql = "SELECT `follow_uid` FROM `attention` WHERE `fans_uid`={$uid} ORDER BY `create_time` DESC LIMIT {$offset}, {$limit}";
+
+        $rows = $this->db->queryAllRows($sql);
+        if (empty($result)) {
+            return array();
+        }
+
+        $followUids = array();
+        foreach ($rows as $row) {
+            $followUids[] = $row['follow_uid'];
+        }
+
+        return $followUids;
+    }
+
     /**
      * 500
      *
      */
     private function getFansUidsFromDb($uid, $offset, $limit) {
-        $sql = "SELECT `fans_uid` FROM attention WHERE `follow_uid`={$uid} ORDER BY `create_time` DESC LIMIT {$offset}, {$limit}";
+        $sql = "SELECT `fans_uid` FROM `attention` WHERE `follow_uid`={$uid} ORDER BY `create_time` DESC LIMIT {$offset}, {$limit}";
 
         $result = $this->db->queryAllRows($sql);
         if (empty($result)) {
@@ -171,9 +262,11 @@ class AttentionModel extends BasicModel {
 
         MemcachedModel::getInstance()->get($key);
 	}
-	
-	private function setFollowUidsToCache() {
 
+	private function setFollowUidsToCache($fansUid, $followUids) {
+        $key = $this->getFollowUidsCacheKey($fansUid);
+
+        return MemcachedModel::getInstance()->set($key, $followUids, self::$_cacheExpire);
 	}
 
     private function deleteFollowUidsFromCache($fansUid) {
