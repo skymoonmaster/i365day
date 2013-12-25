@@ -9,8 +9,14 @@ class FansController extends BasicController {
 		$fanUids = AttentionModel::getInstance()->getFanUids($_SESSION['user_id'], $offset);
 
         $fans = array();
-        if (empty($fanUids)) {
+        if (!empty($fanUids)) {
             $fans = UserModel::getInstance()->getUserInfos($fanUids);
+        }
+
+        $fansNum = AttentionModel::getInstance()->getFansNum($fanUids);
+
+        foreach($fans as &$fan) {
+            $fan['fans_num'] = $fansNum[$fan['user_id']];
         }
 
         $this->getView()->assign('fans', $fans);

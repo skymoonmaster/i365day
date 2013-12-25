@@ -79,7 +79,7 @@ class QiNiuCloudStorage implements CloudStorageInterface {
 		
 		$mode = 2;		
 		$picUrl =  QiNiuCloudStorage::getPicUrl($picName);
-		$requestUrl .= strstr($picUrl, '?') === FALSE ? '?imageView' : '&imageView';
+		$requestUrl = strstr($picUrl, '?') === FALSE ? '?imageView' : '&imageView';
 		
 		if ($isCrop) {
 			$mode = 1;

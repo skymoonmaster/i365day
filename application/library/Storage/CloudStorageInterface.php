@@ -6,8 +6,8 @@
  *
  */
 interface  CloudStorageInterface {
-	public function upload();
-	public function generateThumbnail();
+	public static function upload($picName, $picContent);
+	public static function generateThumbnail($picName, $width = null, $height = null, $quality = null, $format = null, $isCrop = FALSE);
 }
 
 ?>

@@ -16,7 +16,11 @@ class OauthController extends BasicController {
 
     public function doubanAction() {
         $oauthModel = Oauth_Adapter::getInstance()->createOauthModel('douban');
-        
+        $oauthModel->requestAuthorizeCode();
+    }
+
+    public function weiboAction() {
+
     }
 
 }
