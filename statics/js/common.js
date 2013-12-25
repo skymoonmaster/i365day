@@ -251,8 +251,8 @@
             maxMonth = new Date().getMonth() + 1,
             maxDate = new Date().getDate(),
             selectedDate = {
-                year: maxYear,
-                month: maxMonth
+                year: parseInt($('#current_month').val().substr(0, 4)),
+                month: parseInt($('#current_month').val().substr(4, 2))
             };
     $('.home-note-month').html(selectedDate.year + '年<em>' + selectedDate.month + '月</em>');
     $('.home-year-num').text(selectedDate.year + '年');
@@ -367,8 +367,16 @@
         }
 
     }
+    function initNextButton(){
+        if (selectedDate.year === maxYear && selectedDate.month === maxMonth) {
+            $('.home-list-next:visible').hide();
+        } else {
+            $('.home-list-next:hidden').show();
+        }
+    }
 
     createMonthList();
+    initNextButton();
 
 
     //copy

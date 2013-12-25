@@ -17,8 +17,15 @@ class DiaryController extends BasicController {
     public function createAction() {
         $defaultDate = date('Ymd');
         $date = $this->getOptionalParam('date', $defaultDate);
-
-        $this->getView()->assign('date', intval($date));
+        $dateTimestamp = strtotime(intval($date));
+        $firstDiary = DiaryModel::getInstance()->getFirstDairy($_SESSION['user_id']);
+        $duration = 1;
+        if (isset($firstDiary['date_ts']) && intval($firstDiary['date_ts']) != 0) {
+            $duration = ceil(($dateTimestamp - $firstDiary['date_ts']) / 86400) + 1;
+        }
+        
+        $this->getView()->assign('duration', $duration);
+        $this->getView()->assign('date_ts', $dateTimestamp);
     }
 
     public function detailAction() {
