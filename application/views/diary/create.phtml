@@ -19,9 +19,9 @@
                         <div class="note-date-wrap clearfix">
                             <div class="note-date-label">
                                 <strong class="note-date-text">DAY</strong>
-                                <em class="note-date-days">212</em>
+                                <em class="note-date-days">{{$duration}}</em>
                             </div>
-                            <time class="note-date">2013.7.6</time>
+                            <time class="note-date">{{$date_ts|date_format:"%Y.%m.%d"}}</time>
                         </div>
                         <div class="note-img-window">
                             <div class="note-img-tips">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <input type ="hidden" name ='date' value ="{{$date}}"/>
+            <input type ="hidden" name ='date' value ="{{$date_ts|date_format:"%Y%m%d"}}"/>
         </form>
     </div>
     <div class="footer-load"></div>
