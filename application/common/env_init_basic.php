@@ -9,7 +9,7 @@ define('STATIC_DOMAIN', HTTP_DOMAIN . '/statics');
 define('LOG_PATH', '/opt/active/logs');
 define('I365DAY', 'i365day');
 define('DIARY_PIC_DIR', WWW_ROOT . DIRECTORY_SEPARATOR . 'statics' . DIRECTORY_SEPARATOR . 'kvt');
-define('DIARY_PIC_SRC', HTTP_DOMAIN . DIRECTORY_SEPARATOR . 'statics' . DIRECTORY_SEPARATOR . 'kvt');
+define('DIARY_PIC_SRC', '/statics' . DIRECTORY_SEPARATOR . 'kvt');
 
 define('MAINTENANCE_TIME', '2013-06-20 12:00');
 define('MAINTENANCE_REMIND_DAYS', 7);

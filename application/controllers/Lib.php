@@ -16,7 +16,7 @@ class LibController extends BasicController {
     
     protected function init() {
         $inputUserId = $this->getRefererOptionalParam('p', $_SESSION['user_id']);
-//        $_SESSION['user_id'] = 1;
+        $_SESSION['user_id'] = 1;
         if (isset($_SESSION['user_id']) && intval($_SESSION['user_id']) != 0) {
             $this->userInfo = UserModel::getInstance()->getUserInfoById($_SESSION['user_id']);
         }

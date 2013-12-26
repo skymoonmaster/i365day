@@ -121,6 +121,8 @@ body{
 .info-username b,
 .note-img-icon,
 .copy-btn,
+.common-dialog-cancel,
+.common-dialog-ok,
 .write-now{
     background: url(../images/buttons.png) no-repeat;
 }
@@ -672,7 +674,7 @@ body{
     height: 22px;
     display: block;
     position: absolute;
-    bottom: 20px;
+    bottom: 48px;
     right: 80px;
 }
 .article-icon-zan.disable{
@@ -1388,7 +1390,7 @@ nav{
     margin-right: 10px;
 }
 .message-num{
-    background: #fff;
+    background: #ff9710;
     border-radius: 2px;
     font-size: 14px;
     color: #fff;
@@ -2229,4 +2231,62 @@ nav{
 }
 .otheritem{
     cursor: text;
+}
+
+/*20131129 add*/
+.article-opearte{
+    margin: 10px 10px 10px 0;
+    text-align: right;
+}
+.article-opearte a{
+    color: #999;
+    margin-right: 10px;
+}
+.common-dialog{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 400px;
+    height: 170px;
+    margin: -85px 0 0 -200px;
+    background: #fff;
+    color: #666;
+    display: none;
+    z-index: 1010;
+}
+.common-dialog-title{
+    font-family: "微软雅黑";
+    font-size: 24px;
+    margin: 20px 0 0 40px;
+}
+.common-dialog-text{
+    font-size: 14px;
+    text-align: center;   
+}
+.common-dialog-ok,
+.common-dialog-cancel{
+    width: 83px;
+    height: 30px;
+    line-height: 30px;
+    background-position: -671px -774px;
+    display: inline-block;
+    text-align: center;
+    color: #666;
+    margin: 20px 0 0 80px;
+}
+.common-dialog-ok{
+    background-position: -671px -726px;
+    color: #fff;
+}
+.common-dialog-ok:hover,
+.common-dialog-cancel:hover{
+    text-decoration: none;
+}
+.common-dialog-close{
+    width: 23px;
+    height: 23px;
+    background: url(../images/shade-close.jpg) no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
 }

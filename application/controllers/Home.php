@@ -29,6 +29,7 @@ class HomeController extends BasicController {
         $this->getView()->assign('user', $userInfo);
         $this->getView()->assign('diary_list', $diaryList);
         $this->getView()->assign('first_date_ts', $firstDiary['date_ts']);
+        $this->getView()->assign('current_month', $inputMonth);
         $this->getView()->assign('is_record_today_show', $isRecordTodayShow);
     }
 

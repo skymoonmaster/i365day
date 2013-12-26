@@ -23,7 +23,7 @@ Class DiaryLogicModel extends BasicModel {
         $startDateTS = strtotime($startDate);
         $endDateTS = strtotime($endDate);
         $filledDiaryList = array();
-        $condition = array('user_id', $inputUserId);
+        $condition = array('user_id' => $inputUserId);
         $diaryList = DiaryModel::getInstance()->getDataListByDateSectionAndConditions($condition, $startDate, $endDate);
         foreach ($diaryList as $diary) {
             $diaryListByDate[$diary['date']] = $diary;
