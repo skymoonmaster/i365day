@@ -5,7 +5,10 @@ class Util_Result {
 	private $_code;	
 	private $_msg;
 	private $_data;
-	
+
+    const SUCCESS_CODE = 1;
+    const FAILURE_COEE = 2;
+
 	public function __construct($code, $msg, $data) {
 		$this->_code = $code;
 		$this->_msg = $msg;
@@ -28,15 +31,15 @@ class Util_Result {
 		$this->_isSuccess = $isSuccess;
 	}
 
-	public static function success($code, $msg, $data) {
-		$result = new Util_Result($code, $msg, $data);
+	public static function success($msg, $data = array()) {
+		$result = new Util_Result(self::SUCCESS_CODE, $msg, $data);
 		$result->setIsSuccess(TRUE);		
 
 		return $result;	
 	}
 	
-	public static function failure($code, $msg, $data) {
-		$result = new Util_Result($code, $msg, $data);
+	public static function failure($msg, $data = array()) {
+		$result = new Util_Result(self::FAILURE_COEE, $msg, $data);
 		$result->setIsSuccess(FALSE);
 
 		return $result;

@@ -74,7 +74,6 @@ Class Util_EncryptDecrypt {
         'user_device',
         'department',
         'chargeback_send_emaillist',
-        'user',
         'send_email_mission',
         'verizon_charge',
         'att_charge',

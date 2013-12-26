@@ -159,7 +159,7 @@ class DoubanOauth
                     'code' => $this->authorizeCode,
                     );
         $result = json_decode($this->curl($accessUrl, 'POST', $header, $data));
-        var_dump($result);
+
         $this->refreshToken = $result->refresh_token;
         $this->accessToken = $result->access_token;
     }

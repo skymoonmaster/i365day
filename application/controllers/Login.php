@@ -14,36 +14,49 @@ class LoginController extends BasicController {
         //验证invite code是否合法，合法则继续绑定邮箱
         if ($_SESSION['invite_code']
             && InviteCodeModel::getInstance()->isValidInviteCode($_SESSION['invite_code'])) {
+
+            //TODO 有邀请码的同学直接从邀请码中解析出email，并跳过绑定email步骤。
             $this->goToBindEmail();
+
+            return ;
         }
 
         $conditions = array(
-            'app_uid' => $_SESSION['oauth_user_info']['app_uid'],
-            'app_id' => $_SESSION['oauth_user_info']['app_id']
+            'app_uid' => $_SESSION['user_info']['app_uid'],
+            'app_id' => $_SESSION['user_info']['app_id']
         );
         $userInfo = UserModel::getInstance()->getUserInfoByConditions($conditions);
-        var_dump($userInfo);
         if (empty($userInfo)) {
             //TODO 提示用户需要申请
-            $this->redirect("/");
+            $this->redirect("/#apply");
+
+            return ;
         }
 
         //种Cookie，登录成功。跳转
-        $this->setLoginSuccessCookie($userInfo);
+        $this->setLoginSuccessCookie($userInfo['user_id']);
 
         $this->redirect("/home");
     }
 
-    private function setLoginSuccessCookie($userInfo) {
-        $cookieValue = Util_EncryptDecrypt::getInstance()->encryptdecrypt($userInfo['user_id'] . self::COOKIE_STRING, '');
+    private function setLoginSuccessCookie($userId) {
+        $cookieValue = Util_EncryptDecrypt::getInstance()->encryptdecrypt($userId . self::COOKIE_STRING, '');
         setcookie(self::LOGIN_SUCCESS_COOKIE_NAME, $cookieValue, time() + self::LOGIN_SUCCESS_COOKIE_EXPIRE, '/', 'i365day.com', false, true);
     }
 
     private function goToBindEmail() {
-        $cookieValue = Util_EncryptDecrypt::getInstance()->encryptdecrypt(COOKIE_STRING . time(), '');
-        setcookie(self::BIND_EMAIL_COOKIE_NAME, $cookieValue, 0, '/', 'i365day.com', false, true);
+        $this->setBindEmailCookie();
 
         $this->redirect("/login/bindEmail");
+    }
+
+    private function setBindEmailCookie() {
+        $cookieValue = Util_EncryptDecrypt::getInstance()->encryptdecrypt(self::COOKIE_STRING . time(), '');
+        setcookie(self::BIND_EMAIL_COOKIE_NAME, $cookieValue, 0, '/', 'i365day.com', false, true);
+    }
+
+    private function deleteBindEmailCookie() {
+        var_dump(setcookie(self::BIND_EMAIL_COOKIE_NAME, '', time() - 3600, '/', 'i365day.com', false, true));
     }
 
     public function bindEmailAction() {
@@ -58,5 +71,45 @@ class LoginController extends BasicController {
         }
 
         //TODO 查询是否有重名
+
+        $this->getView()->assign('city', $_SESSION['user_info']['location']);
+        $this->getView()->assign('head_portrait', $_SESSION['user_info']['head_portrait']);
+        $this->getView()->assign('nick_name', $_SESSION['user_info']['nick_name']);
+    }
+
+    public function doBindEmailAction() {
+        Yaf_Dispatcher::getInstance()->autoRender(false);
+
+        $email = $this->getAjaxParam('email');
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo Util_Result::failure('invalid email');
+
+            return ;
+        }
+
+        $_SESSION['user_info']['email'] = $email;
+        $userId = UserModel::getInstance()->create($_SESSION['user_info']);
+        if (empty($userId)) {
+            echo Util_Result::failure('service error, please try again.');
+
+            return ;
+        }
+
+        $_SESSION['user_id'] = $userId;
+
+        if (isset($_SESSION['invite_code'])) {
+            InviteCodeModel::getInstance()->cancelInviteCode($_SESSION['invite_code']);
+        }
+
+        //写入用户信息成功后，删除绑定邮箱Cookie，防止用户多次进入绑定邮箱页面。
+        $this->deleteBindEmailCookie();
+
+        //种“正式用户”Cookie，30天后失效
+        $this->setLoginSuccessCookie($_SESSION['user_info']['user_id']);
+
+        echo Util_Result::success('success');
+
+        return ;
     }
 }

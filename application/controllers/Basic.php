@@ -22,7 +22,6 @@ class BasicController extends Yaf_Controller_Abstract {
 
     protected function init() {
         $inputUserId = $this->getOptionalParam('p', $_SESSION['user_id'], true);
-        $_SESSION['user_id'] = 3;
         if (isset($_SESSION['user_id']) && intval($_SESSION['user_id']) != 0) {
             $this->userInfo = UserModel::getInstance()->getUserInfoById($_SESSION['user_id']);
         }

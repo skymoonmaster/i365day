@@ -18,6 +18,7 @@ Class UserModel extends BasicModel {
         }
         return self::$instances;
     }
+
     public function getUserInfoById($userId) {
         return $this->getUserInfo('user_id', $userId);
     }

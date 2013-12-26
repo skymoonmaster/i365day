@@ -11,7 +11,7 @@
     <body>
         <section class="home-info-wrap clearfix">
             <div class="user-info-wrap clearfix">
-                <img src="/statics/images/home_img_head.jpg" alt="头像" width="90" height="90" class="head-sculpture">
+                <img src="{{$user.head_portrait}}" alt="头像" width="90" height="90" class="head-sculpture">
                 <div class="user-info-innerwrap">
                     <h1 class="username">{{$user.nick_name}}</h1>
                     <p class='usercity-wrap'><span class="usercity">{{$user.city}}</span><span class="device">使用{{$user.camera_brand}} {{$user.camera_model}}</span></p>
