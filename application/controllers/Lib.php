@@ -16,7 +16,7 @@ class LibController extends BasicController {
     
     protected function init() {
         $inputUserId = $this->getRefererOptionalParam('p', $_SESSION['user_id']);
-//        $_SESSION['user_id'] = 1;
+
         if (isset($_SESSION['user_id']) && intval($_SESSION['user_id']) != 0) {
             $this->userInfo = UserModel::getInstance()->getUserInfoById($_SESSION['user_id']);
         }
@@ -35,10 +35,14 @@ class LibController extends BasicController {
         if (isset($firstDiary['date_ts']) && intval($firstDiary['date_ts']) != 0) {
             $duration = ceil((time() - $firstDiary['date_ts']) / 86400) + 1;
         }
+        $conditions = array('user_id' => $inputUserId, 'date' => date('Ymd'));
+        $diaryInfo = DiaryModel::getInstance()->getSingleDataByConditions($conditions);
+        $isRecordTodayShow = $diaryInfo ? false : true;
         $userInfo = UserModel::getInstance()->getUserInfoById($inputUserId);
         $this->getView()->assign('user', $userInfo);
         $this->getView()->assign('current_page', $this->getCurrentPage());
         $this->getView()->assign('duration', $duration);
+        $this->getView()->assign('is_record_today_show', $isRecordTodayShow);
     }
 
     public function pagingAction() {

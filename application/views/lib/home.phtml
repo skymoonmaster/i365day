@@ -46,7 +46,7 @@
                     <li class="home-tab-item {{if $current_page == 'like'}}current{{/if}}"><a href="/like{{if !$is_self}}/index/p/{{$current_user_id}}{{/if}}" title="喜欢">喜欢</a></li>
                     <li class="home-tab-item {{if $current_page == 'msg'}}current{{/if}}"><a href="/msg{{if !$is_self}}/index/p/{{$current_user_id}}{{/if}}" title="留言板">留言板</a></li>
                 </ul>
-                <a class="write-now clearword" href="newnote.html" title="记录今天">记录今天</a>
+                {{if $is_record_today_show}}<a class="write-now clearword" href="/diary/create" title="记录今天">记录今天</a>{{/if}}
             </div>
         </section>
         <script src="/statics/js/jquery-1.10.1.min.js"></script>

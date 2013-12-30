@@ -1,4 +1,29 @@
-<!doctype html>
+<?php /* Smarty version Smarty-3.1.3, created on 2013-12-25 13:19:19
+         compiled from "/home/sid/project/php/github/i365day/application/views/diary/create.phtml" */ ?>
+<?php /*%%SmartyHeaderCode:86661910952ba6ad7e82076-55215423%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_valid = $_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    'f554d9c4dbb16ce7a978138f07e5a56df494d4e9' => 
+    array (
+      0 => '/home/sid/project/php/github/i365day/application/views/diary/create.phtml',
+      1 => 1387603354,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '86661910952ba6ad7e82076-55215423',
+  'function' => 
+  array (
+  ),
+  'variables' => 
+  array (
+    'date' => 0,
+  ),
+  'has_nocache_code' => false,
+  'version' => 'Smarty-3.1.3',
+  'unifunc' => 'content_52ba6ad7f37b0',
+),false); /*/%%SmartyHeaderCode%%*/?>
+<?php if ($_valid && !is_callable('content_52ba6ad7f37b0')) {function content_52ba6ad7f37b0($_smarty_tpl) {?><!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,9 +44,9 @@
                         <div class="note-date-wrap clearfix">
                             <div class="note-date-label">
                                 <strong class="note-date-text">DAY</strong>
-                                <em class="note-date-days">{{$duration}}</em>
+                                <em class="note-date-days">212</em>
                             </div>
-                            <time class="note-date">{{$date_ts|date_format:"%Y.%m.%d"}}</time>
+                            <time class="note-date">2013.7.6</time>
                         </div>
                         <div class="note-img-window">
                             <div class="note-img-tips">
@@ -50,11 +75,8 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-            <input type ="hidden" name ='date' value ="{{$date}}"/>
-=======
-            <input type ="hidden" name ='date' value ="{{$date_ts|date_format:"%Y%m%d"}}"/>
->>>>>>> 8487b9a9b0a5ce83d179b1274b774c9cb0b6fcf1
+            <input type ="hidden" name ='date' value ="<?php echo $_smarty_tpl->tpl_vars['date']->value;?>
+"/>
         </form>
     </div>
     <div class="footer-load"></div>
@@ -62,4 +84,4 @@
     <script src="/statics/js/temp-ajax-load.js"></script>
     <script src="/statics/js/common.js"></script>
 </body>
-</html>
+</html><?php }} ?>
