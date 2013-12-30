@@ -77,7 +77,7 @@ class MsgController extends BasicController {
 			'messageCount' => 50
 		);	
 		
-		echo Util_Result::success(0, '', $messageInfos);
+		echo Util_Result::success('', $messageInfos);
 	}
 }
 

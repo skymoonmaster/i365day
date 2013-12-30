@@ -27,11 +27,20 @@ class CallbackController extends BasicController {
         // 通过authorizeCode获取accessToken，至此完成用户授权
         $douban->requestAccessToken();
         
-        $userInfo = $douban->api('User.me.GET')->makeRequest();
-        $userInfo['app_id'] = Conf_Oauth::$appIds['douban'];
-        $userInfo['app_uid'] = $userInfo['id'];
+        $userInfoJson = $douban->api('User.me.GET')->makeRequest();
 
-        $_SESSION['oauth_user_info'] = $userInfo;
+        $doubanUserInfo = json_decode($userInfoJson, true);
+
+        $userInfo = array();
+        $userInfo['app_id'] = Conf_Oauth::$appIds['douban'];
+        $userInfo['app_uid'] = $doubanUserInfo['id'];
+        $userInfo['head_portrait'] = $doubanUserInfo['avatar'];
+        $userInfo['country'] = '';
+        $userInfo['city'] = $doubanUserInfo['loc_name'];
+        $userInfo['nick_name'] = $doubanUserInfo['name'];
+        $userInfo['intro'] = $doubanUserInfo['desc'];
+
+        $_SESSION['user_info'] = $userInfo;
 
         $this->redirect("/login/doLogin");
     }
