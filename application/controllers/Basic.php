@@ -21,12 +21,17 @@ class BasicController extends Yaf_Controller_Abstract {
     protected $userInfo = array();
 
     protected function init() {
-        $inputUserId = $this->getOptionalParam('p', $_SESSION['user_id'], true);
-        if (isset($_SESSION['user_id']) && intval($_SESSION['user_id']) != 0) {
-            $this->userInfo = UserModel::getInstance()->getUserInfoById($_SESSION['user_id']);
+        $isSelf = true;
+        $inputUserId = $this->getOptionalParam('p', 0, true);
+        $loginUserId = (isset($_SESSION['user_id']) && intval($_SESSION['user_id']) != 0) ? $_SESSION['user_id'] : 0;
+        if ($loginUserId) {
+            $this->userInfo = UserModel::getInstance()->getUserInfoById($loginUserId);
         }
-        $this->getView()->assign('current_user_id', intval($inputUserId));
-        $this->getView()->assign('is_self', ($inputUserId == $_SESSION['user_id']));
+        if($inputUserId && $loginUserId && $inputUserId != $loginUserId){
+            $isSelf = false;
+        }
+        $this->getView()->assign('current_user_id', $inputUserId ? $inputUserId : $loginUserId);
+        $this->getView()->assign('is_self', $isSelf);
     }
 
     protected function getAjaxParam($key) {
