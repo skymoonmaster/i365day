@@ -247,89 +247,93 @@
 
 
     //主页年份切换
-    var maxYear = new Date().getFullYear(),
-            maxMonth = new Date().getMonth() + 1,
-            maxDate = new Date().getDate(),
-            selectedDate = {
-                year: parseInt($('#current_month').val().substr(0, 4)),
-                month: parseInt($('#current_month').val().substr(4, 2))
-            };
-    $('.home-note-month').html(selectedDate.year + '年<em>' + selectedDate.month + '月</em>');
-    $('.home-year-num').text(selectedDate.year + '年');
+    if($('#home-note-month').length != 0){
+        var maxYear = new Date().getFullYear(),
+                maxMonth = new Date().getMonth() + 1,
+                maxDate = new Date().getDate(),
+                selectedDate = {
+                    year: parseInt($('#current_month').val().substr(0, 4)),
+                    month: parseInt($('#current_month').val().substr(4, 2))
+                };
+        $('.home-note-month').html(selectedDate.year + '年<em>' + selectedDate.month + '月</em>');
+        $('.home-year-num').text(selectedDate.year + '年');
 
-    $('.home-year-next').on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var year = window.parseInt($('.home-year-num').text()) + 1;
-        if (year <= maxYear) {
+        $('.home-year-next').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var year = window.parseInt($('.home-year-num').text()) + 1;
+            if (year <= maxYear) {
+                $('.home-year-num').text(year + '年');
+                createMonthList();
+            }
+        });
+
+        $('.home-year-prev').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var year = window.parseInt($('.home-year-num').text()) - 1;
             $('.home-year-num').text(year + '年');
             createMonthList();
-        }
-    });
+        });
 
-    $('.home-year-prev').on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var year = window.parseInt($('.home-year-num').text()) - 1;
-        $('.home-year-num').text(year + '年');
+        $('.home-date-wrap').on('click', '.home-month-selectable', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $('.home-month-selected').addClass('home-month-selectable').removeClass('home-month-selected')
+            $(this).addClass('home-month-selected').removeClass('home-month-selectable');
+            updateSelectedDate();
+            $('.home-note-month').html(selectedDate.year + '年<em>' + selectedDate.month + '月</em>');
+            if (selectedDate.year === maxYear && selectedDate.month === maxMonth) {
+                $('.home-list-next:visible').hide();
+            } else {
+                $('.home-list-next:hidden').show();
+            }
+            var monthAsParam = selectedDate.month > 9 ? selectedDate.month : '0' + selectedDate.month;
+
+            location.href = '/home/index/month/' + selectedDate.year + monthAsParam;
+
+        });
+
+        $('.home-list-prev').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!$('.home-month-selected').length) {
+                createMonthList(selectedDate.year);
+            }
+            var num = $('.home-month-selected').parent().index();
+            if (num === 0) {
+                $('.home-year-prev').trigger('click');
+                $('.home-month-item').last().find('a').trigger('click');
+            } else {
+                $('.home-month-selected').parent().prev().find('a').trigger('click');
+            }
+
+            updateSelectedDate();
+        });
+
+        $('.home-list-next').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!$('.home-month-selected').length) {
+                createMonthList(selectedDate.year);
+            }
+            var num = $('.home-month-selected').parent().index();
+
+            if (num === 11) {
+                $('.home-year-next').trigger('click');
+                $('.home-month-item').first().find('a').trigger('click');
+            } else {
+                $('.home-month-selected').parent().next().find('a').trigger('click');
+            }
+
+            updateSelectedDate();
+            if (selectedDate.year === maxYear && selectedDate.month === maxMonth) {
+                $(this).hide();
+            }
+        });
         createMonthList();
-    });
-
-    $('.home-date-wrap').on('click', '.home-month-selectable', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        $('.home-month-selected').addClass('home-month-selectable').removeClass('home-month-selected')
-        $(this).addClass('home-month-selected').removeClass('home-month-selectable');
-        updateSelectedDate();
-        $('.home-note-month').html(selectedDate.year + '年<em>' + selectedDate.month + '月</em>');
-        if (selectedDate.year === maxYear && selectedDate.month === maxMonth) {
-            $('.home-list-next:visible').hide();
-        } else {
-            $('.home-list-next:hidden').show();
-        }
-        var monthAsParam = selectedDate.month > 9 ? selectedDate.month : '0' + selectedDate.month;
-
-        location.href = '/home/index/month/' + selectedDate.year + monthAsParam;
-
-    });
-
-    $('.home-list-prev').on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (!$('.home-month-selected').length) {
-            createMonthList(selectedDate.year);
-        }
-        var num = $('.home-month-selected').parent().index();
-        if (num === 0) {
-            $('.home-year-prev').trigger('click');
-            $('.home-month-item').last().find('a').trigger('click');
-        } else {
-            $('.home-month-selected').parent().prev().find('a').trigger('click');
-        }
-
-        updateSelectedDate();
-    });
-
-    $('.home-list-next').on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (!$('.home-month-selected').length) {
-            createMonthList(selectedDate.year);
-        }
-        var num = $('.home-month-selected').parent().index();
-
-        if (num === 11) {
-            $('.home-year-next').trigger('click');
-            $('.home-month-item').first().find('a').trigger('click');
-        } else {
-            $('.home-month-selected').parent().next().find('a').trigger('click');
-        }
-
-        updateSelectedDate();
-        if (selectedDate.year === maxYear && selectedDate.month === maxMonth) {
-            $(this).hide();
-        }
-    });
+        initNextButton();
+    }
 
     //更新当前选中年月
     function updateSelectedDate() {
@@ -374,11 +378,6 @@
             $('.home-list-next:hidden').show();
         }
     }
-
-    createMonthList();
-    initNextButton();
-
-
     //copy
     $(".copy-btn").click(function() {
         if (window.clipboardData) {

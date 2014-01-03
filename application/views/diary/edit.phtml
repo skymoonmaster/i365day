@@ -11,7 +11,7 @@
 <body>
     <div class="header-load"></div>
     <div class="main">
-        <form action="/diary/docreate" method="post" enctype="multipart/form-data">
+        <form action="/diary/doedit" method="post" enctype="multipart/form-data">
             <h1 class="main-title-icon">发布新日记</h1>
             <div class="note-content line">
                 <div class="note-form">
@@ -28,21 +28,31 @@
                                 <i class="note-img-icon"></i>
                                 <p>目前仅支持jpg、png格式</p>
                             </div>
-                            <img class="note-img"  src="" alt="">
+                            <img class="note-img"  src="{{$diary.pic}}" alt="" style="height: 288px; display: inline; width: 288px;">
                             <input type="file" class="note-img-upload" name="pic" title="点击选择文件">
                         </div>
-                        <input type="text" class="note-img-description" name="pic_desc" placeholder="图片说明...(可选)">
+                        <input type="text" class="note-img-description" name="pic_desc" placeholder="图片说明...(可选)" value="{{$diary.pic_desc}}">
                     </div>
                     <div class="note-text-wrap">
-                        <input type="text" class="note-text-title" name="title" placeholder="填写标题...(可选)">
-                        <textarea class="note-text" name="content"></textarea>
-                        <!-- <input type="text" class="note-text-label" placeholder="#标签"> -->
-                        <ul class="extendinputwrap"><li class="otheritem"><input id="city" name="tags[]" type="text" placeholder="#标签" maxlength="20" /></li></ul>
+                        <input type="text" class="note-text-title" name="title" placeholder="填写标题...(可选)" value="{{$diary.title}}">
+                        <textarea class="note-text" name="content">{{$diary.content}}</textarea>
+                        <ul class="extendinputwrap">
+                            {{foreach from = $diary.tags item=tag}}
+                               <li class="extenditem">
+                                <label>{{$tag}}</label>
+                                <a class="extendclose" href="#" title="移除此项"></a>
+                                <input name="tags[]" value="{{$tag}}" style="display:none;">
+                                </li>
+                            {{/foreach}}
+                            <li class="otheritem">
+                                <input id="city" name="tags[]" type="text" placeholder="#标签" maxlength="20" />
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="note-btn-wrap">
                     <button class="note-send clearword" type="submit" title="写好了,发布">写好了,发布</button>
-                    <label><input type="checkbox" class="note-secret" name="private" />仅自己可见</label>
+                    <label><input type="checkbox" class="note-secret" name="private" {{if $diary.visibility}}checked{{/if}}/>仅自己可见</label>
                     <div class="note-sync-wrap">
                         <span class="note-sync-text">同步到:</span>
                         <a href="#" title="sina" class="login-sina">新浪登录</a>
@@ -50,7 +60,10 @@
                     </div>
                 </div>
             </div>
-            <input type ="hidden" name ='date' value ="{{$date_ts|date_format:"%Y%m%d"}}"/>
+            <input type ="hidden" name ='date' value ="{{$diary.date}}"/>
+            <input type ="hidden" name ='date_ts' value ="{{$diary.date_ts}}"/>
+            <input type ="hidden" name ='diary_id' value ="{{$diary.diary_id}}"/>
+            <input type ="hidden" name ='diary_ext_id' value ="{{$diary.diary_ext_id}}"/>
         </form>
     </div>
     <div class="footer-load"></div>

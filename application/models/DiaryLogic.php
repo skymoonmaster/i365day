@@ -25,6 +25,9 @@ Class DiaryLogicModel extends BasicModel {
         $filledDiaryList = array();
         $condition = array('user_id' => $inputUserId);
         $diaryList = DiaryModel::getInstance()->getDataListByDateSectionAndConditions($condition, $startDate, $endDate);
+        if(!is_array($diaryList) || count($diaryList) == 0){
+            return array();
+        }
         foreach ($diaryList as $diary) {
             $diaryListByDate[$diary['date']] = $diary;
         }
