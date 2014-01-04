@@ -23,7 +23,7 @@ class DiaryController extends BasicController {
         if (isset($firstDiary['date_ts']) && intval($firstDiary['date_ts']) != 0) {
             $duration = ceil(($dateTimestamp - $firstDiary['date_ts']) / 86400) + 1;
         }
-        
+
         $this->getView()->assign('duration', $duration);
         $this->getView()->assign('date_ts', $dateTimestamp);
     }
@@ -42,11 +42,14 @@ class DiaryController extends BasicController {
         }
         $diaryInfo['tags'] = json_decode($diaryInfo['tags'], true);
         $diaryInfo = array_merge($diaryInfo, $diaryExtInfo);
-
         $this->getView()->assign('diary', $diaryInfo);
         $this->getView()->assign('user', $this->userInfo);
         $this->getView()->assign('first_date_ts', $firstDiary['date_ts']);
         $this->getView()->assign('duration', $duration);
+    }
+
+    public function editAction() {
+        $this->detailAction();
     }
 
     public function doCreateAction() {
@@ -69,6 +72,20 @@ class DiaryController extends BasicController {
         $this->redirect("/home");
     }
 
+    public function doEditAction() {
+        $diaryInfo = $this->getDiaryInfo();
+        if (isset($_FILES['pic']['size']) && $_FILES['pic']['size'] != 0) {
+            $retUploadFile = FileModel::getInstance()->uploadDiaryPic($diaryInfo['create_time'], 'pic');
+            if ($retUploadFile) {
+                $picSrc = FileModel::getInstance()->generateSrcForDiaryPic($diaryInfo['create_time'], 'pic');
+                $diaryInfo['pic'] = $picSrc;
+                $diaryInfo['thumbnail'] = $picSrc;
+            }
+        }
+        DiaryModel::getInstance()->updateDiary($diaryInfo);
+        $this->redirect("/home");
+    }
+
     private function getDiaryInfo() {
 
         $title = $this->getRequiredParam('title');
@@ -76,6 +93,7 @@ class DiaryController extends BasicController {
         $date = $this->getRequiredParam('date');
 
         $diaryId = $this->getOptionalParam('diary_id', 0);
+        $diaryExtId = $this->getOptionalParam('diary_ext_id', 0);
         $tags = $this->getOptionalParam('tags', array());
         $private = $this->getOptionalParam('private', 0);
         $picDesc = $this->getOptionalParam('pic_desc', 0);
@@ -85,6 +103,7 @@ class DiaryController extends BasicController {
         $createTime = time();
         return array(
             'diary_id' => $diaryId,
+            'diary_ext_id' => $diaryExtId,
             'title' => $title,
             'content' => $content,
             'tags' => json_encode($this->filterTags($tags)),
@@ -110,6 +129,7 @@ class DiaryController extends BasicController {
         }
         return $ret;
     }
+
 }
 
 /* vim: set ts=4 sw=4 sts=4 tw=100 noet: */

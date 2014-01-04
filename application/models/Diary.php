@@ -9,7 +9,7 @@ Class DiaryModel extends BasicModel {
     protected $table = 'diary';
     protected $primaryKey = 'diary_id';
     protected $basicInfoKeys = array('diary_id', 'title', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date', 'date_ts');
-    protected $extInfoKeys = array('diary_id', 'pic', 'content');
+    protected $extInfoKeys = array('diary_ext_id', 'diary_id', 'pic', 'content');
 
     /**
      * @return DiaryModel
@@ -71,13 +71,13 @@ Class DiaryModel extends BasicModel {
                 $extInfo[$key] = $value;
             }
         }
-        $sqlUpdateDiary = $this->db->buildUpdateSqlStr($basicInfo, $this->table);
+        $sqlUpdateDiary = $this->db->buildUpdateSqlStr($basicInfo, $this->table, $data['diary_id']);
+        $sqlUpdateDiary .= "WHERE diary_id = " . intval($data['diary_id']);
         $retCreateBasicInfo = $this->db->update($sqlUpdateDiary);
         if (!$retCreateBasicInfo) {
             throw new Exception("create diary basic info error " . var_export($basicInfo, true));
         }
-        $extInfo['diary_id'] = $retCreateBasicInfo;
-        $retCreateExtInfo = $this->createWithTimestamp($extInfo);
+        $retCreateExtInfo = DiaryExtModel::getInstance()->update($extInfo);
         if (!$retCreateExtInfo) {
             throw new Exception("create diary ext info error " . var_export($extInfo, true));
         }
