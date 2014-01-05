@@ -33,6 +33,11 @@ class AttentionModel extends BasicModel {
 			throw new Exception_BadInput("Empty params error");
 		}
 
+        $ret = $this->isFollow($fansUid, $followUid);
+        if ($ret) {
+            throw new Exception("重复关注。");
+        }
+
 		$ret = $this->createWithTimestamp(array('fans_uid' => $fansUid, 'follow_uid' => $followUid));
 		if (empty($ret)) {
 			throw new Exception("Failed to write attention data to db");
@@ -43,6 +48,8 @@ class AttentionModel extends BasicModel {
 
         $this->increaseFollowNumToCache($fansUid);
         $this->increaseFansNumToCache($followUid);
+
+        return TRUE;
 	}
 
     public function cancelAttention($followUid, $fansUid) {
@@ -61,6 +68,8 @@ class AttentionModel extends BasicModel {
 
         $this->decreaseFollowNumToCache($fansUid);
         $this->decreaseFansNumToCache($followUid);
+
+        return TRUE;
     }
 
     public function isFollows($fansUid, $uids) {
@@ -93,14 +102,12 @@ class AttentionModel extends BasicModel {
 
     public function isFollow($uid, $followUid) {
         $followUids = $this->getFollowUidsFromCache($uid);
-
-        if (in_array($followUid, $followUids)) {
+        if (!empty($followUids) && in_array($followUid, $followUids)) {
             return TRUE;
         }
 
         $followNum = $this->getFollowNumFromCache($uid);
-
-        if ($followNum <= self::$_cacheLimit) {
+        if (!empty($followNum) && $followNum <= self::$_cacheLimit) {
             return FALSE;
         }
 
@@ -146,6 +153,23 @@ class AttentionModel extends BasicModel {
         }
 
         return $followUids;
+    }
+
+    private function getFollowNumFromDb($uid) {
+        //TODO
+    }
+
+    public function getFollowNum($uid) {
+        $num = $this->getFollowNumFromCache($uid);
+        if ($num === 0) {
+            return 0;
+        }
+
+        $num = $this->getFollowNumFromDb($uid);
+
+        $this->setFollowNumToCache($uid, $num);
+
+        return $num;
     }
 
     public function getFansNum(array $uids) {
@@ -248,7 +272,7 @@ class AttentionModel extends BasicModel {
     }
 
     private function deleteFansUidsFromCache($followUid) {
-        $key = $this->deleteFansUidsFromCache($followUid);
+        $key = $this->getFansUidsCacheKey($followUid);
 
         return MemcachedModel::getInstance()->delete($key);
     }
@@ -281,6 +305,12 @@ class AttentionModel extends BasicModel {
 
     private function getFansUidsCacheKey($followUid) {
         return McKeyModel::getInstance()->forCompanyInfo('attention', $followUid, '');
+    }
+
+    private function setFollowNumToCache($fansUid, $followNum) {
+        $key = $this->getFollowNumCacheKey($fansUid);
+
+        return MemcachedModel::getInstance()->set($key, $followNum, 0);
     }
 
     private function getFollowNumFromCache($fansUid) {

@@ -18,7 +18,7 @@ class MemcachedModel {
     }
 
     public function get($key) {
-        $mc = Memcache_Handler::getInstance(CACHE_CLUSTER);
+        $mc = Memcache_Handler::getInstance();
         if (is_array($key)) {
             foreach ($key as $key_key => $key_value) {
                 $key[$key_key] = $key_value;
@@ -29,22 +29,22 @@ class MemcachedModel {
     }
 
     public function setAll($key, $value, $lifetime) {
-        $mc = Memcache_Handler::getInstance(CACHE_CLUSTER);
+        $mc = Memcache_Handler::getInstance();
         return $mc->setAll($key, $value, false, $lifetime);
     }
 
     public function deleteAll($key) {
-        $mc = Memcache_Handler::getInstance(CACHE_CLUSTER);
+        $mc = Memcache_Handler::getInstance();
         return $mc->deleteAll($key);
     }
 
     public function delete($key) {
-        $mc = Memcache_Handler::getInstance(CACHE_CLUSTER);
+        $mc = Memcache_Handler::getInstance();
         return $mc->delete($key);
     }
 
     public function set($key, $value, $lifetime) {
-        $mc = Memcache_Handler::getInstance(CACHE_CLUSTER);
+        $mc = Memcache_Handler::getInstance();
         return $mc->set($key, $value, false, $lifetime);
     }
 
@@ -83,12 +83,12 @@ class MemcachedModel {
     }
 	
 	public function increase($key, $value = 1) {
-		$mc = Memcache_Handler::getInstance(CACHE_CLUSTER);
+		$mc = Memcache_Handler::getInstance();
 		return $mc->increment($key, $value);
 	}
 
 	public function decrease($key, $value = 1) {
-		$mc = Memcache_Handler::getInstance(CACHE_CLUSTER);
+		$mc = Memcache_Handler::getInstance();
 		return $mc->decrement($key, $value);
 	}
 }

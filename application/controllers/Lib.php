@@ -39,10 +39,17 @@ class LibController extends BasicController {
         $diaryInfo = DiaryModel::getInstance()->getSingleDataByConditions($conditions);
         $isRecordTodayShow = $diaryInfo ? false : true;
         $userInfo = UserModel::getInstance()->getUserInfoById($inputUserId);
+
+        $isFollow = false;
+        if (!$this->isSelf) {
+            $isFollow = AttentionModel::getInstance()->isFollow($_SESSION['user_id'], $inputUserId);
+        }
+
         $this->getView()->assign('user', $userInfo);
         $this->getView()->assign('current_page', $this->getCurrentPage());
         $this->getView()->assign('duration', $duration);
         $this->getView()->assign('is_record_today_show', $isRecordTodayShow);
+        $this->getView()->assign('is_follow', $isFollow);
     }
 
     public function pagingAction() {
