@@ -61,7 +61,7 @@
     }
 
     function renderMessages(data) {
-        if (data.code !== 0) {
+        if (data.code !== 1) {
             return;
         }
 
@@ -111,7 +111,7 @@
     }
 
     function renderMesssageAmount(data) {
-        if (data.code !== 0) {
+        if (data.code !== 1) {
             return;
         }
 
@@ -904,5 +904,35 @@
 
     }
 
+    $(document).on('click', '#add-attention', function() {
+        var url = '/attention/add';
+        var followUid = $(this).attr('alt');
 
+        $.post(url, {'follow_uid': followUid}, function(data) {
+            if (data.code !== 1) {
+                alert(data.msg);
+
+                return ;
+            }
+
+            $('#add-attention').hide();
+            $('#cancel-attention').show();
+        }, 'json');
+    })
+
+    $(document).on('click', '#cancel-attention', function() {
+        var url = '/attention/cancel';
+        var cancelFollowUid = $(this).attr('alt');
+
+        $.post(url, {'cancel_follow_uid': cancelFollowUid}, function(data) {
+            if (data.code !== 1) {
+                alert(data.msg);
+
+                return ;
+            }
+
+            $('#cancel-attention').hide();
+            $('#add-attention').show();
+        }, 'json');
+    })
 })(jQuery);

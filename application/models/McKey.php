@@ -29,6 +29,8 @@ class McKeyModel {
         return self::$instances;
     }
 
+    const MEMCACHE_KEY_PREFIX = 'i365day';
+
     /**
      * companyInfo
      */
@@ -48,7 +50,7 @@ class McKeyModel {
      * @return string
      */
     public static function forCompanyInfo($item, $companyId, $date) {
-        return MEMCACHE_KEY_PREFIX . self::PREFIX_COMPANY_INFO . $item . '_' . $companyId . '_' . $date;
+        return self::MEMCACHE_KEY_PREFIX . self::PREFIX_COMPANY_INFO . $item . '_' . $companyId . '_' . $date;
     }
     
     /**
@@ -58,7 +60,7 @@ class McKeyModel {
      * @return string
      */
     public static function forMissionLock($missionType) {
-        return MEMCACHE_KEY_PREFIX . self::PREFIX_MISSION . $missionType . '_LOCKER';
+        return self::MEMCACHE_KEY_PREFIX . self::PREFIX_MISSION . $missionType . '_LOCKER';
     }
 
 }

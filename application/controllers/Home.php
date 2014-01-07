@@ -26,6 +26,7 @@ class HomeController extends BasicController {
         }
         $firstDiary = DiaryModel::getInstance()->getFirstDairy($_SESSION['user_id']);
         $userInfo = UserModel::getInstance()->getUserInfoById($inputUserId);
+
         $this->getView()->assign('user', $userInfo);
         $this->getView()->assign('diary_list', $diaryList);
         $this->getView()->assign('first_date_ts', $firstDiary['date_ts']);

@@ -12,7 +12,7 @@ class LoginController extends BasicController {
 
     public function doLoginAction() {
         //验证invite code是否合法，合法则继续绑定邮箱
-        if ($_SESSION['invite_code']
+        if (isset($_SESSION['invite_code'])
             && InviteCodeModel::getInstance()->isValidInviteCode($_SESSION['invite_code'])) {
 
             //TODO 有邀请码的同学直接从邀请码中解析出email，并跳过绑定email步骤。
@@ -27,12 +27,16 @@ class LoginController extends BasicController {
         );
         $userInfo = UserModel::getInstance()->getUserInfoByConditions($conditions);
         if (empty($userInfo)) {
+            //TODO 暂不执行该逻辑
             //TODO 提示用户需要申请
-            $this->redirect("/#apply");
+            //$this->redirect("/#apply");
+
+            $this->goToBindEmail();
 
             return ;
         }
 
+        $_SESSION['user_id'] = $userInfo['user_id'];
         //种Cookie，登录成功。跳转
         $this->setLoginSuccessCookie($userInfo['user_id']);
 
@@ -56,7 +60,7 @@ class LoginController extends BasicController {
     }
 
     private function deleteBindEmailCookie() {
-        var_dump(setcookie(self::BIND_EMAIL_COOKIE_NAME, '', time() - 3600, '/', 'i365day.com', false, true));
+        setcookie(self::BIND_EMAIL_COOKIE_NAME, '', time() - 3600, '/', 'i365day.com', false, true);
     }
 
     public function bindEmailAction() {

@@ -19,19 +19,20 @@ class BasicController extends Yaf_Controller_Abstract {
     const ERROR_INPUT_LENGTH = 10;
 
     protected $userInfo = array();
+    protected $isSelf;
 
     protected function init() {
-        $isSelf = true;
+        $this->isSelf = true;
         $inputUserId = $this->getOptionalParam('p', 0, true);
         $loginUserId = (isset($_SESSION['user_id']) && intval($_SESSION['user_id']) != 0) ? $_SESSION['user_id'] : 0;
         if ($loginUserId) {
             $this->userInfo = UserModel::getInstance()->getUserInfoById($loginUserId);
         }
         if($inputUserId && $loginUserId && $inputUserId != $loginUserId){
-            $isSelf = false;
+            $this->isSelf = false;
         }
         $this->getView()->assign('current_user_id', $inputUserId ? $inputUserId : $loginUserId);
-        $this->getView()->assign('is_self', $isSelf);
+        $this->getView()->assign('is_self', $this->isSelf);
     }
 
     protected function getAjaxParam($key) {
