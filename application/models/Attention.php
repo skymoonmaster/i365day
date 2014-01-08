@@ -101,7 +101,7 @@ class AttentionModel extends BasicModel {
     }
 
     public function isFollow($uid, $followUid) {
-        $followUids = $this->getFollowUidsFromCache($uid);
+        $followUids = $this->getFollowUids($uid, 0, self::$_cacheLimit);
         if (!empty($followUids) && in_array($followUid, $followUids)) {
             return TRUE;
         }
@@ -190,7 +190,7 @@ class AttentionModel extends BasicModel {
         $sql = "SELECT `follow_uid` FROM `attention` WHERE `fans_uid`={$uid} ORDER BY `create_time` DESC LIMIT {$offset}, {$limit}";
 
         $rows = $this->db->queryAllRows($sql);
-        if (empty($result)) {
+        if (empty($rows)) {
             return array();
         }
 
@@ -247,7 +247,7 @@ class AttentionModel extends BasicModel {
 	private function getFollowUidsFromCache($fansUid) {
         $key = $this->getFollowUidsCacheKey($fansUid);
 
-        MemcachedModel::getInstance()->get($key);
+        return MemcachedModel::getInstance()->get($key);
 	}
 
 	private function setFollowUidsToCache($fansUid, $followUids) {
