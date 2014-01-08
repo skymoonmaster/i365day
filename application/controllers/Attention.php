@@ -6,25 +6,25 @@ class AttentionController extends BasicController {
         Yaf_Dispatcher::getInstance()->autoRender(false);
 
         if (empty($this->userInfo)) {
-            echo Util_Result::failure('请登录后再试')->toJson();
+            echo Util_Result::failure('请登录后再试');
             return ;
         }
 
         $followUid = $this->getAjaxParam('follow_uid');
         if (empty($followUid)) {
-            echo Util_Result::failure('缺少参数')->toJson();
+            echo Util_Result::failure('缺少参数');
             return ;
         }
 
         try {
             $result = AttentionModel::getInstance()->addAttention($followUid, $this->userInfo['user_id']);
         } catch(Exception $e) {
-            echo Util_Result::failure('关注失败，稍后再试。')->toJson();
+            echo Util_Result::failure('关注失败，稍后再试。');
             return ;
         }
 
         if (!$result) {
-            echo Util_Result::failure('关注失败，稍后再试。');
+            echo Util_Result::failure('1关注失败，稍后再试。');
             return ;
         }
 

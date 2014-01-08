@@ -9,6 +9,7 @@ Class UserModel extends BasicModel {
     
     protected $table = 'user';
 
+    protected $primaryKey = 'user_id';
     /**
      * @return UserModel
      */
@@ -78,8 +79,8 @@ Class UserModel extends BasicModel {
         }
 
         $userInfos = array();
-        foreach($rows as $rows) {
-            $userInfos[$rows['user_id']] = $row;
+        foreach($rows as $row) {
+            $userInfos[$row['user_id']] = $row;
         }
 
         return $userInfos;
