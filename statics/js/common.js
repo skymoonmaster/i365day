@@ -73,21 +73,21 @@
 
         $.each(messages, function(index, message) {
             if (message.count > 1) {
-                message.senderName = message.senderName + '等' + message.count + '人';
+                message.sender_name = message.sender_name + '等' + message.count + '人';
             }
 
-            if (message.messageType == 1) {
-                var li = $('<li class="message-item">' + message.senderName + '喜欢了你的日记<a href="" title="' + message.diaryTitle + '">' + message.diaryTitle + '</a></li>');
-            } else if (message.messageType == 2) {
-                var li = $('<li class="message-item"><a href="" title="' + message.diaryTitle + '">' + message.diaryTitle + '</a>有了' + message.count + '条评论</li>');
-            } else if (message.messageType == 3) {
-                var li = $('<li class="message-item">' + message.senderName + '给你<a href="#" title="留言">留言</a>了</li>');
-            } else if (message.messageType == 4) {
-                var li = $('<li class="message-item">' + message.senderName + '<a href="#" title="fond">关注</a>了你</li>');
+            if (message.type == 1) {
+                var li = $('<li class="message-item">' + message.sender_name + '喜欢了你的日记<a href="" title="' + message.diary_title + '" onclick="return false;">' + message.diary_title + '</a></li>');
+            } else if (message.type == 2) {
+                var li = $('<li class="message-item"><a href="" title="' + message.diary_title + '">' + message.diary_title + '</a>有了' + message.count + '条评论</li>');
+            } else if (message.type == 3) {
+                var li = $('<li class="message-item">' + message.sender_name + '给你<a href="#" title="留言">留言</a>了</li>');
+            } else if (message.type == 4) {
+                var li = $('<li class="message-item">' + message.sender_name + '<a href="#" title="fond">关注</a>了你</li>');
             }
 
-            li.attr({'message-id': message.messageId, 'diary-id': message.diaryId, 'message-type': message.messageType});
-            li.bind('click', {messageId: messageId, diaryId: message.diaryId, messageType: message.messageType}, readMessage);
+            li.attr({'message-id': message.message_id, 'diary-id': message.diary_id, 'message-type': message.type});
+            li.bind('click', {messageId: message.message_id, diaryId: message.diary_id, messageType: message.type}, readMessage);
             messageList.append(li);
         });
 
@@ -99,7 +99,9 @@
     function readMessage(event) {
         var url = "/msg/readMessage";
 
-        $.post(url, event.data);
+        $.post(url, event.data, function(data) {
+            window.location.href = $(event.target).attr('href');
+        }, 'json');
     }
 
     $(document).ready(checkNewMessage);

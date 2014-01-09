@@ -24,7 +24,7 @@ class AttentionController extends BasicController {
         }
 
         if (!$result) {
-            echo Util_Result::failure('1关注失败，稍后再试。');
+            echo Util_Result::failure('关注失败，稍后再试。');
             return ;
         }
 
