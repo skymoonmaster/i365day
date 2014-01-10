@@ -12,7 +12,7 @@
  * @author	yp
  * @version	$Revision: 1.1 $
  */
-class LeavingMsgController extends BasicController {
+class LeavingmsgController extends BasicController {
 
     public function doCreateAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);
@@ -30,7 +30,7 @@ class LeavingMsgController extends BasicController {
         if (!$ret) {
             throw new Exception('create leaving msg error');
         }
-        $this->redirect("/coinfo/index");
+        $this->redirect("/msg");
     }
     public function doDelAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);

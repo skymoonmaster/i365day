@@ -249,7 +249,7 @@
 
 
     //主页年份切换
-    if($('#home-note-month').length != 0){
+    if($('.home-note-month').length != 0){
         var maxYear = new Date().getFullYear(),
                 maxMonth = new Date().getMonth() + 1,
                 maxDate = new Date().getDate(),
