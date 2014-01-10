@@ -12,7 +12,7 @@ class FollowController extends BasicController {
             $follows = UserModel::getInstance()->getUserInfos($followUids);
         }
 
-        $followNum = AttentionModel::getInstance()->getFansNum($followUids);
+        $followNum = AttentionNumModel::getInstance()->getFansNums($followUids);
 
         foreach($follows as &$follow) {
             $follow['fans_num'] = $followNum[$follow['user_id']];

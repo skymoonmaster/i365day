@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of Attention
+ * 关注关系业务层
  *
  * @author zhangyuyi
  */
@@ -46,8 +46,8 @@ class AttentionModel extends BasicModel {
         $this->deleteFollowUidsFromCache($fansUid);
         $this->deleteFansUidsFromCache($followUid);
 
-        $this->increaseFollowNumToCache($fansUid);
-        $this->increaseFansNumToCache($followUid);
+        AttentionNumModel::getInstance()->increaseFollowNum($fansUid);
+        AttentionNumModel::getInstance()->increaseFansNum($followUid);
 
         return TRUE;
 	}
@@ -66,14 +66,14 @@ class AttentionModel extends BasicModel {
         $this->deleteFollowUidsFromCache($fansUid);
         $this->deleteFansUidsFromCache($followUid);
 
-        $this->decreaseFollowNumToCache($fansUid);
-        $this->decreaseFansNumToCache($followUid);
+        AttentionNumModel::getInstance()->decreaseFollowNum($fansUid);
+        AttentionNumModel::getInstance()->decreaseFansNum($followUid);
 
         return TRUE;
     }
 
     public function isFollows($fansUid, $uids) {
-        $followNum = $this->getFollowNumFromCache($fansUid);
+        $followNum = AttentionNumModel::getInstance()->getFollowNum($fansUid);
 
         if ($followNum <= self::$_cacheLimit) {
             $followUids = $this->getFollowUidsFromCache($fansUid);
@@ -101,12 +101,12 @@ class AttentionModel extends BasicModel {
     }
 
     public function isFollow($uid, $followUid) {
-        $followUids = $this->getFollowUidsFromCache($uid);
+        $followUids = $this->getFollowUids($uid, 0, self::$_cacheLimit);
         if (!empty($followUids) && in_array($followUid, $followUids)) {
             return TRUE;
         }
 
-        $followNum = $this->getFollowNumFromCache($uid);
+        $followNum = AttentionNumModel::getInstance()->getFollowNum($uid);
         if (!empty($followNum) && $followNum <= self::$_cacheLimit) {
             return FALSE;
         }
@@ -155,43 +155,6 @@ class AttentionModel extends BasicModel {
         return $followUids;
     }
 
-    private function getFollowNumFromDb($uid) {
-        //TODO
-    }
-
-    public function getFollowNum($uid) {
-        $num = $this->getFollowNumFromCache($uid);
-        if ($num === 0) {
-            return 0;
-        }
-
-        $num = $this->getFollowNumFromDb($uid);
-
-        $this->setFollowNumToCache($uid, $num);
-
-        return $num;
-    }
-
-    public function getFansNum(array $uids) {
-        if (empty($uids)) {
-            throw new Exception_BadInput("Empty params error");
-        }
-
-        $multiKey = array();
-        foreach ($uids as $uid) {
-            $multiKey[$this->getFansNumCacheKey($uid)] = $uid;
-        }
-
-        $fanNums = array();
-
-        $results = MemcachedModel::getInstance()->get(array_keys($multiKey));
-        foreach ($results as $key => $num) {
-            $fanNums[$multiKey[$key]] = $num;
-        }
-
-        return $fanNums;
-    }
-
     public function getFanUids($uid, $offset = self::DEFAULT_OFFSET, $limit = self::DEFAULT_LIMIT) {
         if (empty($uid)) {
             throw new Exception_BadInput("Empty params error");
@@ -227,7 +190,7 @@ class AttentionModel extends BasicModel {
         $sql = "SELECT `follow_uid` FROM `attention` WHERE `fans_uid`={$uid} ORDER BY `create_time` DESC LIMIT {$offset}, {$limit}";
 
         $rows = $this->db->queryAllRows($sql);
-        if (empty($result)) {
+        if (empty($rows)) {
             return array();
         }
 
@@ -284,7 +247,7 @@ class AttentionModel extends BasicModel {
 	private function getFollowUidsFromCache($fansUid) {
         $key = $this->getFollowUidsCacheKey($fansUid);
 
-        MemcachedModel::getInstance()->get($key);
+        return MemcachedModel::getInstance()->get($key);
 	}
 
 	private function setFollowUidsToCache($fansUid, $followUids) {
@@ -305,55 +268,5 @@ class AttentionModel extends BasicModel {
 
     private function getFansUidsCacheKey($followUid) {
         return McKeyModel::getInstance()->forCompanyInfo('attention', $followUid, '');
-    }
-
-    private function setFollowNumToCache($fansUid, $followNum) {
-        $key = $this->getFollowNumCacheKey($fansUid);
-
-        return MemcachedModel::getInstance()->set($key, $followNum, 0);
-    }
-
-    private function getFollowNumFromCache($fansUid) {
-        $key = $this->getFollowNumCacheKey($fansUid);
-
-        return MemcachedModel::getInstance()->get($key);
-    }
-
-    private function increaseFollowNumToCache($fansUid) {
-        $key = $this->getFollowNumCacheKey($fansUid);
-
-        return MemcachedModel::getInstance()->increase($key);
-    }
-
-    private function decreaseFollowNumToCache($fansUid) {
-        $key = $this->getFollowNumCacheKey($fansUid);
-
-        return MemcachedModel::getInstance()->decrease($key);
-    }
-
-    private function getFansNumCacheKey($followUid) {
-        return McKeyModel::getInstance()->forCompanyInfo('attention', $followUid. '_num', '');
-    }
-
-    private function getFollowNumCacheKey($fansUid) {
-        return McKeyModel::getInstance()->forCompanyInfo('attention', $fansUid . '_num', '');
-    }
-
-    private function getFansNumFromCache($followUid) {
-        $key = $this->getFansNumCacheKey($followUid);
-
-        return MemcachedModel::getInstance()->get($key);
-    }
-
-    private function increaseFansNumToCache($followUid) {
-        $key = $this->getFansNumCacheKey($followUid);
-
-        return MemcachedModel::getInstance()->increase($key);
-    }
-
-    private function decreaseFansNumToCache($fansUid) {
-        $key = $this->getFansNumCacheKey($fansUid);
-
-        MemcachedModel::getInstance()->decrease($key);
     }
 }

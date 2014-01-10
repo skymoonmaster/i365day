@@ -37,21 +37,21 @@ class MessageModel extends BasicModel {
 			throw new Exception_BadInput("Invalid message type");
 		}	
 		
-		if ((!isset($senderId) || empty($senderId)) || (!issset($receiverId) || empty($receiverId))) {
+		if ((!isset($senderId) || empty($senderId)) || (!isset($receiverId) || empty($receiverId))) {
 			throw new Exception_BadInput("Invalid message sender id or receiver id");
 		}
 		
 		$createTime = $updateTime = time();
 
 		$sql = "INSERT INTO message VALUES (";
-		$sql .= "{$messageType}, {$senderId}, {$senderName}, {$receiverId}, ";
+		$sql .= "NULL, {$messageType}, {$senderId}, '{$senderName}', {$receiverId}, ";
 		$sql .= self::$messageReadStatus['unread'] . ", ";
-		$sql .= "{$createTime}, {$updateTime}, {$diaryId}, {$diaryTitle}, 1) ";		
+		$sql .= "{$createTime}, {$updateTime}, {$diaryId}, '{$diaryTitle}', 1) ";
 		$sql .= "ON DUPLICATE KEY UPDATE count = count + 1";
 
 		$this->db->update($sql);
 		$messageId = $this->db->getLastInsertID();
-		
+
 		$this->setMessageToCache($messageId, $messageType, $senderId, $senderName, $receiverId, $diaryId, $diaryTitle);
 		$this->increaseMessageAmountToCache($receiverId);	
 		
@@ -79,7 +79,7 @@ class MessageModel extends BasicModel {
 			$memcache->set($messageContentCacheKey, $messageContent, self::$cacheExpire);
 		
 			//将消息缓存key的索引写入缓存
-			$memcache->set($messageCacheKeyIndex, json_encode($messageCacheKeyIndex), self::$cacheExpire);			
+			$memcache->set($key, json_encode($messageCacheKeyIndex), self::$cacheExpire);
 		}
 		
 		//消息内计数。譬如：“n人给你留言”、“n人评论了你的日志”等；
@@ -97,9 +97,8 @@ class MessageModel extends BasicModel {
 			'is_read' => self::$messageReadStatus['read']
 		); 
 			
-		$this->update($updateData);	
-
-		$this->decreaseMessageAmountToCache($receiverId);	
+		$this->update($updateData);
+		$this->decreaseMessageAmountToCache($receiverId);
 
 		$messageCacheKey = empty($diaryId) ? $messageType : $messageType . '_' . $diaryId;		
 		MemcachedModel::getInstance()->delete(self::getMessageNumCacheKey($receiverId, $messageCacheKey));			
@@ -127,9 +126,8 @@ class MessageModel extends BasicModel {
 			return array('message' => $messageCache, 'messageCount' => $messageAmount);	
 		}
 
-		$sql = "SELECT * FROM message WHERE `receiver_id`={$receiverId} AND `is_read`=" . self::$messageReadStatus['unread'];	
+		$sql = "SELECT * FROM message WHERE `receiver_id`={$receiverId} AND `is_read`=" . self::$messageReadStatus['unread'];
 		$messages = $this->db->queryAllRows($sql);
-		
 		if ($messages === FALSE) {
 			return FALSE;	
 		}

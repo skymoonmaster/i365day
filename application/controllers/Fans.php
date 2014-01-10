@@ -13,7 +13,7 @@ class FansController extends BasicController {
             $fans = UserModel::getInstance()->getUserInfos($fanUids);
         }
 
-        $fansNum = AttentionModel::getInstance()->getFansNum($fanUids);
+        $fansNum = AttentionNumModel::getInstance()->getFansNums($fanUids);
 
         foreach($fans as &$fan) {
             $fan['fans_num'] = $fansNum[$fan['user_id']];

@@ -20,64 +20,37 @@ class MsgController extends BasicController {
         $this->getView()->assign('user', $userInfo);
     }
 	
-	public function readMessage() {
+	public function readMessageAction() {
 		Yaf_Dispatcher::getInstance()->autoRender(false);	
 
 		$messageId = $this->getAjaxParam('messageId');	
 		$diaryId = $this->getAjaxParam('diaryId');	
 		$messageType = $this->getAjaxParam('messageType');	
 
-		MessageModel::getInstance()->readMessage($messageId, $messageType, $diaryId);	
+		MessageModel::getInstance()->readMessage($_SESSION['user_id'], $messageId, $messageType, $diaryId);
+
+        echo Util_Result::success('success');
 	}
 
 	public function checkNewMessageAction() {
 		Yaf_Dispatcher::getInstance()->autoRender(false);	
-//		$amount = MessageModel::getInstance()->getMessageAmount($receiverId);
-		$result = new Util_Result(0, 'msg', 1000);
-		
-		echo $result;
+		$amount = MessageModel::getInstance()->getMessageAmount($_SESSION['user_id']);
+
+		echo Util_Result::success('success', $amount);
+        return ;
 	}
 	
 	public function getNewMessageAction() {
 		Yaf_Dispatcher::getInstance()->autoRender(false);
-//		$messageInfos = MessageModel::getInstance()->getMessage($receiverId);
-//		
-//		if ($messageInfos === FALSE) {
-//			return Util_Result::failure($code, 'success', array());
-//		}
-		
-		//$messageId, $messageType, $senderId, $senderName, $receiverId, $diaryId, $diaryTitle
-		$messageInfos = array(
-			'message' => array(
-				array(
-					'messageId' => 1,
-					'messageType' => 2,
-					'senderName' => 'zhangyuyi',
-					'diaryTitle' => '这是谁的小孩子',
-					'diaryId' => 123,
-					'count' => 5,
-				),
-				array(
-					'messageId' => 2,
-					'messageType' => 3,
-					'senderName' => 'zhyy',
-					'diaryTitle' => '谁家的小睡',
-					'diaryId' => 0,
-					'count' => 4,		
-				),
-				array(
-					'messageId' => 2,
-					'messageType' => 1,
-					'senderName' => 'wushuang',
-					'diaryTitle' => '谁家的小睡',
-					'diaryId' => 456,
-					'count' => 3,		
-				),
-			),
-			'messageCount' => 50
-		);	
-		
+
+		$messageInfos = MessageModel::getInstance()->getMessage($_SESSION['user_id']);
+
+		if ($messageInfos === FALSE) {
+			return Util_Result::failure('', array());
+		}
+
 		echo Util_Result::success('', $messageInfos);
+        return ;
 	}
 }
 
