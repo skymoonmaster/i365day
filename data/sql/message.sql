@@ -11,5 +11,5 @@ CREATE TABLE `message` (
   `diary_title` char(64) DEFAULT NULL COMMENT '日记标题',
   `count` int(11) unsigned NOT NULL COMMENT '计数',
   PRIMARY KEY (`message_id`),
-  UNIQUE KEY `unique_index` (`receiver_id`,`is_read`,`diary_id`,`type`)
+  UNIQUE KEY `unique_index` (`receiver_id`,`diary_id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
