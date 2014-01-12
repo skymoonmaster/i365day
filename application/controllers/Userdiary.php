@@ -19,6 +19,8 @@ class UserDiaryController extends BasicController {
         $diaryId = $this->getRequiredParam('diary_id');
         $userId = $this->userInfo['user_id'];
         $relation = $this->getRequiredParam('relation');
+        $author = $this->getRequiredParam('author');
+        $diaryTitle = $this->getRequiredParam('diaryTitle');
 
         $userDiary = array(
             'diary_id' => $diaryId,
@@ -32,6 +34,16 @@ class UserDiaryController extends BasicController {
         if (!$ret || !$retUpdateFavNum) {
             throw new Exception_Ajax('replace user diary relation error');
         }
+
+        MessageModel::getInstance()->addMessage(
+            MessageModel::$messageType['likeDiary'],
+            $this->userInfo['user_id'],
+            $this->userInfo['nick_name'],
+            $author,
+            $diaryId,
+            $diaryTitle
+        );
+
         echo json_encode(array('error_no' => self::ERROR_OK));
     }
 

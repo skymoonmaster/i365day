@@ -505,8 +505,11 @@
     $('.article-icon-zan').on('click', function(e) {
         e.preventDefault();
         var diaryId = $(this).attr('alt');
+        var author = $(this).attr('author');
+        var diaryTitle = $(this).attr('diarytitle');
+//        console.log(author, diarytitle);
         $.ajax({
-            url: encodeURI('/userdiary/replaceRelation/relation/1/diary_id/' + diaryId),
+            url: encodeURI('/userdiary/replaceRelation/relation/1/diary_id/' + diaryId + '/author/' + author + '/diaryTitle/' + diaryTitle),
             type: 'GET',
             dataType: 'json',
             async: false,
