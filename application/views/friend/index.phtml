@@ -15,22 +15,38 @@
         <div id="main" class="friend">
             <h1>全部动态</h1>
             <div class="main-content line">
-                <div class="friend-state">
-                    <a href="#" title="" class="friend-pic"><img src="/statics/images/friend-pic.gif"></a>
-                    <div class="record">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>记录了第308天
-                        <div class="record-content clearfix">
-                            <div class="pic">
-                                <a href="#" title=""><img src="/statics/images/friend.gif" width="100" height="100"/></a>
-                            </div>
-                            <a href="#" class="info">
-                                <h3>薰豆梨肉玛德莲蛋糕</h3>
-                                <p>之前保证过出一个简单易行的食谱，今天就来向大家介绍这款薰豆梨肉玛德莲蛋糕。
-玛德莲蛋糕（madeleine，petite madeleine）是一种传统的贝壳形状的小蛋糕，来自于法国东北部洛林大区的两个市镇科梅尔西和Liverdun。</p>
-                            </a>
+
+                {{foreach from = $feeds item=feed}}
+                    {{assign var="feed_content" value=$feed.content|json_decode:true}}
+                    {{if $feed.type == 3}}
+                    <div class="friend-state">
+                        <a href="#" title="" class="friend-pic"><img src="/statics/images/friend-pic.gif"></a>
+                        <div class="make-friend">
+                            <a href="#" class="friend-name" title="入江直树">入江直树</a>和<a href="#" class="friend-name" title="相原琴子">相原琴子</a>成为了朋友
                         </div>
-                        <div class="publish-date">23:22</div>
                     </div>
+                    {{/if}}
+
+                    {{if $feed.type == 1}}
+                    <div class="friend-state">
+                        <a href="#" title="" class="friend-pic"><img src="/statics/images/friend-pic.gif"></a>
+                        <div class="record">
+                            <a href="#" class="friend-name" title="入江直树">入江直树</a>记录了第308天
+                            <div class="record-content clearfix">
+                                <div class="pic">
+                                    <a href="#" title=""><img src="/statics/images/friend.gif" width="100" height="100"/></a>
+                                </div>
+                                <a href="#" class="info">
+                                    <h3>{{$feed_content.title}}</h3>
+                                    <p>{{$feed_content.content}}</p>
+                                </a>
+                            </div>
+                            <div class="publish-date">{{$feed}}</div>
+                        </div>
+                    </div>
+                    {{/if}}
+
+                    {{if $feed.type == 2}}
                     <div class="like-friend">
                         <a href="#" class="friend-name" title="入江直树">入江直树</a>喜欢了<a href="#" class="friend-name" title="相原琴子">相原琴子</a>的日记
                         <div class="like-content clearfix">
@@ -38,115 +54,16 @@
                                 <a href="#" title=""><img src="/statics/images/like.gif" width="70" height="70"/></a>
                             </div>
                             <a href="#" class="info">
-                                <h3>薰豆梨肉玛德莲蛋糕</h3>
-                                <p>之前保证过出一个简单易行的食谱，今天就来向大家介绍这款薰豆梨肉玛德莲蛋糕。
-梅尔西和Liverdun。</p>
+                                <h3>{{$feed_content.title}}</h3>
+                                <p>{{$feed_content.content}}</p>
                             </a>
                         </div>
                         <div class="publish-date">昨天04:22</div>
                     </div>
-                </div>
-                <div class="friend-state">
-                    <a href="#" title="" class="friend-pic"><img src="/statics/images/friend-pic.gif"></a>
-                    <div class="record">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>记录了他第一次遇到相原琴子的第一天
-                        <div class="record-content clearfix">
-                            <div class="pic">
-                                <a href="#" title=""><img src="/statics/images/friend.gif" width="100" height="100"/></a>
-                            </div>
-                            <a href="#" class="info">
-                                <h3>薰豆梨肉玛德莲蛋糕</h3>
-                                <p>之前保证过出一个简单易行的食谱，今天就来向大家介绍这款薰豆梨肉玛德莲蛋糕。
-玛德莲蛋糕（madeleine，petite madeleine）是一种传统的贝壳形状的小蛋糕，来自于法国东北部洛林大区的两个市镇科梅尔西和Liverdun。</p>
-                            </a>
-                        </div>
-                        <div class="publish-date">23:22</div>
-                    </div>
-                    <div class="make-friend">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>和<a href="#" class="friend-name" title="相原琴子">相原琴子</a>成为了朋友
-                    </div>
-                    <div class="make-friend">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>和<a href="#" class="friend-name" title="相原琴子">相原琴子</a>成为了朋友
-                    </div>
-                </div>
-                <div class="friend-state">
-                    <a href="#" title="" class="friend-pic"><img src="/statics/images/friend-pic.gif"></a>
-                    <div class="record">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>记录了第308天
-                        <div class="record-content clearfix">
-                            <div class="pic">
-                                <a href="#" title=""><img src="/statics/images/friend.gif" width="100" height="100"/></a>
-                            </div>
-                            <a href="#" class="info">
-                                <h3>薰豆梨肉玛德莲蛋糕</h3>
-                                <p>之前保证过出一个简单易行的食谱，今天就来向大家介绍这款薰豆梨肉玛德莲蛋糕。
-玛德莲蛋糕（madeleine，petite madeleine）是一种传统的贝壳形状的小蛋糕，来自于法国东北部洛林大区的两个市镇科梅尔西和Liverdun。</p>
-                            </a>
-                        </div>
-                        <div class="publish-date">23:22</div>
-                    </div>
-                    <div class="record">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>记录了第308天
-                        <div class="record-content clearfix">
-                            <div class="pic">
-                                <a href="#" title=""><img src="/statics/images/friend.gif" width="100" height="100"/></a>
-                            </div>
-                            <a href="#" class="info">
-                                <h3>薰豆梨肉玛德莲蛋糕</h3>
-                                <p>之前保证过出一个简单易行的食谱，今天就来向大家介绍这款薰豆梨肉玛德莲蛋糕。
-玛德莲蛋糕（madeleine，petite madeleine）是一种传统的贝壳形状的小蛋糕，来自于法国东北部洛林大区的两个市镇科梅尔西和Liverdun。</p>
-                            </a>
-                        </div>
-                        <div class="publish-date">23:22</div>
-                    </div>
-                </div>
-                <div class="friend-state">
-                    <a href="#" title="" class="friend-pic"><img src="/statics/images/friend-pic.gif"></a>
-                    <div class="record">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>记录了他第一次遇到相原琴子的第一天
-                        <div class="record-content clearfix">
-                            <div class="pic">
-                                <a href="#" title=""><img src="/statics/images/friend.gif" width="100" height="100"/></a>
-                            </div>
-                            <a href="#" class="info">
-                                <h3>薰豆梨肉玛德莲蛋糕</h3>
-                                <p>之前保证过出一个简单易行的食谱，今天就来向大家介绍这款薰豆梨肉玛德莲蛋糕。
-玛德莲蛋糕（madeleine，petite madeleine）是一种传统的贝壳形状的小蛋糕，来自于法国东北部洛林大区的两个市镇科梅尔西和Liverdun。</p>
-                            </a>
-                        </div>
-                        <div class="publish-date">23:22</div>
-                    </div>
-                    <div class="make-friend">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>和<a href="#" class="friend-name" title="相原琴子">相原琴子</a>成为了朋友
-                    </div>
-                    <div class="make-friend">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>和<a href="#" class="friend-name" title="相原琴子">相原琴子</a>成为了朋友
-                    </div>
-                </div>
-                <div class="friend-state">
-                    <a href="#" title="" class="friend-pic"><img src="/statics/images/friend-pic.gif"></a>
-                    <div class="record">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>记录了他第一次遇到相原琴子的第一天
-                        <div class="record-content clearfix">
-                            <div class="pic">
-                                <a href="#" title=""><img src="/statics/images/friend.gif" width="100" height="100"/></a>
-                            </div>
-                            <a href="#" class="info">
-                                <h3>薰豆梨肉玛德莲蛋糕</h3>
-                                <p>之前保证过出一个简单易行的食谱，今天就来向大家介绍这款薰豆梨肉玛德莲蛋糕。
-玛德莲蛋糕（madeleine，petite madeleine）是一种传统的贝壳形状的小蛋糕，来自于法国东北部洛林大区的两个市镇科梅尔西和Liverdun。</p>
-                            </a>
-                        </div>
-                        <div class="publish-date">23:22</div>
-                    </div>
-                    <div class="make-friend">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>和<a href="#" class="friend-name" title="相原琴子">相原琴子</a>成为了朋友
-                    </div>
-                    <div class="make-friend">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>和<a href="#" class="friend-name" title="相原琴子">相原琴子</a>成为了朋友
-                    </div>
-                </div>
-                <div class="paging-load"></div>
+                    {{/if}}
+                {{/foreach}}
+
+<!--                <div class="paging-load"></div>-->
             </div>
         </div>
         <div id="sidebar">

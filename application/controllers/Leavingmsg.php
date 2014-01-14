@@ -13,7 +13,6 @@
  * @version	$Revision: 1.1 $
  */
 class LeavingmsgController extends BasicController {
-
     public function doCreateAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);
         $followId = $this->getRequiredParam('follow_id');

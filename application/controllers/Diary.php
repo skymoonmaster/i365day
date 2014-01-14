@@ -69,6 +69,13 @@ class DiaryController extends BasicController {
         if (!isset($_FILES['pic'])) {
             throw new Exception_BadInput('pic is empty');
         }
+
+        $feedData = array(
+            'type' => FeedModel::$feedType['diary'],
+            'content' =>json_encode(array('title' => $diaryInfo['title'], 'content' => mb_substr($diaryInfo['content'], 0, 220, 'UTF-8')))
+        );
+        FeedModel::getInstance()->addFeed($this->userInfo['user_id'], $feedData);
+
         $this->redirect("/home");
     }
 

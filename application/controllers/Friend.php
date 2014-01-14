@@ -15,7 +15,9 @@
 class FriendController extends BasicController {
 
     public function indexAction() {
-       
+        $feeds = FeedModel::getInstance()->getFeeds($this->userInfo['user_id'], 0, 500);
+
+        $this->getView()->assign('feeds', $feeds);
     }
 
 

@@ -1,4 +1,4 @@
-CREATE TABLE `half_year_feed` (
+CREATE TABLE `feed` (
   `feed_id` int(11) unsigned NOT NULL COMMENT 'feed id',
   `user_id` int(11) unsigned NOT NULL COMMENT 'feed发布者id',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
