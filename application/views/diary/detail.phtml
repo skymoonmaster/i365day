@@ -35,7 +35,7 @@
                             <a href="#" class="article-label" title="{{$tag}}">#{{$tag}}</a>
                             {{/foreach}}
                         </div>
-                        <a href="#" class="article-icon-zan clearword" title="赞一个" alt="{{$diary.diary_id}}">赞一个</a>
+                        <a href="#" class="article-icon-zan clearword" title="赞一个" alt="{{$diary.diary_id}}" author="{{$diary.user_id}}" diaryTitle="{{$diary.title}}">赞一个</a>
                         <a href="#" class="article-icon-other clearword disable" title="分享">分享</a>
                         <div class="article-opearte">
                             <a href="/diary/edit/diary_id/{{$diary.diary_id}}" class="article-opearte-edit" title="编辑">编辑</a>
@@ -57,6 +57,9 @@
                 <form action="/comment/docreate" method="post">
                     <input type="hidden" name="diary_id" id="diary_id" value ="{{$diary.diary_id}}"/>
                     <input type="hidden" name="follow_id" id="follow_id"/>
+                    <input type="hidden" name="user_id" value="{{$diary.user_id}}">
+                    <input type="hidden" name="diary_title" value="{{$diary.title}}">
+
                     <div class="article-leave-message">
                         <h2 class="article-message-title">评论</h2>
                         <textarea class="comment-text" name="content" id="content" placeholder="写评论吧"></textarea>

@@ -77,13 +77,13 @@
             }
 
             if (message.type == 1) {
-                var li = $('<li class="message-item">' + message.sender_name + '喜欢了你的日记<a href="" title="' + message.diary_title + '" onclick="return false;">' + message.diary_title + '</a></li>');
+                var li = $('<li class="message-item">' + message.sender_name + '喜欢了你的日记<a href="/diary/detail/diary_id/' + message.diary_id + '" title="' + message.diary_title + '" onclick="return false;">' + message.diary_title + '</a></li>');
             } else if (message.type == 2) {
-                var li = $('<li class="message-item"><a href="" title="' + message.diary_title + '">' + message.diary_title + '</a>有了' + message.count + '条评论</li>');
+                var li = $('<li class="message-item"><a href="/diary/detail/diary_id/' + message.diary_id + '" title="' + message.diary_title + '" onclick="return false;">' + message.diary_title + '</a>有了' + message.count + '条评论</li>');
             } else if (message.type == 3) {
-                var li = $('<li class="message-item">' + message.sender_name + '给你<a href="#" title="留言">留言</a>了</li>');
+                var li = $('<li class="message-item">' + message.sender_name + '给你<a href="#" title="留言" onclick="return false;">留言</a>了</li>');
             } else if (message.type == 4) {
-                var li = $('<li class="message-item">' + message.sender_name + '<a href="#" title="fond">关注</a>了你</li>');
+                var li = $('<li class="message-item">' + message.sender_name + '<a href="#" title="fond" onclick="return false;">关注</a>了你</li>');
             }
 
             li.attr({'message-id': message.message_id, 'diary-id': message.diary_id, 'message-type': message.type});
@@ -97,6 +97,10 @@
     }
 
     function readMessage(event) {
+        if (!$(event.target).attr('href')) {
+            return ;
+        }
+
         var url = "/msg/readMessage";
 
         $.post(url, event.data, function(data) {
@@ -119,11 +123,11 @@
 
         var msgAmount = data.data;
         if (msgAmount <= 0) {
-            $('.message-num').text(0).attr('title', 0 + '条新消息').css('background', '#fff');
+            $('.message-num').text(0).attr('title', 0 + '条新消息').hide();
             return;
         }
 
-        $('.message-num').text(msgAmount).attr('title', msgAmount + '条新消息').css('background', '#ff9710');
+        $('.message-num').text(msgAmount).attr('title', msgAmount + '条新消息').show().css('background', '#ff9710');
     }
 
     //申请内测表单显隐
@@ -501,8 +505,11 @@
     $('.article-icon-zan').on('click', function(e) {
         e.preventDefault();
         var diaryId = $(this).attr('alt');
+        var author = $(this).attr('author');
+        var diaryTitle = $(this).attr('diarytitle');
+//        console.log(author, diarytitle);
         $.ajax({
-            url: encodeURI('/userdiary/replaceRelation/relation/1/diary_id/' + diaryId),
+            url: encodeURI('/userdiary/replaceRelation/relation/1/diary_id/' + diaryId + '/author/' + author + '/diaryTitle/' + diaryTitle),
             type: 'GET',
             dataType: 'json',
             async: false,

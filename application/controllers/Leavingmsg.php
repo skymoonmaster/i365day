@@ -30,6 +30,13 @@ class LeavingmsgController extends BasicController {
         if (!$ret) {
             throw new Exception('create leaving msg error');
         }
+        MessageModel::getInstance()->addMessage(
+            MessageModel::$messageType['leavingMessage'],
+            $this->userInfo['user_id'],
+            $this->userInfo['nick_name'],
+            $hostId
+        );
+
         $this->redirect("/msg");
     }
     public function doDelAction() {
