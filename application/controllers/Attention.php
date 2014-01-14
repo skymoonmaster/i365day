@@ -28,6 +28,13 @@ class AttentionController extends BasicController {
             return ;
         }
 
+        MessageModel::getInstance()->addMessage(
+            MessageModel::$messageType['follow'],
+            $this->userInfo['user_id'],
+            $this->userInfo['nick_name'],
+            $followUid
+        );
+
         echo Util_Result::success('success');
         return ;
     }
