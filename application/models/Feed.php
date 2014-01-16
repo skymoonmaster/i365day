@@ -4,7 +4,7 @@ Class FeedModel extends BasicModel {
 
 	protected static $instances;
 	
-	protected $table = 'half_year_feed';
+	protected $table = 'feed';
 	
 	public static $feedType = array(
 		'diary' => 1,	
@@ -54,10 +54,10 @@ Class FeedModel extends BasicModel {
 			throw new Exception("Failed to write feed content data to db");
 		}
 
-		$ret = $this->createWithTimestamp(array($feedId, $userId));	
-		if (empty($ret)) {
-			throw new Exception("Failed to write feed data to db");
-		}
+		$ret = $this->createWithTimestamp(array('feed_id' => $feedId, 'user_id' => $userId));
+//		if (empty($ret)) {
+//			throw new Exception("Failed to write feed data to db");
+//		}
 		
 		$this->_setUserLatestUpdateTimeToCache($userId);
 
@@ -72,7 +72,9 @@ Class FeedModel extends BasicModel {
 	 */
 	private function _getFeedInfosFromCache($userId) {
 		$key = McKeyModel::getInstance()->forCompanyInfo('user_home_feed_', $userId, '');
-		MemcachedModel::getInstance()->get($key);
+		$value = MemcachedModel::getInstance()->get($key);
+
+        return json_decode($value, true);
 	}
 	
 	/**
@@ -83,7 +85,9 @@ Class FeedModel extends BasicModel {
 	 */
 	private function _setFeedInfosToCache($userId, $feedInfos) {
 		$key = McKeyModel::getInstance()->forCompanyInfo('user_home_feed_', $userId, '');
-		MemcachedModel::getInstance()->set($key, $feedInfos, 0);	
+
+        $value = json_encode($feedInfos);
+		MemcachedModel::getInstance()->set($key, $value, 0);
 	}
 
 	private function _getUserLatestQueryTimeFromCache($userId) {
@@ -113,19 +117,25 @@ Class FeedModel extends BasicModel {
 		//
 		$latestUpdateFollowingUserIds = array();	
 		$keys = array();
+
+        $followingUserIds = AttentionModel::getInstance()->getFollowUids($userId, 0, AttentionModel::DEFAULT_MAX_FOLLOWING_NUM);
+        $followingUserIds[] = $userId;
 		foreach ($followingUserIds as $uid) {
 			$keys[$uid] = McKeyModel::getInstance()->forCompanyInfo('user_latest_update_time_', $uid, '');	
 		}
 
 		$caches = MemcachedModel::getInstance()->get($keys);	
-
 		foreach ($followingUserIds as $uid) {
 			$key = $keys[$uid];
 
 			if (!isset($caches[$key])) {
 				continue;
 			}
-			
+
+            if ($caches[$key] < $userLatestQueryTime) {
+                continue;
+            }
+
 			$latestUpdateFollowingUserIds[$uid] = $caches[$key];
 		}
 
@@ -138,11 +148,11 @@ Class FeedModel extends BasicModel {
 		$updateTime = time();	
 		$lifeTime = $updateTime + 86400 * 30 * 6; 
 
-		MemcachedModel::getInstance()->set($key, time(), $lifeTime);	
+		$res = MemcachedModel::getInstance()->set($key, time(), $lifeTime);
 	}
 
 	private function _getLatestFeedInfosFromDb($userId) {
-		$userLatestQueryTime = $this->_getUserLatestQueryTimeFromCache($userId);	
+		$userLatestQueryTime = $this->_getUserLatestQueryTimeFromCache($userId);
 		if (empty($userLatestQueryTime)) {
 			$userLatestQueryTime = strtotime(self::DEFAULT_USER_LATEST_QUERY_TIME);
 		}
@@ -179,17 +189,16 @@ Class FeedModel extends BasicModel {
 		 * $feedInfo = array($feedId, $userId, $createTime, $updateTime);
 		 */
 		$feedInfos = $this->_getFeedInfosFromCache($userId);
-			
+		$feedInfos = empty($feedInfos) ? array() : $feedInfos;
 		//当用户查看feed第一页数据时，更新feed缓存
 		if ($offset == 0) {
 			$feedInfosFromDb = $this->_getLatestFeedInfosFromDb($userId);	
-			
-			$feedInfos = array_merge($feedInfosFromDb, $feedInfos);	
+			$feedInfos = array_merge($feedInfosFromDb, $feedInfos);
 
 			$this->_setFeedInfosToCache($userId, $feedInfos);	
 			$this->_setUserLatestQueryTimeToCache($userId, $currentTime);
 		}
-		
+
 		if (empty($feedInfos)) {
 			return array();			
 		}	

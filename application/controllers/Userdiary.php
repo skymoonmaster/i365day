@@ -20,7 +20,7 @@ class UserDiaryController extends BasicController {
         $userId = $this->userInfo['user_id'];
         $relation = $this->getRequiredParam('relation');
         $author = $this->getRequiredParam('author');
-        $diaryTitle = $this->getRequiredParam('diaryTitle');
+        $diaryTitle = urldecode($this->getRequiredParam('diaryTitle'));
 
         $userDiary = array(
             'diary_id' => $diaryId,
@@ -43,6 +43,13 @@ class UserDiaryController extends BasicController {
             $diaryId,
             $diaryTitle
         );
+
+        $diaryExt = DiaryExtModel::getInstance()->getDiaryExtByDiaryId($diaryId);
+        $feedData = array(
+            'type' => FeedModel::$feedType['likeDiary'],
+            'content' =>json_encode(array('title' => $diaryTitle, 'content' => mb_substr($diaryExt['content'], 0, 140, 'UTF-8')))
+        );
+        FeedModel::getInstance()->addFeed($this->userInfo['user_id'], $feedData);
 
         echo json_encode(array('error_no' => self::ERROR_OK));
     }

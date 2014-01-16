@@ -17,6 +17,7 @@ class AttentionModel extends BasicModel {
 
     const DEFAULT_OFFSET = 0;
     const DEFAULT_LIMIT = 15;
+    const DEFAULT_MAX_FOLLOWING_NUM = 2000;
 
 	public static function getInstance() {
         if (!isset(self::$instances)) {
