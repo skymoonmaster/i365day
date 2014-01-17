@@ -28,7 +28,7 @@ class DiaryController extends BasicController {
         $this->getView()->assign('date_ts', $dateTimestamp);
     }
 
-    public function detailAction() {
+    public function detailAction($forEdit = 0) {
         $diaryId = $this->getRequiredParam('diary_id');
         $diaryInfo = DiaryModel::getInstance()->getDiaryById($diaryId);
         $diaryExtInfo = DiaryExtModel::getInstance()->getDiaryExtByDiaryId($diaryId);
@@ -42,6 +42,11 @@ class DiaryController extends BasicController {
         }
         $diaryInfo['tags'] = json_decode($diaryInfo['tags'], true);
         $diaryInfo = array_merge($diaryInfo, $diaryExtInfo);
+        if(!$forEdit){
+            $diaryInfo['content'] = str_replace("\n", "</p><p>", $diaryInfo['content']);
+            $diaryInfo['content'] = str_replace(" ", "&nbsp", $diaryInfo['content']);
+            $diaryInfo['content'] = str_replace("\t", "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp", $diaryInfo['content']);
+        }
         $this->getView()->assign('diary', $diaryInfo);
         $this->getView()->assign('user', $this->userInfo);
         $this->getView()->assign('first_date_ts', $firstDiary['date_ts']);
@@ -49,7 +54,7 @@ class DiaryController extends BasicController {
     }
 
     public function editAction() {
-        $this->detailAction();
+        $this->detailAction(1);
     }
 
     public function doCreateAction() {
@@ -69,7 +74,7 @@ class DiaryController extends BasicController {
         if (!isset($_FILES['pic'])) {
             throw new Exception_BadInput('pic is empty');
         }
-
+        
         $feedData = array(
             'type' => FeedModel::$feedType['diary'],
             'content' =>json_encode(array('title' => $diaryInfo['title'], 'content' => mb_substr($diaryInfo['content'], 0, 220, 'UTF-8')))

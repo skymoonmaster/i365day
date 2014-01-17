@@ -16,12 +16,30 @@
         });
     }
     //申请内测弹窗
-    displayDialog('.apply', 'j-apply', '.j-apply-close');
+    displayDialog('.apply','j-apply','.j-apply-close');
     //登录弹窗
-    displayDialog('.login a', 'j-login', '.j-login-close');
+    displayDialog('.login a','j-login','.j-login-close');
 
     //删除弹窗
     displayDialog('.delete, .article-opearte-delete', 'j-delete-confirm', '.j-delete-close, .j-delete-cancel, .j-delete-ok');
+    //取消关注弹窗
+    displayDialog('.quxiao-guanzhu, .cancel-fans', 'j-interest-confirm', '.j-interest-close, .j-interest-cancel, .j-interest-ok');
+    
+    //上传图片提示弹窗
+    $('.note-send').on('click', function(e){
+        if(!$('.note-img').attr('src')){
+            e.preventDefault();
+            $('<div class="mask1000"></div>').appendTo('body').width($(window).width()).height($(document).height()).fadeIn(dialogTime,function(){
+                $('.j-photo-alert').fadeIn(dialogTime);
+            });
+            $('.j-photo-ok, .j-photo-close').one('click', function(e){
+                e.preventDefault();
+                $('.j-photo-alert').fadeOut(dialogTime, function(){
+                    $('.mask1000').fadeOut(dialogTime).remove();
+                });
+            });
+        }
+    });
 
     //消息中心显隐
     var messageId,
