@@ -17,7 +17,7 @@
                     <p class='usercity-wrap'><span class="usercity">{{$user.city}}</span><span class="device">使用{{$user.camera_brand}} {{$user.camera_model}}</span></p>
                     {{if !$is_self}}
                     <p class="user-info-guanzhu">
-                        <a href="#" class="guanzhu" title="关注他" id="add-attention" alt="{{$user.user_id}}" {{if $is_follow}}style="display: none"{{/if}}>关注他</a>
+                        <a href="#" class="guanzhu" title="关注他" id="add-attention" alt="{{$user.user_id}}" user-name="{{$user.nick_name}}" {{if $is_follow}}style="display: none"{{/if}}>关注他</a>
                         <a href="#" class="quxiao-guanzhu" id="cancel-attention" title="取消关注" alt="{{$user.user_id}}" {{if !$is_follow}}style="display: none"{{/if}}>取消关注</a>
                     </p>
                     {{/if}}

@@ -30,7 +30,7 @@ Class Util_EncryptDecrypt {
         'user_real_name',
         'user_first_name',
         'user_last_name',
-        'user_name',
+//        'user_name',
         'real_name',
         'send_email_from',
         'send_email_from_name',

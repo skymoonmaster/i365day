@@ -525,7 +525,6 @@
         var diaryId = $(this).attr('alt');
         var author = $(this).attr('author');
         var diaryTitle = $(this).attr('diarytitle');
-//        console.log(author, diarytitle);
         $.ajax({
             url: encodeURI('/userdiary/replaceRelation/relation/1/diary_id/' + diaryId + '/author/' + author + '/diaryTitle/' + diaryTitle),
             type: 'GET',
@@ -934,8 +933,8 @@
     $(document).on('click', '#add-attention', function() {
         var url = '/attention/add';
         var followUid = $(this).attr('alt');
-
-        $.post(url, {'follow_uid': followUid}, function(data) {
+        var followNickname = $(this).attr('user-name');
+        $.post(url, {'follow_uid': followUid, 'follow_nick_name': followNickname}, function(data) {
             if (data.code !== 1) {
                 alert(data.msg);
 

@@ -76,8 +76,16 @@ class DiaryController extends BasicController {
         }
         
         $feedData = array(
+            'user_id' => $this->userInfo['user_id'],
+            'user_name' => $this->userInfo['nick_name'],
             'type' => FeedModel::$feedType['diary'],
-            'content' =>json_encode(array('title' => $diaryInfo['title'], 'content' => mb_substr($diaryInfo['content'], 0, 220, 'UTF-8')))
+            'content' =>json_encode(
+                array(
+                    'diary_id' => $diaryId,
+                    'title' => $diaryInfo['title'],
+                    'content' => mb_substr($diaryInfo['content'], 0, 220, 'UTF-8')
+                )
+            )
         );
         FeedModel::getInstance()->addFeed($this->userInfo['user_id'], $feedData);
 

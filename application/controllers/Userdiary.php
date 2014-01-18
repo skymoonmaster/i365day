@@ -19,7 +19,7 @@ class UserDiaryController extends BasicController {
         $diaryId = $this->getRequiredParam('diary_id');
         $userId = $this->userInfo['user_id'];
         $relation = $this->getRequiredParam('relation');
-        $author = $this->getRequiredParam('author');
+        $authorId = $this->getRequiredParam('author');
         $diaryTitle = urldecode($this->getRequiredParam('diaryTitle'));
 
         $userDiary = array(
@@ -39,15 +39,24 @@ class UserDiaryController extends BasicController {
             MessageModel::$messageType['likeDiary'],
             $this->userInfo['user_id'],
             $this->userInfo['nick_name'],
-            $author,
+            $authorId,
             $diaryId,
             $diaryTitle
         );
 
         $diaryExt = DiaryExtModel::getInstance()->getDiaryExtByDiaryId($diaryId);
         $feedData = array(
+            'user_id' => $this->userInfo['user_id'],
+            'user_name' => $this->userInfo['nick_name'],
             'type' => FeedModel::$feedType['likeDiary'],
-            'content' =>json_encode(array('title' => $diaryTitle, 'content' => mb_substr($diaryExt['content'], 0, 140, 'UTF-8')))
+            'content' =>json_encode(
+                array(
+                    'authorId' => $authorId,
+//                    'authorName' =>
+                    'title' => $diaryTitle,
+                    'content' => mb_substr($diaryExt['content'], 0, 140, 'UTF-8')
+                )
+            )
         );
         FeedModel::getInstance()->addFeed($this->userInfo['user_id'], $feedData);
 

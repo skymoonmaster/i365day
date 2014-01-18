@@ -11,7 +11,8 @@ class AttentionController extends BasicController {
         }
 
         $followUid = $this->getAjaxParam('follow_uid');
-        if (empty($followUid)) {
+        $followNickName = $this->getAjaxParam('follow_nick_name');
+        if (empty($followUid) || empty($followNickName)) {
             echo Util_Result::failure('缺少参数');
             return ;
         }
@@ -34,6 +35,19 @@ class AttentionController extends BasicController {
             $this->userInfo['nick_name'],
             $followUid
         );
+
+        $feedData = array(
+            'user_id' => $this->userInfo['user_id'],
+            'user_name' => $this->userInfo['nick_name'],
+            'type' => FeedModel::$feedType['beFriend'],
+            'content' =>json_encode(
+                array(
+                    'followId' => $followUid,
+                    'followNickName' => $followNickName
+                )
+            )
+        );
+        FeedModel::getInstance()->addFeed($this->userInfo['user_id'], $feedData);
 
         echo Util_Result::success('success');
         return ;
