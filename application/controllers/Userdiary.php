@@ -19,8 +19,9 @@ class UserDiaryController extends BasicController {
         $diaryId = $this->getRequiredParam('diary_id');
         $userId = $this->userInfo['user_id'];
         $relation = $this->getRequiredParam('relation');
-        $authorId = $this->getRequiredParam('author');
-        $diaryTitle = urldecode($this->getRequiredParam('diaryTitle'));
+        $authorId = $this->getRequiredParam('author_id');
+        $authorName = $this->getRequiredParam('author_name');
+        $diaryTitle = urldecode($this->getRequiredParam('diary_title'));
 
         $userDiary = array(
             'diary_id' => $diaryId,
@@ -52,7 +53,7 @@ class UserDiaryController extends BasicController {
             'content' =>json_encode(
                 array(
                     'authorId' => $authorId,
-//                    'authorName' =>
+                    'authorName' => $authorName,
                     'title' => $diaryTitle,
                     'content' => mb_substr($diaryExt['content'], 0, 140, 'UTF-8')
                 )
