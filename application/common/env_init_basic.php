@@ -2,7 +2,7 @@
 
 date_default_timezone_set('Asia/Chongqing');
 
-define('WWW_ROOT', '/opt/active/viewmobile/wwwroot/i365day');
+define('WWW_ROOT', '/data/wwwroot/i365day');
 define('PROCESS_START_TIME', microtime(true) * 1000);
 define('HTTP_DOMAIN', 'http://' . DOMAIN);
 define('STATIC_DOMAIN', HTTP_DOMAIN . '/statics');

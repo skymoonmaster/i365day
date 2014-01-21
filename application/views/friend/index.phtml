@@ -22,7 +22,7 @@
                     <div class="friend-state">
                         <a href="#" title="" class="friend-pic"><img src="/statics/images/friend-pic.gif"></a>
                         <div class="make-friend">
-                            <a href="#" class="friend-name" title="入江直树">入江直树</a>和<a href="#" class="friend-name" title="相原琴子">相原琴子</a>成为了朋友
+                            <a href="/home/index/p/{{$feed.user_id}}" class="friend-name" title="{{$feed.user_name}}">{{$feed.user_name}}</a>关注了<a href="/home/index/p/{{$feed_content.followId}}"" class="friend-name" title="{{$feed_content.followNickName}}">{{$feed_content.followNickName}}</a>
                         </div>
                     </div>
                     {{/if}}
@@ -31,34 +31,37 @@
                     <div class="friend-state">
                         <a href="#" title="" class="friend-pic"><img src="/statics/images/friend-pic.gif"></a>
                         <div class="record">
-                            <a href="#" class="friend-name" title="入江直树">入江直树</a>记录了第308天
+                            <a href="/home/index/p/{{$feed.user_id}}" class="friend-name" title="{{$feed.user_name}}">{{$feed.user_name}}</a>记录了{{$feed_content.title}}
                             <div class="record-content clearfix">
                                 <div class="pic">
-                                    <a href="#" title=""><img src="/statics/images/friend.gif" width="100" height="100"/></a>
+                                    <a href="/home/index/p/{{$feed.user_id}}" title="{{$feed.user_name}}"><img src="/statics/images/friend.gif" width="100" height="100"/></a>
+                                </div>
+                                <a href="/diary/detail/diary_id/{{$feed_content.diary_id}}" class="info">
+                                    <h3>{{$feed_content.title}}</h3>
+                                    <p>{{$feed_content.content}}</p>
+                                </a>
+                            </div>
+                            <div class="publish-date">{{$feed.formatted_time}}</div>
+                        </div>
+                    </div>
+                    {{/if}}
+
+                    {{if $feed.type == 2}}
+                    <div class="friend-state">
+                        <a href="#" title="" class="friend-pic"><img src="/statics/images/friend-pic.gif"></a>
+                        <div class="like-friend">
+                            <a href="/home/index/p/{{$feed.user_id}}" class="friend-name" title="{{$feed.user_name}}">{{$feed.user_name}}</a>喜欢了<a href="/home/index/p/{{$feed_content.authorId}}" class="friend-name" title="{{$feed_content.authorName}}">{{$feed_content.authorName}}</a>的日记
+                            <div class="like-content clearfix">
+                                <div class="pic">
+                                    <a href="#" title=""><img src="/statics/images/like.gif" width="70" height="70"/></a>
                                 </div>
                                 <a href="#" class="info">
                                     <h3>{{$feed_content.title}}</h3>
                                     <p>{{$feed_content.content}}</p>
                                 </a>
                             </div>
-                            <div class="publish-date">{{$feed}}</div>
+                            <div class="publish-date">{{$feed.formatted_time}}</div>
                         </div>
-                    </div>
-                    {{/if}}
-
-                    {{if $feed.type == 2}}
-                    <div class="like-friend">
-                        <a href="#" class="friend-name" title="入江直树">入江直树</a>喜欢了<a href="#" class="friend-name" title="相原琴子">相原琴子</a>的日记
-                        <div class="like-content clearfix">
-                            <div class="pic">
-                                <a href="#" title=""><img src="/statics/images/like.gif" width="70" height="70"/></a>
-                            </div>
-                            <a href="#" class="info">
-                                <h3>{{$feed_content.title}}</h3>
-                                <p>{{$feed_content.content}}</p>
-                            </a>
-                        </div>
-                        <div class="publish-date">昨天04:22</div>
                     </div>
                     {{/if}}
                 {{/foreach}}

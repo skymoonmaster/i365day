@@ -1,6 +1,7 @@
 CREATE TABLE `feed_content` (
   `feed_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'feed id',
   `user_id` int(11) unsigned NOT NULL COMMENT 'feed发布者id',
+  `user_name` char(64) NOT NULL COMMENT 'feed发布者昵称',
   `type` tinyint(2) unsigned NOT NULL COMMENT 'feed类型',
   `content` text NOT NULL COMMENT 'feed内容',
   `status` tinyint(2) unsigned NOT NULL COMMENT 'feed状态，1为正常，2为用户删除，3为系统审核删除',
