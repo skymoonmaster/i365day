@@ -42,7 +42,7 @@
                                 <img src="{{$diary.thumbnail}}" alt="" class="home-note-img">
                                 <div class="home-note-link-mask"></div>
                                 <a href="/diary/detail/diary_id/{{$diary.diary_id}}" class="home-note-link" title="查看日记">
-                                    <span class="home-note-the">第<em class="home-note-days">{{($diary.date_ts - $first_date_ts)/86400 + 1}}</em>日</span>
+                                    <span class="home-note-the">第<em class="home-note-days">{{$diary.date_ts|my_days}}</em>日</span>
                                     <time class="home-note-date">{{$diary.date_ts|date_format:"%m月%d日"}}</time>
                                 </a>
                             </li>

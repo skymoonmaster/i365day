@@ -8,7 +8,7 @@ Class DiaryModel extends BasicModel {
     protected static $instances;
     protected $table = 'diary';
     protected $primaryKey = 'diary_id';
-    protected $basicInfoKeys = array('diary_id', 'title', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date', 'date_ts');
+    protected $basicInfoKeys = array('diary_id', 'title', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date', 'date_ts', 'status');
     protected $extInfoKeys = array('diary_ext_id', 'diary_id', 'pic', 'content');
 
     /**
@@ -73,13 +73,26 @@ Class DiaryModel extends BasicModel {
         }
         $sqlUpdateDiary = $this->db->buildUpdateSqlStr($basicInfo, $this->table, $data['diary_id']);
         $sqlUpdateDiary .= "WHERE diary_id = " . intval($data['diary_id']);
-        $retCreateBasicInfo = $this->db->update($sqlUpdateDiary);
-        if (!$retCreateBasicInfo) {
-            throw new Exception("create diary basic info error " . var_export($basicInfo, true));
+        $retUpdateBasicInfo = $this->db->update($sqlUpdateDiary);
+        if (!$retUpdateBasicInfo) {
+            throw new Exception("update diary basic info error " . var_export($basicInfo, true));
         }
-        $retCreateExtInfo = DiaryExtModel::getInstance()->update($extInfo);
-        if (!$retCreateExtInfo) {
-            throw new Exception("create diary ext info error " . var_export($extInfo, true));
+        $retUpdateExtInfo = DiaryExtModel::getInstance()->update($extInfo);
+        if (!$retUpdateExtInfo) {
+            throw new Exception("update diary ext info error " . var_export($extInfo, true));
+        }
+        return true;
+    }
+    public function delDiaryById($diaryId) {
+        if (!$diaryId) {
+            throw new Exception_BadInput("bad input diaryId for diary");
+        }
+        $diaryInfo = array('diary_id' => $diaryId, 'status' => DiaryModel::$statusDel);
+        $sqlUpdateDiary = $this->db->buildUpdateSqlStr($diaryInfo, $this->table, $diaryId);
+        $sqlUpdateDiary .= "WHERE diary_id = " . intval($diaryId);
+        $retUpdateBasicInfo = $this->db->update($sqlUpdateDiary);
+        if (!$retUpdateBasicInfo) {
+            throw new Exception("delete diary error by id " . $diaryId);
         }
         return true;
     }
@@ -88,7 +101,7 @@ Class DiaryModel extends BasicModel {
         if (!$diaryId || intval($diaryId) == 0) {
             throw new Exception_BadInput("bad input diary id");
         }
-        return $this->getSingleDataByConditions(array('diary_id' => $diaryId));
+        return $this->getSingleDataByConditions(array('diary_id' => $diaryId, 'status' => self::$statusNormal));
     }
 
     public function getFirstDairy($userId) {
@@ -100,7 +113,7 @@ Class DiaryModel extends BasicModel {
     }
     
     public function getDataListByDateSectionAndConditions($columnKeyToValues, $startDate, $endDate) {
-        $sqlFormat = "SELECT * FROM $this->table WHERE date >= %d AND date <= %d ";
+        $sqlFormat = "SELECT * FROM $this->table WHERE status=0 AND date >= %d AND date <= %d ";
         foreach ($columnKeyToValues as $key => $value) {
             if (!$key) {
                 continue;
@@ -128,6 +141,12 @@ Class DiaryModel extends BasicModel {
         return $this->db->update($sqlStr);
     }
 
+    public function getDiaryAmountByUid($userId){
+        if (!$userId || intval($userId) == 0) {
+            throw new Exception_BadInput("bad input user id");
+        }
+        return $this->getAmountByConditions(array('user_id' => $userId, 'status' => self::$statusNormal));
+    }
 }
 
 /* vim: set ts=4 sw=4 sts=4 tw=100 noet: */

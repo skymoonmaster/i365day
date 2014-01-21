@@ -24,12 +24,11 @@ class HomeController extends BasicController {
             $diaryInfo = DiaryModel::getInstance()->getSingleDataByConditions($conditions);
             $isRecordTodayShow = $diaryInfo ? false : true;
         }
-        $firstDiary = DiaryModel::getInstance()->getFirstDairy($_SESSION['user_id']);
         $userInfo = UserModel::getInstance()->getUserInfoById($inputUserId);
 
         $this->getView()->assign('user', $userInfo);
         $this->getView()->assign('diary_list', $diaryList);
-        $this->getView()->assign('first_date_ts', $firstDiary['date_ts']);
+        $this->getView()->assign('first_date_ts', strtotime(date('Y').'-01-01'));
         $this->getView()->assign('current_month', $inputMonth);
         $this->getView()->assign('is_record_today_show', $isRecordTodayShow);
     }

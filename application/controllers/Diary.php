@@ -105,7 +105,13 @@ class DiaryController extends BasicController {
         DiaryModel::getInstance()->updateDiary($diaryInfo);
         $this->redirect("/home");
     }
-
+    
+    public function delAction(){
+        $diaryId = $this->getRequiredParam('diary_id');
+        DiaryModel::getInstance()->delDiaryById($diaryId);
+        $this->redirect("/home");
+    }
+    
     private function getDiaryInfo() {
 
         $title = $this->getRequiredParam('title');

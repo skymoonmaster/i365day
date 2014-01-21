@@ -30,11 +30,7 @@ class LibController extends BasicController {
 
     public function homeAction() {
         $inputUserId = $this->getRefererOptionalParam('p', $_SESSION['user_id'], true);
-        $firstDiary = DiaryModel::getInstance()->getFirstDairy($inputUserId);
-        $duration = 1;
-        if (isset($firstDiary['date_ts']) && intval($firstDiary['date_ts']) != 0) {
-            $duration = ceil((time() - $firstDiary['date_ts']) / 86400) + 1;
-        }
+        $diaryDays = DiaryModel::getInstance()->getDiaryAmountByUid($inputUserId);
         $conditions = array('user_id' => $inputUserId, 'date' => date('Ymd'));
         $diaryInfo = DiaryModel::getInstance()->getSingleDataByConditions($conditions);
         $isRecordTodayShow = $diaryInfo ? false : true;
@@ -47,7 +43,7 @@ class LibController extends BasicController {
 
         $this->getView()->assign('user', $userInfo);
         $this->getView()->assign('current_page', $this->getCurrentPage());
-        $this->getView()->assign('duration', $duration);
+        $this->getView()->assign('duration', $diaryDays);
         $this->getView()->assign('is_record_today_show', $isRecordTodayShow);
         $this->getView()->assign('is_follow', $isFollow);
     }
@@ -65,7 +61,15 @@ class LibController extends BasicController {
     public function commentAction() {
         $diaryId = $this->getRequiredParam('diary_id');
         $commentList = CommentModel::getInstance()->getCommentByDiaryId($diaryId);
+        $commentAssociate = array();
+        if(is_array($commentList) && count($commentList) > 0){
+            foreach ($commentList as $comment){
+                $commentAssociate[$comment['comment_id']] = $comment;
+            }
+        }
+        var_dump($commentList);
         $this->getView()->assign('comment_list', $commentList ? $commentList : array());
+        $this->getView()->assign('comment_associate', $commentAssociate);
     }
 
     public function footerAction() {

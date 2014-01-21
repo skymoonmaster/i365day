@@ -10,6 +10,7 @@ Class BasicModel {
     protected $primaryKey = '';
 
     public static $statusDel = -1;
+    public static $statusNormal = 0;
     protected function __construct() {
         $this->db = DB_ProxyWrapper::getInstance(I365DAY);
     }
@@ -56,6 +57,17 @@ Class BasicModel {
             $sqlFormat .= " AND $key = '" . $this->db->realEscapeString($value) . "'";
         }
         return $this->db->queryFirstRow($sqlFormat);
+    }
+    public function getAmountByConditions($columnKeyToValues) {
+        $sqlFormat = "SELECT count(*) as cnt FROM $this->table WHERE 1=1 ";
+        foreach ($columnKeyToValues as $key => $value) {
+            if (!$key) {
+                continue;
+            }
+            $sqlFormat .= " AND $key = '" . $this->db->realEscapeString($value) . "'";
+        }
+        $ret = $this->db->queryFirstRow($sqlFormat);
+        return intval($ret['cnt']) > 0 ? intval($ret['cnt']) : 0;
     }
     
     public function getDataListByConditions($columnKeyToValues) {

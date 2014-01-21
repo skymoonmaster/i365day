@@ -13,8 +13,11 @@
  * Purpose: capitalize words in the string
  * -------------------------------------------------------------
  */
-function smarty_modifier_my_number_format($num)
-{
-    return number_format(substr(sprintf("%.5f", $num), 0, -3),2);
+
+function smarty_modifier_my_days($timeStamp) {
+    $firstDateTS = strtotime(date('Y', $timeStamp) . '-01-01');
+
+    return ($timeStamp - $firstDateTS) / 86400 + 1;
 }
+
 ?>
