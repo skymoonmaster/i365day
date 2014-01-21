@@ -2290,3 +2290,14 @@ nav{
     top: 0;
     right: 0;
 }
+.reply-quote{
+    width: 30em;
+    padding-left: 7px;
+    margin-bottom: 20px;
+    border-left: 1px solid;
+}
+.reply-to-author{
+    white-space: nowrap;
+    margin-left: 10px;
+    color: #588a11;
+}

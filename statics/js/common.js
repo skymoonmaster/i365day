@@ -9,7 +9,7 @@
             $('.' + dialogClassName).fadeIn(dialogTime);
         });
         $(document).on('click', closeELem, function(e) {
-            e.preventDefault();
+            //e.preventDefault();
             $('.' + dialogClassName).fadeOut(dialogTime, function() {
                 $('.mask1000').fadeOut(dialogTime).remove();
             });
