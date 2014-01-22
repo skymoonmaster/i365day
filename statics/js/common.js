@@ -425,7 +425,6 @@
     //留言板的删除按钮
     $('.article-detail').on('click', '.delete', function(e) {
         e.preventDefault();
-        debugger;
         $('.comment-text').val('回复 ' + $(this).closest('.comment-item').find('.article-author').html());
         $('#follow_id').val($(this).attr('alt'));
     });
@@ -526,17 +525,6 @@
         var authorId = $(this).attr('author');
         var authorName = $(this).attr('author-name');
         var diaryTitle = $(this).attr('diary-title');
-
-//        $.ajax({
-//            url: encodeURI('/userdiary/replaceRelation/relation/1/diary_id/' + diaryId + '/author/' + author + '/diaryTitle/' + diaryTitle),
-//            type: 'GET',
-//            dataType: 'json',
-//            async: false,
-//            success: function(json) {
-//
-//            }
-//        });
-
         var postData = {
             'relation' : 1,
             'diary_id' : diaryId,
@@ -545,6 +533,7 @@
             'diary_title' : diaryTitle
         };
         $.post('/userdiary/replaceRelation', postData, function(data) {}, 'json');
+        $('.article-icon-zan').removeClass('disable');
     });
 
 

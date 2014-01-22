@@ -14,6 +14,11 @@
             <li class="comment-item">
                 <img class="comment-head" src="/statics/images/message_img_smallhead.jpg" alt="头像">
                 <div class="comment-main">
+                    {{if $msg.follow_id != 0}}
+                        <div class="reply-quote">
+                            <span>{{$leaving_msg_associate[$msg['follow_id']]['content']}}</span><a href="#" class="reply-to-author" title="{{$msg.vistor_name}}">{{$msg.vistor_name}}</a>
+                        </div>
+                    {{/if}}
                     <p class="comment-content"><a class="article-author" href="#" title="{{$msg.vistor_name}}">{{$msg.vistor_name}}:</a>{{$msg.content}}</p>
                     <p class="comment-other">
                         <time class="article-time">{{$msg.create_time|date_format:"%Y年%m月%d日 %H:%M"}}</time><a href="" class="reply" title="回复" alt ="{{$msg.leaving_msg_id}}">回复</a><a href="#" class="delete" title="删除" alt ="{{$msg.leaving_msg_id}}">删除</a>

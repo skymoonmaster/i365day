@@ -43,7 +43,7 @@ class LibController extends BasicController {
 
         $this->getView()->assign('user', $userInfo);
         $this->getView()->assign('current_page', $this->getCurrentPage());
-        $this->getView()->assign('duration', $diaryDays);
+        $this->getView()->assign('diary_days', $diaryDays);
         $this->getView()->assign('is_record_today_show', $isRecordTodayShow);
         $this->getView()->assign('is_follow', $isFollow);
     }
@@ -55,7 +55,14 @@ class LibController extends BasicController {
     public function leavingMsgAction() {
         $inputUserId = $this->getRefererOptionalParam('p', $_SESSION['user_id']);
         $leavingMsgList = LeavingMsgModel::getInstance()->getLeavingMsgByOwnerId($inputUserId);
+        $leavingMsgAssociate = array();
+        if(is_array($leavingMsgList) && count($leavingMsgList) > 0){
+            foreach ($leavingMsgList as $leavingMsg){
+                $leavingMsgAssociate[$leavingMsg['leaving_msg_id']] = $leavingMsg;
+            }
+        }
         $this->getView()->assign('leaving_msg_list', $leavingMsgList ? $leavingMsgList : array());
+        $this->getView()->assign('leaving_msg_associate', $leavingMsgAssociate);
     }
 
     public function commentAction() {
@@ -67,7 +74,6 @@ class LibController extends BasicController {
                 $commentAssociate[$comment['comment_id']] = $comment;
             }
         }
-        var_dump($commentList);
         $this->getView()->assign('comment_list', $commentList ? $commentList : array());
         $this->getView()->assign('comment_associate', $commentAssociate);
     }
