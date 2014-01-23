@@ -35,7 +35,7 @@
                             <a href="#" class="article-label" title="{{$tag}}">#{{$tag}}</a>
                             {{/foreach}}
                         </div>
-                        <a href="#" class="article-icon-zan clearword" title="赞一个" alt="{{$diary.diary_id}}" author="{{$diary.user_id}}" author-name="{{$user.nick_name}}" diary-title="{{$diary.title}}">赞一个</a>
+                        <a href="#" class="article-icon-zan {{if !$is_related}}disable{{/if}} clearword"  title="赞一个" alt="{{$diary.diary_id}}" author="{{$diary.user_id}}" author-name="{{$user.nick_name}}" diary-title="{{$diary.title}}">赞一个</a>
                         <a href="#" class="article-icon-other clearword disable" title="分享">分享</a>
                         <div class="article-opearte">
                             <a href="/diary/edit/diary_id/{{$diary.diary_id}}" class="article-opearte-edit" title="编辑">编辑</a>
@@ -75,7 +75,7 @@
                     <div class="clearfix">
                         <img src="/statics/images/home_img_head.jpg" alt="头像" width="90" height="90" class="head-sculpture">
                         <a class="username" href="myhome.html" title="{{$user.nick_name}}">{{$user.nick_name}}</a>
-                        <p class="detail-days">{{$duration}}个日子</p>
+                        <p class="detail-days">{{$diary_days}}个日子</p>
                         <p class="user-info-guanzhu">
                             <a href="#" class="guanzhu" title="关注他">关注他</a>
                             <a href="#" class="quxiao-guanzhu hide" title="取消关注">取消关注</a>

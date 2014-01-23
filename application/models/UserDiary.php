@@ -39,6 +39,11 @@ Class UserDiaryModel extends BasicModel {
             WHERE $this->table.user_id = %d";
         return $this->db->queryAllRows($sqlFormat, $userId);
     }
+    public function isRelated($userId, $diaryId){
+        $sqlFormat = "SELECT * FROM $this->table WHERE $this->table.user_id = %d AND $this->table.diary_id = %d";
+        $ret = $this->db->queryFirstRow($sqlFormat, $userId, $diaryId);
+        return $ret ? true : false;
+    }
 }
 
 /* vim: set ts=4 sw=4 sts=4 tw=100 noet: */

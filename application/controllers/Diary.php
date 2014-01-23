@@ -35,11 +35,6 @@ class DiaryController extends BasicController {
         if (!is_array($diaryInfo) || !is_array($diaryExtInfo)) {
             throw new Exception("can not find diary by id $diaryId");
         }
-        $firstDiary = DiaryModel::getInstance()->getFirstDairy($_SESSION['user_id']);
-        $duration = 1;
-        if (isset($firstDiary['date_ts']) && intval($firstDiary['date_ts']) != 0) {
-            $duration = ceil((time() - $firstDiary['date_ts']) / 86400) + 1;
-        }
         $diaryInfo['tags'] = json_decode($diaryInfo['tags'], true);
         $diaryInfo = array_merge($diaryInfo, $diaryExtInfo);
         if(!$forEdit){
@@ -47,10 +42,12 @@ class DiaryController extends BasicController {
             $diaryInfo['content'] = str_replace(" ", "&nbsp", $diaryInfo['content']);
             $diaryInfo['content'] = str_replace("\t", "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp", $diaryInfo['content']);
         }
+        $isRelated = UserDiaryModel::getInstance()->isRelated($_SESSION['user_id'], $diaryId);
+        $diaryDays = DiaryModel::getInstance()->getDiaryAmountByUid($_SESSION['user_id']);
         $this->getView()->assign('diary', $diaryInfo);
         $this->getView()->assign('user', $this->userInfo);
-        $this->getView()->assign('first_date_ts', $firstDiary['date_ts']);
-        $this->getView()->assign('duration', $duration);
+        $this->getView()->assign('diary_days', $diaryDays);
+        $this->getView()->assign('is_related', $isRelated);
     }
 
     public function editAction() {
