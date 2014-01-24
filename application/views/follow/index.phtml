@@ -31,7 +31,10 @@
                 <li class="fans-item">
                     <a href="/home/index/p/{{$follow.user_id}}" class="fans-head" title="{{$follow.nick_name}}"><img src="/statics/images/fans_img_head.jpg" alt=""></a>
                     <a href="/home/index/p/{{$follow.user_id}}" class="fans-name" title="{{$follow.nick_name}}">{{$follow.nick_name}}</a>
-                    <a href="#" class="cancel-fans" title="取消关注">取消关注</a>
+
+                    <a href="#" class="quxiao-guanzhu cancel-attention" id="cancel-attention-{{$follow.user_id}}" title="取消关注" alt="{{$follow.user_id}}" {{if (!$is_self) && (!$follow.is_follow)}}style="display: none"{{/if}}>取消关注</a>
+                    <a href="#" class="guanzhu add-attention" id="add-attention-{{$follow.user_id}}" title="关注" alt="{{$follow.user_id}}" user-name="{{$follow.nick_name}}" {{if $is_self || $follow.is_follow }}style="display: none"{{/if}}>关注</a>
+
                     <div class="fans-detail">
                         <a href="/home/index/p/{{$follow.user_id}}" class="fans-day" title="查看他的日记">{{$follow.diary_days}}个日子</a>
                         <a href="/fans/index/p/{{$follow.user_id}}" class="fans-fans" title="查看他的粉丝">{{$follow.fans}}个粉丝</a>

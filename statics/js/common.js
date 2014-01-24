@@ -23,7 +23,7 @@
     //删除弹窗
     displayDialog('.delete, .article-opearte-delete', 'j-delete-confirm', '.j-delete-close, .j-delete-cancel, .j-delete-ok');
     //取消关注弹窗
-    displayDialog('.quxiao-guanzhu, .cancel-fans', 'j-interest-confirm', '.j-interest-close, .j-interest-cancel, .j-interest-ok');
+    displayDialog('j-interest-confirm', '.j-interest-close, .j-interest-cancel, .j-interest-ok');
     
     //上传图片提示弹窗
     $('.note-send').on('click', function(e){
@@ -929,6 +929,44 @@
         }
 
     }
+
+    $(document).on('click', '.add-attention', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        var url = '/attention/add';
+        var followUid = $(this).attr('alt');
+        var followNickname = $(this).attr('user-name');
+        $.post(url, {'follow_uid': followUid, 'follow_nick_name': followNickname}, function(data) {
+            if (data.code !== 1) {
+                alert(data.msg);
+
+                return ;
+            }
+
+            $('#add-attention-' + followUid).hide();
+            $('#cancel-attention-' +  + followUid).show();
+        }, 'json');
+    })
+
+    $(document).on('click', '.cancel-attention', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        var url = '/attention/cancel';
+        var cancelFollowUid = $(this).attr('alt');
+
+        $.post(url, {'cancel_follow_uid': cancelFollowUid}, function(data) {
+            if (data.code !== 1) {
+                alert(data.msg);
+
+                return ;
+            }
+
+            $('#cancel-attention-' + cancelFollowUid).hide();
+            $('#add-attention-' + cancelFollowUid).show();
+        }, 'json');
+    })
 
     $(document).on('click', '#add-attention', function() {
         var url = '/attention/add';
