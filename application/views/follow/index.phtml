@@ -17,7 +17,7 @@
             <div class="fans-title-wrap clearfix line">
                 <div class="fans-title">
                     <a href="#" class="inline-block fans-myinterest current">{{if $is_self}}我{{else}}{{$userInfo.nick_name}}{{/if}}的关注<em>{{$userInfo.follows}}</em></a>
-                    <a href="/fans" class="inline-block fans-myfans">{{if $is_self}}我{{else}}{{$userInfo.nick_name}}{{/if}}的粉丝<em>{{$userInfo.fans}}</em></a>
+                    <a href="/fans{{if !$is_self}}/index/p/{{$userInfo.user_id}}{{/if}}" class="inline-block fans-myfans">{{if $is_self}}我{{else}}{{$userInfo.nick_name}}{{/if}}的粉丝<em>{{$userInfo.fans}}</em></a>
                 </div>
 <!--                <div class="news-search">-->
 <!--                    <form>-->

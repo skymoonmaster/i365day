@@ -3,6 +3,7 @@
 class FollowController extends BasicController {
     public function indexAction() {
         $pageNo = $this->getOptionalParam('page', 1);
+        $offset = ($pageNo - 1) * AttentionModel::DEFAULT_LIMIT;
 
         if (!$this->isSelf) {
             $userId = $this->getOptionalParam('p', 0, true);
@@ -12,7 +13,6 @@ class FollowController extends BasicController {
             $userInfo = $this->userInfo;
         }
 
-        $offset = ($pageNo - 1) * AttentionModel::DEFAULT_LIMIT;
         $followUids = AttentionModel::getInstance()->getFollowUids($userId, $offset);
 
         if (empty($followUids)) {
@@ -33,7 +33,6 @@ class FollowController extends BasicController {
             $follow['is_follow'] = $this->isSelf ? true : $isCurrentUserFollows[$follow['user_id']];
         }
 
-        $this->getView()->assign('isSelf', $this->isSelf);
         $this->getView()->assign('userInfo', $userInfo);
         $this->getView()->assign('follows', $follows);
     }

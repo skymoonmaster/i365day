@@ -35,8 +35,8 @@
                 <a href="#" class="modify-description clearword" title="修改">修改</a>
             </div>
             <div class="user-fans-wrap">
-                <p class="user-interest"><a href="/follow" title="查看关注"><em class="user-interest-num">{{$user.follows}}</em>个关注</a></p>
-                <p class="user-fans"><a href="/fans" title="查看粉丝"><em class="user-fans-num">{{$user.fans}}</em>个粉丝</a></p>
+                <p class="user-interest"><a href="/follow{{if !$is_self}}/index/p/{{$user.user_id}}{{/if}}" title="查看关注"><em class="user-interest-num">{{$user.follows}}</em>个关注</a></p>
+                <p class="user-fans"><a href="/fans{{if !$is_self}}/index/p/{{$user.user_id}}{{/if}}" title="查看粉丝"><em class="user-fans-num">{{$user.fans}}</em>个粉丝</a></p>
             </div>
         </section>
         <section class="home-info-wrap clearfix">

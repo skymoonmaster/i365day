@@ -22,9 +22,7 @@
 
     //删除弹窗
     displayDialog('.delete, .article-opearte-delete', 'j-delete-confirm', '.j-delete-close, .j-delete-cancel, .j-delete-ok');
-    //取消关注弹窗
-    displayDialog('j-interest-confirm', '.j-interest-close, .j-interest-cancel, .j-interest-ok');
-    
+
     //上传图片提示弹窗
     $('.note-send').on('click', function(e){
         if(!$('.note-img').attr('src')){

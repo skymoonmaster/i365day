@@ -75,22 +75,19 @@ class AttentionModel extends BasicModel {
 
     public function isFollows($fansUid, $uids) {
         $followNum = AttentionNumModel::getInstance()->getFollowNum($fansUid);
-
         if ($followNum <= self::$_cacheLimit) {
             $followUids = $this->getFollowUidsFromCache($fansUid);
+        } else {
+            $sql = "SELECT `follow_uid` FROM `attention` WHERE `fans_uid`={$fansUid} AND `follow_uid` IN (";
+            $sql .= implode(',', $uids);
+            $sql .= ")";
 
-            return array_intersect($uids, $followUids);
-        }
+            $rows = $this->db->queryAllRows($sql);
 
-        $sql = "SELECT `follow_id` FROM `attention` WHERE `fans_uid`={$fansUid} AND `follow_id` IN (";
-        $sql .= implode(',', $uids);
-        $sql .= ")";
-
-        $rows = $this->db->queryAllRows($sql);
-
-        $followUids = array();
-        foreach ($rows as $row) {
-            $followUids[] = $row['follow_id'];
+            $followUids = array();
+            foreach ($rows as $row) {
+                $followUids[] = $row['follow_uid'];
+            }
         }
 
         $isFollows = array();
@@ -241,6 +238,10 @@ class AttentionModel extends BasicModel {
         return MemcachedModel::getInstance()->delete($key);
     }
 
+    private function getFansUidsCacheKey($followUid) {
+        return McKeyModel::getInstance()->forCompanyInfo('attention_fans', $followUid, '');
+    }
+
 	/**
 	 * 获取关注人缓存
 	 * 缓存500条
@@ -264,10 +265,8 @@ class AttentionModel extends BasicModel {
     }
 
 	private function getFollowUidsCacheKey($fansUid) {
-        return McKeyModel::getInstance()->forCompanyInfo('attention', $fansUid, '');
+        return McKeyModel::getInstance()->forCompanyInfo('attention_follow', $fansUid, '');
     }
 
-    private function getFansUidsCacheKey($followUid) {
-        return McKeyModel::getInstance()->forCompanyInfo('attention', $followUid, '');
-    }
+
 }
