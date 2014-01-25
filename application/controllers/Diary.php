@@ -57,11 +57,10 @@ class DiaryController extends BasicController {
     public function doCreateAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);
         $diaryInfo = $this->getDiaryInfo();
-        $retUploadFile = FileModel::getInstance()->uploadDiaryPic($diaryInfo['create_time'], 'pic');
-        if ($retUploadFile) {
-            $picSrc = FileModel::getInstance()->generateSrcForDiaryPic($diaryInfo['create_time'], 'pic');
-            $diaryInfo['pic'] = $picSrc;
-            $diaryInfo['thumbnail'] = $picSrc;
+        $picUrl = FileModel::getInstance()->uploadDiaryPic($diaryInfo['create_time'], 'pic');
+        if ($picUrl) {
+            $diaryInfo['pic'] = $picUrl;
+            $diaryInfo['thumbnail'] = $picUrl;
         }
 
         $diaryId = DiaryModel::getInstance()->createDiary($diaryInfo);

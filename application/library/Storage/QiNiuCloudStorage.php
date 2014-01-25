@@ -1,11 +1,14 @@
 <?php
 
+require_once(dirname(__FILE__) . "/Qiniu/io.php");
+require_once(dirname(__FILE__) . "/Qiniu/rs.php");
+
 /*
  * 七牛云存储
  * 
  */
 
-class QiNiuCloudStorage implements CloudStorageInterface {
+class Storage_QiNiuCloudStorage implements Storage_CloudStorageInterface {
 	
 	/**
 	 * 初始化QiNiuCloudStorage
@@ -26,13 +29,13 @@ class QiNiuCloudStorage implements CloudStorageInterface {
 	 * @link http://docs.qiniu.com/php-sdk/v6/index.html#upload 七牛上传接口文档
 	 */
 	public static function upload($picName, $picContent) {
-		QiNiuCloudStorage::initQiNiu();
+        Storage_QiNiuCloudStorage::initQiNiu();
 
-		$putPolicy = new Qiniu_RS_PutPolicy(Conf_QiNiu::BUCKET);			
+		$putPolicy = new Qiniu_RS_PutPolicy(Conf_QiNiu::BUCKET);
 		$upToken = $putPolicy->Token(null);
 		$putExtra = new Qiniu_PutExtra();
 		$putExtra->Crc32 = 1;
-		list($return, $error) = Qiniu_PutFile($upToken, $picName, $picContent, null);
+		list($return, $error) = Qiniu_PutFile($upToken, $picName, $picContent, $putExtra);
 
 		if ($error !== null) {
 			return FALSE;
@@ -73,12 +76,12 @@ class QiNiuCloudStorage implements CloudStorageInterface {
 
 		if (!empty($format) && !in_array($format, Conf_QiNiu::$picFormats)) {
 			throw new Exception_BadInput("The pic format is invalid.");	
-		}	
+		}
 
-		QiNiuCloudStorage::initQiNiu();			
+        Storage_QiNiuCloudStorage::initQiNiu();
 		
 		$mode = 2;		
-		$picUrl =  QiNiuCloudStorage::getPicUrl($picName);
+		$picUrl =  Storage_QiNiuCloudStorage::getPicUrl($picName);
 		$requestUrl = strstr($picUrl, '?') === FALSE ? '?imageView' : '&imageView';
 		
 		if ($isCrop) {
@@ -128,9 +131,9 @@ class QiNiuCloudStorage implements CloudStorageInterface {
 		if (Conf_QiNiu::IS_PUBLIC_RESOURCE) {
 			return Qiniu_RS_MakeBaseUrl(Conf_QiNiu::DOMAIN, $picName);
 		}	
-		
+
 		//private resource must be authorized
-		QiNiuCloudStorage::initQiNiu();
+        Storage_QiNiuCloudStorage::initQiNiu();
 		$baseUrl = Qiniu_RS_MakeBaseUrl(Conf_QiNiu::DOMAIN, $picName);
 		$getPolicy = new Qiniu_RS_GetPolicy();
 		return $getPolicy->MakeRequest($baseUrl, null);
