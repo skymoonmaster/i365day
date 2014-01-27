@@ -70,13 +70,16 @@ Class BasicModel {
         return intval($ret['cnt']) > 0 ? intval($ret['cnt']) : 0;
     }
     
-    public function getDataListByConditions($columnKeyToValues) {
+    public function getDataListByConditions($columnKeyToValues, $order = "") {
         $sqlFormat = "SELECT * FROM $this->table WHERE 1=1 ";
         foreach ($columnKeyToValues as $key => $value) {
             if (!$key) {
                 continue;
             }
             $sqlFormat .= " AND $key = '" . $this->db->realEscapeString($value) . "'";
+        }
+        if($order){
+            $sqlFormat .= ' ' . $order;
         }
         return $this->db->queryAllRows($sqlFormat);
     }

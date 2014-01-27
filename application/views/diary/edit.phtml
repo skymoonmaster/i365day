@@ -53,6 +53,16 @@
                 <div class="note-btn-wrap">
                     <button class="note-send clearword" type="submit" title="写好了,发布">写好了,发布</button>
                     <label><input type="checkbox" class="note-secret" name="private" {{if $diary.visibility}}checked{{/if}}/>仅自己可见</label>
+                    {{if $is_admin}}
+                        <select id="diary_type" name="type" class="note-text-title" style="width:220px; margin-left: 20px;" >
+                            <option value="0" {{if $diary.type == 0}}selected{{/if}}>选择日记类型</option>
+                            <option value="1" {{if $diary.type == 1}}selected{{/if}}>365周报</option>
+                            <option value="2" {{if $diary.type == 2}}selected{{/if}}>365线下聚会</option>
+                            <option value="3" {{if $diary.type == 3}}selected{{/if}}>365黑板报</option>
+                            <option value="4" {{if $diary.type == 4}}selected{{/if}}>365明星同学</option>
+                            <option value="5" {{if $diary.type == 5}}selected{{/if}}>其他</option>
+                        </select>
+                    {{/if}}
                     <div class="note-sync-wrap">
                         <span class="note-sync-text">同步到:</span>
                         <a href="#" title="sina" class="login-sina">新浪登录</a>

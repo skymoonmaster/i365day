@@ -27,14 +27,13 @@ Class FileModel extends BasicModel {
         }
         //This is our size condition
         if ($uploaded_size > 50 * 1024 * 1024) {
-            throw new Exception("filename is too large");
+            throw new Exception("file is too large");
         }
-
         //Writes the photo to the server
         if (move_uploaded_file($_FILES [$uploadFileName] ['tmp_name'], $target)) {
             $ret = Storage_QiNiuCloudStorage::upload($fname, $target);
             if (empty($ret)) {
-                throw new Exception("filename upload failed");
+                throw new Exception("file upload failed");
             }
 
             return Storage_QiNiuCloudStorage::getPicUrl($ret['key']);

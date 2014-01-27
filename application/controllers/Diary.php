@@ -57,12 +57,18 @@ class DiaryController extends BasicController {
     public function doCreateAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);
         $diaryInfo = $this->getDiaryInfo();
+        $diaryType = $this->getOptionalParam('type', 0);
+        if($diaryType){
+            $diaryInfo['type'] = $diaryType;
+            $diaryInfo['is_admin'] = 1;
+        }
         $picUrl = FileModel::getInstance()->uploadDiaryPic($diaryInfo['create_time'], 'pic');
         if ($picUrl) {
             $diaryInfo['pic'] = $picUrl;
             $diaryInfo['thumbnail'] = $picUrl;
         }
-
+        
+        
         $diaryId = DiaryModel::getInstance()->createDiary($diaryInfo);
         if (!$diaryId) {
             throw new Exception('create diray error');

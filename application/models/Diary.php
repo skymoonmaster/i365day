@@ -8,7 +8,7 @@ Class DiaryModel extends BasicModel {
     protected static $instances;
     protected $table = 'diary';
     protected $primaryKey = 'diary_id';
-    protected $basicInfoKeys = array('diary_id', 'title', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date', 'date_ts', 'status');
+    protected $basicInfoKeys = array('diary_id', 'title', 'type', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date', 'date_ts', 'is_admin' , 'status');
     protected $extInfoKeys = array('diary_ext_id', 'diary_id', 'pic', 'content');
 
     /**
