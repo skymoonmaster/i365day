@@ -83,7 +83,7 @@ class AttentionNumModel extends BasicModel {
     }
 
     private function getFollowNumCacheKey($fansUid) {
-        return McKeyModel::getInstance()->forCompanyInfo('attention', $fansUid . '_num', '');
+        return McKeyModel::getInstance()->forCompanyInfo('attention_follow', $fansUid . '_num', '');
     }
 
     private function setFollowNumToCache($fansUid, $followNum) {
@@ -133,7 +133,7 @@ class AttentionNumModel extends BasicModel {
     }
 
     private function getFansNumCacheKey($followUid) {
-        return McKeyModel::getInstance()->forCompanyInfo('attention', $followUid. '_num', '');
+        return McKeyModel::getInstance()->forCompanyInfo('attention_fans', $followUid. '_num', '');
     }
 
     private function getFansNumFromCache($followUid) {
