@@ -57,17 +57,16 @@ class DiaryController extends BasicController {
     public function doCreateAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);
         $diaryInfo = $this->getDiaryInfo();
-        $diaryType = $this->getOptionalParam('type', 0);
-        if ($diaryType) {
-            $diaryInfo['type'] = $diaryType;
-            $diaryInfo['is_admin'] = 1;
-        }
         $picUrl = FileModel::getInstance()->uploadDiaryPic($diaryInfo['create_time'], 'pic');
         if ($picUrl) {
             $diaryInfo['pic'] = $picUrl;
             $diaryInfo['thumbnail'] = $picUrl;
         }
-
+        $diaryType = $this->getOptionalParam('type', 0);
+        if ($diaryType) {
+            $diaryInfo['type'] = $diaryType;
+            $diaryInfo['is_admin'] = 1;
+        }
 
         $diaryId = DiaryModel::getInstance()->createDiary($diaryInfo);
         if (!$diaryId) {
@@ -120,6 +119,7 @@ class DiaryController extends BasicController {
         $content = $this->getRequiredParam('content');
         $date = $this->getRequiredParam('date');
         $title = $this->getOptionalParam('title', $this->defaultTitle(strtotime($date)));
+        $diaryType = $this->getOptionalParam('type', 0);
         $diaryId = $this->getOptionalParam('diary_id', 0);
         $diaryExtId = $this->getOptionalParam('diary_ext_id', 0);
         $tags = $this->getOptionalParam('tags', array());
@@ -129,11 +129,11 @@ class DiaryController extends BasicController {
             throw new Exception_Login("invalid user");
         }
         $createTime = time();
-        
         return array(
             'diary_id' => $diaryId,
             'diary_ext_id' => $diaryExtId,
             'title' => $title,
+            'type' => $diaryType,
             'content' => $content,
             'tags' => json_encode($this->filterTags($tags)),
             'visibility' => $private ? 1 : 0,
@@ -141,6 +141,7 @@ class DiaryController extends BasicController {
             'date_ts' => strtotime($date),
             'user_id' => $this->userInfo['user_id'],
             'pic_desc' => $picDesc,
+            'is_admin' => $diaryType ? 1 : 0,
             'create_time' => $createTime
         );
     }

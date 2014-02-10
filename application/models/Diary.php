@@ -147,6 +147,22 @@ Class DiaryModel extends BasicModel {
         }
         return $this->getAmountByConditions(array('user_id' => $userId, 'status' => self::$statusNormal));
     }
+
+    public function getDiaryListExtByConditions($columnKeyToValues, $order = ''){
+        $sqlFormat = "SELECT * FROM $this->table"
+                . " LEFT JOIN diary_ext ON $this->table.diary_id = diary_ext.diary_id"
+                . " WHERE $this->table.status=0 ";
+        foreach ($columnKeyToValues as $key => $value) {
+            if (!$key) {
+                continue;
+            }
+            $sqlFormat .= " AND $key = '" . $this->db->realEscapeString($value) . "'";
+        }
+        if($order){
+            $sqlFormat .= $order;
+        }
+        return $this->db->queryAllRows($sqlFormat);
+    }
 }
 
 /* vim: set ts=4 sw=4 sts=4 tw=100 noet: */

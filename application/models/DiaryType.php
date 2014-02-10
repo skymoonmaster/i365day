@@ -6,7 +6,7 @@ Class DiaryTypeModel extends BasicModel {
      * @var DiaryModel
      */
     protected static $instances;
-    public static $diaryTypeIdToName = array(0 => '周报', 1 => '线下聚会', 2 => '黑板报', 3 => '明星同学', 4 => '其他');
+    public static $diaryTypeIdToName = array(1 => '365周报', 2 => '365线下聚会', 3 => '365黑板报', 4 => '365明星同学', '5' =>'其他');
     
 }
 
