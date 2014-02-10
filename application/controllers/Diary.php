@@ -37,7 +37,7 @@ class DiaryController extends BasicController {
         }
         $diaryInfo['tags'] = json_decode($diaryInfo['tags'], true);
         $diaryInfo = array_merge($diaryInfo, $diaryExtInfo);
-        if(!$forEdit){
+        if (!$forEdit) {
             $diaryInfo['content'] = str_replace("\n", "</p><p>", $diaryInfo['content']);
             $diaryInfo['content'] = str_replace(" ", "&nbsp", $diaryInfo['content']);
             $diaryInfo['content'] = str_replace("\t", "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp", $diaryInfo['content']);
@@ -58,7 +58,7 @@ class DiaryController extends BasicController {
         Yaf_Dispatcher::getInstance()->autoRender(false);
         $diaryInfo = $this->getDiaryInfo();
         $diaryType = $this->getOptionalParam('type', 0);
-        if($diaryType){
+        if ($diaryType) {
             $diaryInfo['type'] = $diaryType;
             $diaryInfo['is_admin'] = 1;
         }
@@ -67,8 +67,8 @@ class DiaryController extends BasicController {
             $diaryInfo['pic'] = $picUrl;
             $diaryInfo['thumbnail'] = $picUrl;
         }
-        
-        
+
+
         $diaryId = DiaryModel::getInstance()->createDiary($diaryInfo);
         if (!$diaryId) {
             throw new Exception('create diray error');
@@ -76,26 +76,27 @@ class DiaryController extends BasicController {
         if (!isset($_FILES['pic'])) {
             throw new Exception_BadInput('pic is empty');
         }
-        
+
         $feedData = array(
             'user_id' => $this->userInfo['user_id'],
             'user_name' => $this->userInfo['nick_name'],
             'type' => FeedModel::$feedType['diary'],
-            'content' =>json_encode(
-                array(
-                    'diary_id' => $diaryId,
-                    'title' => $diaryInfo['title'],
-                    'content' => mb_substr($diaryInfo['content'], 0, 220, 'UTF-8')
-                )
+            'content' => json_encode(
+                    array(
+                        'diary_id' => $diaryId,
+                        'title' => $diaryInfo['title'],
+                        'content' => mb_substr($diaryInfo['content'], 0, 220, 'UTF-8')
+                    )
             )
         );
         FeedModel::getInstance()->addFeed($this->userInfo['user_id'], $feedData);
 
-        $this->redirect("/home");
+        $this->redirect("/diary/detail/diary_id/" . $diaryId);
     }
 
     public function doEditAction() {
         $diaryInfo = $this->getDiaryInfo();
+        $diaryId = $this->getOptionalParam('diary_id', 0);
         if (isset($_FILES['pic']['size']) && $_FILES['pic']['size'] != 0) {
             $retUploadFile = FileModel::getInstance()->uploadDiaryPic($diaryInfo['create_time'], 'pic');
             if ($retUploadFile) {
@@ -105,21 +106,20 @@ class DiaryController extends BasicController {
             }
         }
         DiaryModel::getInstance()->updateDiary($diaryInfo);
-        $this->redirect("/home");
+        $this->redirect("/diary/detail/diary_id/" . $diaryId);
     }
-    
-    public function delAction(){
+
+    public function delAction() {
         $diaryId = $this->getRequiredParam('diary_id');
         DiaryModel::getInstance()->delDiaryById($diaryId);
         $this->redirect("/home");
     }
-    
+
     private function getDiaryInfo() {
 
-        $title = $this->getRequiredParam('title');
         $content = $this->getRequiredParam('content');
         $date = $this->getRequiredParam('date');
-
+        $title = $this->getOptionalParam('title', $this->defaultTitle(strtotime($date)));
         $diaryId = $this->getOptionalParam('diary_id', 0);
         $diaryExtId = $this->getOptionalParam('diary_ext_id', 0);
         $tags = $this->getOptionalParam('tags', array());
@@ -129,6 +129,7 @@ class DiaryController extends BasicController {
             throw new Exception_Login("invalid user");
         }
         $createTime = time();
+        
         return array(
             'diary_id' => $diaryId,
             'diary_ext_id' => $diaryExtId,
@@ -157,7 +158,12 @@ class DiaryController extends BasicController {
         }
         return $ret;
     }
-
+    
+    private function defaultTitle($dateTS){
+        $firstDateTS = strtotime(date('Y', $dateTS) . '-01-01');
+        $days = intval(($dateTS - $firstDateTS) / 86400 + 1);
+        return $days . '/365@' . date('Y');
+    }
 }
 
 /* vim: set ts=4 sw=4 sts=4 tw=100 noet: */
