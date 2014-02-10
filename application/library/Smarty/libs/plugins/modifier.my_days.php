@@ -17,7 +17,7 @@
 function smarty_modifier_my_days($timeStamp) {
     $firstDateTS = strtotime(date('Y', $timeStamp) . '-01-01');
 
-    return ($timeStamp - $firstDateTS) / 86400 + 1;
+    return intval(($timeStamp - $firstDateTS) / 86400 + 1);
 }
 
 ?>

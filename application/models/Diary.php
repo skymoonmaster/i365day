@@ -8,7 +8,7 @@ Class DiaryModel extends BasicModel {
     protected static $instances;
     protected $table = 'diary';
     protected $primaryKey = 'diary_id';
-    protected $basicInfoKeys = array('diary_id', 'title', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date', 'date_ts', 'status');
+    protected $basicInfoKeys = array('diary_id', 'title', 'type', 'tags', 'pic_desc', 'thumbnail', 'visibility', 'user_id', 'date', 'date_ts', 'is_admin' , 'status');
     protected $extInfoKeys = array('diary_ext_id', 'diary_id', 'pic', 'content');
 
     /**
@@ -146,6 +146,22 @@ Class DiaryModel extends BasicModel {
             throw new Exception_BadInput("bad input user id");
         }
         return $this->getAmountByConditions(array('user_id' => $userId, 'status' => self::$statusNormal));
+    }
+
+    public function getDiaryListExtByConditions($columnKeyToValues, $order = ''){
+        $sqlFormat = "SELECT * FROM $this->table"
+                . " LEFT JOIN diary_ext ON $this->table.diary_id = diary_ext.diary_id"
+                . " WHERE $this->table.status=0 ";
+        foreach ($columnKeyToValues as $key => $value) {
+            if (!$key) {
+                continue;
+            }
+            $sqlFormat .= " AND $key = '" . $this->db->realEscapeString($value) . "'";
+        }
+        if($order){
+            $sqlFormat .= $order;
+        }
+        return $this->db->queryAllRows($sqlFormat);
     }
 }
 
