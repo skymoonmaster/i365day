@@ -62,12 +62,6 @@ class DiaryController extends BasicController {
             $diaryInfo['pic'] = $picUrl;
             $diaryInfo['thumbnail'] = $picUrl;
         }
-        $diaryType = $this->getOptionalParam('type', 0);
-        if ($diaryType) {
-            $diaryInfo['type'] = $diaryType;
-            $diaryInfo['is_admin'] = 1;
-        }
-
         $diaryId = DiaryModel::getInstance()->createDiary($diaryInfo);
         if (!$diaryId) {
             throw new Exception('create diray error');
