@@ -11,7 +11,8 @@
     <body>
         <div class="header-load"></div>
         <div class="main">
-            <form action="">
+            <form action="/setting/dosave">
+                
                 <h1 class="main-title-icon settine-title">个人设置</h1>
                 <div class="setting-wrap line">
                     <ul class="setting-list clearfix">
@@ -46,17 +47,15 @@
                                         </tr>
                                         <tr>
                                             <td class="setting-table-name">相机</td>
-                                            <td class="setting-table-value"><input type="text" name="camera_brand" class="setting-input" value="{{$user.camera_brand}} {{$user.camera_model}}"></td>
+                                            <td class="setting-table-value"><input type="text" name="camera" class="setting-input" value="{{$user.camera}}"></td>
                                         </tr>
                                         <tr>
                                             <td class="setting-table-name">时区</td>
                                             <td class="setting-table-value">
-                                                <select class="setting-time-area">
-                                                    <option value="8" selected>GMT+8 北京</option>
-                                                    <option value="8">GMT+8 北京</option>
-                                                    <option value="8">GMT+8 北京</option>
-                                                    <option value="8">GMT+8 北京</option>
-                                                    <option value="8">GMT+8 北京</option>
+                                                <select class="setting-time-area" name="time_zone">
+                                                    {{foreach from=$time_zones item=time_zone key=label}}
+                                                        <option value="{{$label}}" {{if $label == $user.time_zone}}selected{{/if}}>{{$time_zone}}</option>
+                                                    {{/foreach}}
                                                 </select>
                                             </td>
                                         </tr>
@@ -67,7 +66,7 @@
                         <li class="setting-item">
                             <h2 class="setting-item-title">帐号和第三方绑定</h2>
                             <div class="setting-item-content setting-item-bind">
-                                <table "setting-form-table">
+                                <table class="setting-form-table">
                                     <tbody>
                                         <tr>
                                             <td class="setting-table-name">邮箱</td>
@@ -75,17 +74,28 @@
                                         </tr>
                                         <tr>
                                             <td class="setting-table-name">新浪微博</td>
-                                            <td class="setting-table-value"><a class="setting-binded" href="#" title="fond" target="_blank">fond</a><a href="#" class="setting-cancel-bind">取消绑定</a></td>
+                                                {{if $user.app_id ==  3}}
+                                                <td class="setting-table-value">
+                                                <a class="setting-binded" href="#" title="{{$user.nick_name}}" target="_blank">{{$user.nick_name}}</a><a href="#" class="setting-cancel-bind">取消绑定</a></td>
+                                                {{else}}
+                                                <td class="setting-table-value"><a href="#" class="setting-bind" title="绑定帐号">绑定帐号</a></td>
+                                                {{/if}}
                                         </tr>
                                         <tr>
                                             <td class="setting-table-name">豆瓣</td>
-                                            <td class="setting-table-value"><a href="#" class="setting-bind" title="绑定帐号">绑定帐号</a></td>
+                                                {{if $user.app_id ==  2}}
+                                                <td class="setting-table-value">
+                                                <a class="setting-binded" href="#" title="{{$user.nick_name}}" target="_blank">{{$user.nick_name}}</a><a href="#" class="setting-cancel-bind">取消绑定</a></td>
+                                                {{else}}
+                                                <td class="setting-table-value"><a href="#" class="setting-bind" title="绑定帐号">绑定帐号</a></td>
+                                                {{/if}}
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </li>
                     </ul>
+                    <input type="hidden" name="user_id" value="{{$user.user_id}}">
                     <div class="setting-submit-wrap">
                         <button class="setting-submit clearword" title="保存全部">保存全部</button>
                     </div>

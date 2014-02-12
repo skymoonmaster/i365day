@@ -14,7 +14,7 @@
                 <img src="{{$user.head_portrait}}" alt="头像" width="90" height="90" class="head-sculpture">
                 <div class="user-info-innerwrap">
                     <h1 class="username">{{$user.nick_name}}</h1>
-                    <p class='usercity-wrap'><span class="usercity">{{$user.city}}</span><span class="device">使用{{$user.camera_brand}} {{$user.camera_model}}</span></p>
+                    <p class='usercity-wrap'><span class="usercity">{{$user.city}}</span><span class="device">使用{{$user.camera}}</span></p>
                     {{if !$is_self}}
                     <p class="user-info-guanzhu">
                         <a href="#" class="guanzhu" title="关注他" id="add-attention" alt="{{$user.user_id}}" user-name="{{$user.nick_name}}" {{if $is_follow}}style="display: none"{{/if}}>关注他</a>
@@ -32,7 +32,7 @@
             </div>
             <div class="user-description-wrap">
                 <p>{{$user.intro}}</p>
-                <a href="#" class="modify-description clearword" title="修改">修改</a>
+                <a href="#" class="modify-description clearword" title="修改" alt="{{$user.user_id}}">修改</a>
             </div>
             <div class="user-fans-wrap">
                 <p class="user-interest"><a href="/follow{{if !$is_self}}/index/p/{{$user.user_id}}{{/if}}" title="查看关注"><em class="user-interest-num">{{$user.follows}}</em>个关注</a></p>
