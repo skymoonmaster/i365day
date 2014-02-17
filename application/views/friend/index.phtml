@@ -38,7 +38,7 @@
                                 </div>
                                 <a href="/diary/detail/diary_id/{{$feed_content.diary_id}}" class="info">
                                     <h3>{{$feed_content.title}}</h3>
-                                    <p>{{$feed_content.content}}</p>
+                                    <p>{{$feed_content.content|mb_substr:'0':'156':'utf-8'}}</p>
                                 </a>
                             </div>
                             <div class="publish-date">{{$feed.formatted_time}}</div>
@@ -57,7 +57,7 @@
                                 </div>
                                 <a href="#" class="info">
                                     <h3>{{$feed_content.title}}</h3>
-                                    <p>{{$feed_content.content}}</p>
+                                    <p>{{$feed_content.content|mb_substr:'0':'89':'utf-8'}}</p>
                                 </a>
                             </div>
                             <div class="publish-date">{{$feed.formatted_time}}</div>
@@ -70,45 +70,15 @@
             </div>
         </div>
         <div id="sidebar">
-            <h2>我的关注 <a href="interest.html" class="myfocus-num">78</a></h2>
+            <h2>我的关注 <a href="interest.html" class="myfocus-num">{{$userInfo.follows}}</a></h2>
             <div class="sidebar-content">
                 <div class="myfocus clearfix">
-                    <a href="#" title="">
+                    {{foreach from = $follows item=follow}}
+                    <a href="/home/index/p/{{$follow.user_id}}" title="{{$follow.user_name}}">
                         <img src="/statics/images/friend-pic.gif" width="50" height="50">
-                        <span class="myfocus-name">ezuojuzhiwen</span>
+                        <span class="myfocus-name">{{$follow.user_name}}</span>
                     </a>
-                    <a href="#" title="">
-                        <img src="/statics/images/friend-pic.gif" width="50" height="50">
-                        <span class="myfocus-name">ezuojuzhiwen</span>
-                    </a>
-                    <a href="#" title="">
-                        <img src="/statics/images/friend-pic.gif" width="50" height="50">
-                        <span class="myfocus-name">who</span>
-                    </a>
-                    <a href="#" title="">
-                        <img src="/statics/images/friend-pic.gif" width="50" height="50">
-                        <span class="myfocus-name">ezuojuzhiwen</span>
-                    </a>
-                    <a href="#" title="">
-                        <img src="/statics/images/friend-pic.gif" width="50" height="50">
-                        <span class="myfocus-name">EXO</span>
-                    </a>
-                    <a href="#" title="">
-                        <img src="/statics/images/friend-pic.gif" width="50" height="50">
-                        <span class="myfocus-name">who</span>
-                    </a>
-                    <a href="#" title="">
-                        <img src="/statics/images/friend-pic.gif" width="50" height="50">
-                        <span class="myfocus-name">一吻定情</span>
-                    </a>
-                    <a href="#" title="">
-                        <img src="/statics/images/friend-pic.gif" width="50" height="50">
-                        <span class="myfocus-name">入江裕树</span>
-                    </a>
-                    <a href="#" title="">
-                        <img src="/statics/images/friend-pic.gif" width="50" height="50">
-                        <span class="myfocus-name">who</span>
-                    </a>
+                    {{/foreach}}
                 </div>
             </div>
             <aside class="all-hot">
