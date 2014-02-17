@@ -37,12 +37,57 @@
 
                     <div class="fans-detail">
                         <a href="/home/index/p/{{$fan.user_id}}" class="fans-day" title="查看他的日记">{{$fan.diary_days}}个日子</a>
-                        <a href="/fans/index/p/{{$fan.user_id}}" class="fans-fans" title="查看他的粉丝">{{$fan.fans}}个粉丝</a>
+                        <a href=""/fans/index/p/{{$fan.user_id}}" class="fans-fans" title="查看他的粉丝">{{$fan.fans}}个粉丝</a>
                     </div>
                 </li>
                 {{/foreach}}
             </ul>
-            <div class="paging-load"></div>
+            <div class="paging-load">
+                <div class="article-paging-box">
+                    <ul class="article-paging-wrap clearfix">
+                        {{if $page.pageNum != 1}}
+                        <li class="article-paging-item"><a href=""/fans/index/page/{{$page.pageNum - 1}}" title="上一页">&lt上一页</a></li>
+                        {{/if}}
+
+                        {{assign var=pageSegment value="`$page.totalPageNum / 5`"|ceil}}
+                        {{if $pageSegment < 2}}
+                            {{section name=p start=1 loop=$page.totalPageNum + 1}}
+                            <li class="article-paging-item {{if $page.pageNum == $smarty.section.p.index}}current{{/if}}"><a href=""/fans/index/page/{{$smarty.section.p.index}}" title="第{{$smarty.section.p.index}}页">{{$smarty.section.p.index}}</a></li>
+                            {{/section}}
+                        {{/if}}
+
+                        {{if $pageSegment >= 2}}
+                            {{if $page.pageNum <= 5}}
+                                {{section name=p start=1 loop=6}}
+                                <li class="article-paging-item {{if $page.pageNum == $smarty.section.p.index}}current{{/if}}"><a href="/fans/index/page/{{$smarty.section.p.index}}" title="第{{$smarty.section.p.index}}页">{{$smarty.section.p.index}}</a></li>
+                                {{/section}}
+                                <li class="article-paging-item">...</li>
+                                <li class="article-paging-item"><a href="/fans/index/page/{{$page.totalPageNum}}" title="第{{$page.totalPageNum}}页">{{$page.totalPageNum}}</a></li>
+                            {{elseif $page.pageNum + 5 > $page.totalPageNum}}
+                                <li class="article-paging-item"><a href="/fans/index/page/1" title="第1页">1</a></li>
+                                <li class="article-paging-item">...</li>
+
+                                {{section name=p start="`$page.totalPageNum - 4`" loop="`$page.totalPageNum + 1`"}}
+                                <li class="article-paging-item {{if $page.pageNum == $smarty.section.p.index}}current{{/if}}"><a href="/fans/index/page/{{$smarty.section.p.index}}" title="第{{$smarty.section.p.index}}页">{{$smarty.section.p.index}}</a></li>
+                                {{/section}}
+                            {{elseif $pageSegment >= 3}}
+                                <li class="article-paging-item"><a href="/fans/index/page/1" title="第1页">1</a></li>
+                                <li class="article-paging-item">...</li>
+
+                                {{section name=p start="`$page.pageNum - 2`" loop="`$page.pageNum + 3`"}}
+                                <li class="article-paging-item {{if $page.pageNum == $smarty.section.p.index}}current{{/if}}"><a href="/fans/index/page/{{$smarty.section.p.index}}" title="第{{$smarty.section.p.index}}页">{{$smarty.section.p.index}}</a></li>
+                                {{/section}}
+
+                                <li class="article-paging-item">...</li>
+                                <li class="article-paging-item"><a href="/fans/index/page/{{$page.totalPageNum}}" title="第{{$page.totalPageNum}}页">{{$page.totalPageNum}}</a></li>
+                            {{/if}}
+                        {{/if}}
+                        {{if $page.totalPageNum != 1 &&  $page.pageNum != $page.totalPageNum}}
+                        <li class="article-paging-item"><a href="/fans/index/page/{{$page.pageNum - 1}}" title="下一页">下一页&gt</a></li>
+                        {{/if}}
+                    </ul>
+                </div>
+            </div>
         </section>
     </div>
     <div class="footer-load"></div>

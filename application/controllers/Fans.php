@@ -3,9 +3,6 @@
 
 class FansController extends BasicController {
     public function indexAction() {
-        $pageNo = $this->getOptionalParam('page', 1);
-        $offset = ($pageNo - 1) * AttentionModel::DEFAULT_LIMIT;
-
         if (!$this->isSelf) {
             $userId = $this->getOptionalParam('p', 0, true);
             $userInfo = UserModel::getInstance()->getUserInfoById($userId);
@@ -14,9 +11,24 @@ class FansController extends BasicController {
             $userInfo = $this->userInfo;
         }
 
+        $pageNo = $this->getOptionalParam('page', 1);
+        if ($pageNo <= 0) {
+            $pageNo = 1;
+        } elseif ($pageNo > ceil($userInfo['fans'] / AttentionModel::DEFAULT_LIMIT)) {
+            $pageNo = ceil($userInfo['fans'] / AttentionModel::DEFAULT_LIMIT);
+        }
+        $offset = ($pageNo - 1) * AttentionModel::DEFAULT_LIMIT;
 		$fanUids = AttentionModel::getInstance()->getFanUids($userId, $offset);
+
+        $page = new Util_Pagination();
+        $page['totalItemNum'] = $userInfo['fans'];
+        $page['pageSize'] = AttentionModel::DEFAULT_LIMIT;
+        $page['pageNum'] = $pageNo;
+        $page['totalPageNum'] = ceil($page['totalItemNum'] / $page['pageSize']);
+
         if (empty($fanUids)) {
             $this->getView()->assign('userInfo', $userInfo);
+            $this->getView()->assign('page', $page);
 
             return ;
         }
@@ -31,6 +43,7 @@ class FansController extends BasicController {
             $fan['is_follow'] = $isCurrentUserFollows[$fan['user_id']];
         }
 
+        $this->getView()->assign('page', $page);
         $this->getView()->assign('userInfo', $userInfo);
         $this->getView()->assign('fans', $fans);
     }
