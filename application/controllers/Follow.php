@@ -2,9 +2,6 @@
 
 class FollowController extends BasicController {
     public function indexAction() {
-        $pageNo = $this->getOptionalParam('page', 1);
-        $offset = ($pageNo - 1) * AttentionModel::DEFAULT_LIMIT;
-
         if (!$this->isSelf) {
             $userId = $this->getOptionalParam('p', 0, true);
             $userInfo = UserModel::getInstance()->getUserInfoById($userId);
@@ -13,10 +10,24 @@ class FollowController extends BasicController {
             $userInfo = $this->userInfo;
         }
 
+        $pageNo = $this->getOptionalParam('page', 1);
+        if ($pageNo <= 0) {
+            $pageNo = 1;
+        } elseif ($pageNo > ceil($userInfo['follows'] / AttentionModel::DEFAULT_LIMIT)) {
+            $pageNo = ceil($userInfo['follows'] / AttentionModel::DEFAULT_LIMIT);
+        }
+        $offset = ($pageNo - 1) * AttentionModel::DEFAULT_LIMIT;
         $followUids = AttentionModel::getInstance()->getFollowUids($userId, $offset);
+
+        $page = new Util_Pagination();
+        $page['totalItemNum'] = $userInfo['follows'];
+        $page['pageSize'] = AttentionModel::DEFAULT_LIMIT;
+        $page['pageNum'] = $pageNo;
+        $page['totalPageNum'] = ceil($page['totalItemNum'] / $page['pageSize']);
 
         if (empty($followUids)) {
             $this->getView()->assign('userInfo', $userInfo);
+            $this->getView()->assign('page', $page);
 
             return ;
         }
@@ -33,6 +44,7 @@ class FollowController extends BasicController {
             $follow['is_follow'] = $this->isSelf ? true : $isCurrentUserFollows[$follow['user_id']];
         }
 
+        $this->getView()->assign('page', $page);
         $this->getView()->assign('userInfo', $userInfo);
         $this->getView()->assign('follows', $follows);
     }
