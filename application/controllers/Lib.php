@@ -53,16 +53,6 @@ class LibController extends BasicController {
     }
 
     public function leavingMsgAction() {
-        $inputUserId = $this->getRefererOptionalParam('p', $_SESSION['user_id']);
-        $leavingMsgList = LeavingMsgModel::getInstance()->getLeavingMsgByOwnerId($inputUserId);
-        $leavingMsgAssociate = array();
-        if(is_array($leavingMsgList) && count($leavingMsgList) > 0){
-            foreach ($leavingMsgList as $leavingMsg){
-                $leavingMsgAssociate[$leavingMsg['leaving_msg_id']] = $leavingMsg;
-            }
-        }
-        $this->getView()->assign('leaving_msg_list', $leavingMsgList ? $leavingMsgList : array());
-        $this->getView()->assign('leaving_msg_associate', $leavingMsgAssociate);
     }
 
     public function commentAction() {

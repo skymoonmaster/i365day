@@ -14,11 +14,6 @@
  */
 class MsgController extends BasicController {
 
-    public function indexAction() {
-        $inputUserId = $this->getOptionalParam('p', $_SESSION['user_id']);
-        $userInfo = UserModel::getInstance()->getUserInfoById($inputUserId);
-        $this->getView()->assign('user', $userInfo);
-    }
 
     public function readMessageAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);

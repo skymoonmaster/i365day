@@ -244,7 +244,7 @@ class MessageModel extends BasicModel {
 	}	
 
 	private static function getMessageCacheKeyIndex($receiverId) {
-		return McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId, ''); 
+		return McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId, '');
 	}
 
 	private static function getMessageContentCacheKey($receiverId, $messageCacheKey) {
@@ -252,6 +252,6 @@ class MessageModel extends BasicModel {
 	}
 	
 	private static function getMessageNumCacheKey($receiverId, $messageCacheKey) {
-		return McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId . '_' . $messageCacheKey . '_num', '');	
+		return McKeyModel::getInstance()->forCompanyInfo('msg', $receiverId . '_' . $messageCacheKey . '_num', '');
 	}
 }
