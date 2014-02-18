@@ -9,7 +9,7 @@ Class LeavingMsgModel extends BasicModel {
     protected $table = 'leaving_msg';
     protected $primaryKey = 'leaving_msg_id';
 
-    const DEFAULT_LIMIT = 8;
+    const DEFAULT_LIMIT = 5;
     /**
      * @return LeavingMsgModel
      */
