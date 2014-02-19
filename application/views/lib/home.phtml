@@ -44,7 +44,7 @@
                 <ul class="home-tab-wrap clearfix">
                     <li class="home-tab-item {{if $current_page == 'home'}}current{{/if}}"><a href="/home{{if !$is_self}}/index/p/{{$current_user_id}}{{/if}}" title="我的365">{{if $is_self}}我{{else}}{{$user.nick_name}}{{/if}}的365</a></li>
                     <li class="home-tab-item {{if $current_page == 'like'}}current{{/if}}"><a href="/like{{if !$is_self}}/index/p/{{$current_user_id}}{{/if}}" title="喜欢">喜欢</a></li>
-                    <li class="home-tab-item {{if $current_page == 'msg'}}current{{/if}}"><a href="/msg{{if !$is_self}}/index/p/{{$current_user_id}}{{/if}}" title="留言板">留言板</a></li>
+                    <li class="home-tab-item {{if $current_page == 'leavingmsg'}}current{{/if}}"><a href="/leavingmsg{{if !$is_self}}/index/p/{{$current_user_id}}{{/if}}" title="留言板">留言板</a></li>
                 </ul>
                 {{if $is_record_today_show}}<a class="write-now clearword" href="/diary/create" title="记录今天">记录今天</a>{{/if}}
             </div>
