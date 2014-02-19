@@ -32,7 +32,7 @@
                     <img class="article-image" src="{{$diary.thumbnail}}" width="320" height="210" alt="{{$diary.pic_desc}}">
                     <div class="article-wrap">
                         <h2 class="article-title"><a href="/diary/detail/diary_id/{{$diary.diary_id}}" title="{{$diary.title}}">{{$diary.title}}</a></h2>
-                        <a class="article-author" href="/home/index/p/{{$diary.user_id}}" title="fond">fond</a><span class="article-from">发表于</span><span class="article-time">{{$diary.update_time|date_format:"%Y-%m-%d %H:%M"}}</span><a class="article-type" href="/news/index/type/{{$diary.type}}">[{{$diary_type_id_to_name[$diary['type']]}}]</a>
+                        <a class="article-author" href="/home/index/p/{{$diary.user_id}}" title="{{$diary.nick_name}}">{{$diary.nick_name}}</a><span class="article-from">发表于</span><span class="article-time">{{$diary.update_time|date_format:"%Y-%m-%d %H:%M"}}</span><a class="article-type" href="/news/index/type/{{$diary.type}}">[{{$diary_type_id_to_name[$diary['type']]}}]</a>
                         <p class="article-text">{{$diary.content}}</p>
                     </div>
                 </article>

@@ -21,7 +21,7 @@
                             <h2 class="setting-item-title">头像</h2>
                             <div class="setting-item-content">
                                 <div class="setting-head-wrap">
-                                    <img id="cropbox" {{if $width_avatar}}width="220"{{else}}height="220"{{/if}} src="{{$user.avatar}}">
+                                    <img id="cropbox" {{if $width_avatar}}width="220"{{else}}height="220"{{/if}} src="{{if !$user.avatar}}/statics/images/pool.jpg{{else}}{{$user.avatar}}{{/if}}">
                                     <input type="hidden" id="x" name="x" />
                                     <input type="hidden" id="y" name="y" />
                                     <input type="hidden" id="w" name="w" />
