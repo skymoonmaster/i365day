@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>个人设置--365每天记</title>
         <link rel="stylesheet" href="/statics/css/common.css">
+        <link rel="stylesheet" href="/statics/css/jquery.Jcrop.min.css">
         <!--[if lt IE 9]>
         <script src="/statics/js/html5shiv.js"></script>
         <![endif]-->
@@ -11,8 +12,8 @@
     <body>
         <div class="header-load"></div>
         <div class="main">
-            <form action="/setting/dosave">
-                
+            <form action="/setting/dosave" method="POST">
+
                 <h1 class="main-title-icon settine-title">个人设置</h1>
                 <div class="setting-wrap line">
                     <ul class="setting-list clearfix">
@@ -20,12 +21,13 @@
                             <h2 class="setting-item-title">头像</h2>
                             <div class="setting-item-content">
                                 <div class="setting-head-wrap">
-                                    <div class="setting-head-clipwindow"></div>
-                                    <img class="setting-head-image" width="222" height="167" src="/statics/images/friend.gif">
+                                    <img id="cropbox" {{if $width_avatar}}width="220"{{else}}height="220"{{/if}} src="{{$user.avatar}}">
+                                    <input type="hidden" id="x" name="x" />
+                                    <input type="hidden" id="y" name="y" />
+                                    <input type="hidden" id="w" name="w" />
+                                    <input type="hidden" id="h" name="h" />
                                 </div>
                                 <input type="file" class="setting-head-upload">
-                                <button class="setting-head-update clearword">更新头像</button>
-                                <button class="setting-head-cancel clearword">取消</button>
                             </div>
                         </li>
                         <li class="setting-item">
@@ -54,7 +56,7 @@
                                             <td class="setting-table-value">
                                                 <select class="setting-time-area" name="time_zone">
                                                     {{foreach from=$time_zones item=time_zone key=label}}
-                                                        <option value="{{$label}}" {{if $label == $user.time_zone}}selected{{/if}}>{{$time_zone}}</option>
+                                                    <option value="{{$label}}" {{if $label == $user.time_zone}}selected{{/if}}>{{$time_zone}}</option>
                                                     {{/foreach}}
                                                 </select>
                                             </td>
@@ -74,21 +76,21 @@
                                         </tr>
                                         <tr>
                                             <td class="setting-table-name">新浪微博</td>
-                                                {{if $user.app_id ==  3}}
-                                                <td class="setting-table-value">
+                                            {{if $user.app_id ==  3}}
+                                            <td class="setting-table-value">
                                                 <a class="setting-binded" href="#" title="{{$user.nick_name}}" target="_blank">{{$user.nick_name}}</a><a href="#" class="setting-cancel-bind">取消绑定</a></td>
-                                                {{else}}
-                                                <td class="setting-table-value"><a href="#" class="setting-bind" title="绑定帐号">绑定帐号</a></td>
-                                                {{/if}}
+                                            {{else}}
+                                            <td class="setting-table-value"><a href="#" class="setting-bind" title="绑定帐号">绑定帐号</a></td>
+                                            {{/if}}
                                         </tr>
                                         <tr>
                                             <td class="setting-table-name">豆瓣</td>
-                                                {{if $user.app_id ==  2}}
-                                                <td class="setting-table-value">
+                                            {{if $user.app_id ==  2}}
+                                            <td class="setting-table-value">
                                                 <a class="setting-binded" href="#" title="{{$user.nick_name}}" target="_blank">{{$user.nick_name}}</a><a href="#" class="setting-cancel-bind">取消绑定</a></td>
-                                                {{else}}
-                                                <td class="setting-table-value"><a href="#" class="setting-bind" title="绑定帐号">绑定帐号</a></td>
-                                                {{/if}}
+                                            {{else}}
+                                            <td class="setting-table-value"><a href="#" class="setting-bind" title="绑定帐号">绑定帐号</a></td>
+                                            {{/if}}
                                         </tr>
                                     </tbody>
                                 </table>
@@ -106,5 +108,26 @@
         <script src="/statics/js/jquery-1.10.1.min.js"></script>
         <script src="/statics/js/temp-ajax-load.js"></script>
         <script src="/statics/js/common.js"></script>
+        <script src="/statics/js/jquery.Jcrop.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(function() {
+
+                    $('#cropbox').Jcrop({
+                        aspectRatio: 1,
+                        onSelect: updateCoords
+                    });
+
+                });
+                function updateCoords(c)
+                {
+                    $('#x').val(c.x);
+                    $('#y').val(c.y);
+                    $('#w').val(c.w);
+                    $('#h').val(c.h);
+                }
+                ;
+            });
+        </script>
     </body>
 </html>

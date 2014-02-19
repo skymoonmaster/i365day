@@ -63,7 +63,7 @@ class LeavingmsgController extends BasicController {
         );
         $ret = LeavingMsgModel::getInstance()->createWithTimestamp($comment);
         if (!$ret) {
-            throw new Exception('create leaving leavingmsg error');
+            throw new Exception('create leaving msg error');
         }
         MessageModel::getInstance()->addMessage(
             MessageModel::$messageType['leavingMessage'],
@@ -71,8 +71,8 @@ class LeavingmsgController extends BasicController {
             $this->userInfo['nick_name'],
             $hostId
         );
-
-        $this->redirect("/leavingmsg");
+        $redirectUri = ($hostId != $followId) ? '/msg/index/p/' . intval($hostId) : '/msg';
+        $this->redirect($redirectUri);
     }
     public function doDelAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);

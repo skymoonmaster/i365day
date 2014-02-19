@@ -6,13 +6,16 @@ define('WWW_ROOT', '/data/wwwroot/i365day');
 define('PROCESS_START_TIME', microtime(true) * 1000);
 define('HTTP_DOMAIN', 'http://' . DOMAIN);
 define('STATIC_DOMAIN', HTTP_DOMAIN . '/statics');
-define('LOG_PATH', '/opt/active/logs');
+define('LOG_PATH', '/data/logs');
 define('I365DAY', 'i365day');
-define('DIARY_PIC_DIR', WWW_ROOT . DIRECTORY_SEPARATOR . 'statics' . DIRECTORY_SEPARATOR . 'kvt');
-define('DIARY_PIC_SRC', '/statics' . DIRECTORY_SEPARATOR . 'kvt');
 
-define('MAINTENANCE_TIME', '2013-06-20 12:00');
-define('MAINTENANCE_REMIND_DAYS', 7);
+define('DIARY_PIC_DIR', WWW_ROOT . DIRECTORY_SEPARATOR . 'statics' . DIRECTORY_SEPARATOR . 'kvt');
+define('AVATAR_PIC_DIR', WWW_ROOT . DIRECTORY_SEPARATOR . 'statics' . DIRECTORY_SEPARATOR . 'avatar');
+define('DIARY_PIC_SRC', '/statics' . DIRECTORY_SEPARATOR . 'kvt');
+define('AVATAR_PIC_SRC', '/statics' . DIRECTORY_SEPARATOR . 'kvt');
+define('AVATAR_WIDTH', 90);
+define('AVATAR_HEIGHT', 90);
+define('AVATAR_QUALITY', 90);
 ini_set("display_errors", '');
 ini_set("session.cookie_httponly", 1);
 //日志打印相关参数定义

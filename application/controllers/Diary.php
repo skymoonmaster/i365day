@@ -43,9 +43,14 @@ class DiaryController extends BasicController {
             $diaryInfo['content'] = str_replace("\t", "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp", $diaryInfo['content']);
         }
         $isRelated = UserDiaryModel::getInstance()->isRelated($_SESSION['user_id'], $diaryId);
-        $diaryDays = DiaryModel::getInstance()->getDiaryAmountByUid($_SESSION['user_id']);
+        $diaryDays = DiaryModel::getInstance()->getDiaryAmountByUid($diaryInfo['user_id']);
+        if($_SESSION['user_id'] == $diaryInfo['user_id']){
+            $userInfo = $this->userInfo;
+        }else{
+            $userInfo = UserModel::getInstance()->getUserInfoById($diaryInfo['user_id']);
+        }
         $this->getView()->assign('diary', $diaryInfo);
-        $this->getView()->assign('user', $this->userInfo);
+        $this->getView()->assign('user', $userInfo);
         $this->getView()->assign('diary_days', $diaryDays);
         $this->getView()->assign('is_related', $isRelated);
     }
@@ -159,7 +164,9 @@ class DiaryController extends BasicController {
         $days = intval(($dateTS - $firstDateTS) / 86400 + 1);
         return $days . '/365@' . date('Y');
     }
-}
+
+    
+ }
 
 /* vim: set ts=4 sw=4 sts=4 tw=100 noet: */
 ?>

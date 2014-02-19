@@ -14,7 +14,7 @@
  */
 class CommentController extends BasicController {
 
-   public function doCreateAction() {
+    public function doCreateAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);
         $diaryId = $this->getRequiredParam('diary_id');
         $followId = $this->getRequiredParam('follow_id');
@@ -29,7 +29,7 @@ class CommentController extends BasicController {
             'vistor_name' => $this->userInfo['nick_name']
         );
         $ret = CommentModel::getInstance()->createWithTimestamp($comment);
-        if($ret){
+        if ($ret) {
             $retUpdateCommentNum = DiaryModel::getInstance()->addCommentNumById($diaryId);
         }
         if (!$ret || !$retUpdateCommentNum) {
@@ -37,17 +37,12 @@ class CommentController extends BasicController {
         }
 
 //        if ($author != $this->userInfo['user_id']) {
-            //send message
-            MessageModel::getInstance()->addMessage(
-                MessageModel::$messageType['DiaryComment'],
-                $this->userInfo['user_id'],
-                $this->userInfo['nick_name'],
-                $author,
-                $diaryId,
-                $diaryTitle);
+        //send message
+        MessageModel::getInstance()->addMessage(
+                MessageModel::$messageType['DiaryComment'], $this->userInfo['user_id'], $this->userInfo['nick_name'], $author, $diaryId, $diaryTitle);
 //        }
 
-        $this->redirect("/diary/detail/diary_id/". intval($diaryId));
+        $this->redirect("/diary/detail/diary_id/" . intval($diaryId));
     }
 
     public function doDelAction() {

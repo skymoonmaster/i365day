@@ -77,7 +77,7 @@ class LoginController extends BasicController {
         //TODO 查询是否有重名
 
         $this->getView()->assign('city', $_SESSION['user_info']['location']);
-        $this->getView()->assign('head_portrait', $_SESSION['user_info']['head_portrait']);
+        $this->getView()->assign('avatar', $_SESSION['user_info']['avatar']);
         $this->getView()->assign('nick_name', $_SESSION['user_info']['nick_name']);
     }
 
