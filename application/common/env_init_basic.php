@@ -2,7 +2,7 @@
 
 date_default_timezone_set('Asia/Chongqing');
 
-define('WWW_ROOT', '/data/wwwroot/i365day');
+define('WWW_ROOT', 'data/wwwroot/i365day');
 define('PROCESS_START_TIME', microtime(true) * 1000);
 define('HTTP_DOMAIN', 'http://' . DOMAIN);
 define('STATIC_DOMAIN', HTTP_DOMAIN . '/statics');
@@ -16,6 +16,8 @@ define('AVATAR_PIC_SRC', '/statics' . DIRECTORY_SEPARATOR . 'kvt');
 define('AVATAR_WIDTH', 90);
 define('AVATAR_HEIGHT', 90);
 define('AVATAR_QUALITY', 90);
+define('AVATAR_CROP_WIDTH', 220);
+define('AVATAR_CROP_HEIGHT', 220);
 ini_set("display_errors", '');
 ini_set("session.cookie_httponly", 1);
 //日志打印相关参数定义

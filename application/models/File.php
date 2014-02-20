@@ -52,7 +52,7 @@ Class FileModel extends BasicModel {
         $pathInfo = pathinfo($_FILES [$filename] ['name']);
         return DIARY_PIC_DIR . DIRECTORY_SEPARATOR . md5($_SESSION['user_id'] . $createTime) . '.' . $pathInfo ['extension'];
     }
-    
+
     public function generateSrcForDiaryPic($createTime, $filename) {
         if (!isset($_SESSION['user_id']) || intval($_SESSION['user_id']) == 0) {
             throw new Exception_Login("please login");
@@ -63,19 +63,22 @@ Class FileModel extends BasicModel {
         $pathInfo = pathinfo($_FILES [$filename] ['name']);
         return DIARY_PIC_SRC . DIRECTORY_SEPARATOR . md5($_SESSION['user_id'] . $createTime) . '.' . $pathInfo ['extension'];
     }
-    
-        
-    public function generateFilenameForAvatar($filename){
+
+    public function generateFilenameForAvatar($extension) {
         if (!isset($_SESSION['user_id']) || intval($_SESSION['user_id']) == 0) {
             throw new Exception_Login("please login");
         }
-        $pathInfo = pathinfo($filename);
-        return AVATAR_PIC_DIR . DIRECTORY_SEPARATOR . md5($_SESSION['user_id']) . '.' . $pathInfo ['extension'];
+        return AVATAR_PIC_DIR . DIRECTORY_SEPARATOR . md5($_SESSION['user_id']) . '.' . $extension;
     }
-    
+
     public function uploadDiaryPic($createTime, $filename) {
 
         $targetFilename = $this->generateFilenameForDiaryPic($createTime, $filename);
+        return $this->upload($filename, $targetFilename);
+    }
+
+    public function uploadAvatar($filename, $targetFilename) {
+       
         return $this->upload($filename, $targetFilename);
     }
 

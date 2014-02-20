@@ -37,6 +37,19 @@ class SettingController extends BasicController {
         echo json_encode(array('errno' => $ret));
     }
 
+    public function doUploadAvatarAction() {
+        Yaf_Dispatcher::getInstance()->autoRender(false);
+        $fname = $_FILES ['avatar'] ['name'];
+        $pathInfo = pathinfo($fname);
+        $extension = isset($pathInfo['extension']) ? $pathInfo['extension'] : '';
+        $targetFilename = FileModel::getInstance()->generateFilenameForAvatar($extension);
+        $picUrl = FileModel::getInstance()->uploadAvatar('avatar', $targetFilename);
+        $showAvatarSize = $this->getShowAvatarSize($targetFilename);
+
+        $result = array('code' => 1, 'pic_url' => $picUrl, 'extension' => $extension, 'time' => time());
+        echo json_encode(array_merge($result, $showAvatarSize));
+    }
+
     private function getUserInfo() {
         return array(
             'user_id' => $this->getRequiredParam('user_id'),
@@ -49,26 +62,51 @@ class SettingController extends BasicController {
     }
 
     private function processAvatar() {
-
-        $src = dirname(__FILE__) . '/../../statics/images/pool.jpg';
-        $imgSize = getimagesize($src);
-        $origWidth = $imgSize[0];
-        $origHeight = $imgSize[1];
-        $resizeRate = round(max($origWidth/220, $origHeight/220), 2);
+        $extension = $this->getRequiredParam('extension');
+        $src = FileModel::getInstance()->generateFilenameForAvatar($extension);
+        $showAvatarSize = $this->getShowAvatarSize($src);
+        $resizeRate = $showAvatarSize['rate'] ? $showAvatarSize['rate'] : 1;
         
-        $imgRes = imagecreatefromjpeg($src);
+        if($extension == 'jpg'){
+            $imgRes = imagecreatefromjpeg($src);
+        }else if($extension == 'gif'){
+            $imgRes = imagecreatefromgif($src);
+        }else{
+            $imgRes = imagecreatefrompng($src);
+        }
+        
         $dstRes = ImageCreateTrueColor(AVATAR_WIDTH, AVATAR_HEIGHT);
 
-        imagecopyresampled($dstRes, $imgRes, 0, 0, $_POST['x'] * $resizeRate, $_POST['y'] * $resizeRate, 
-                AVATAR_WIDTH, AVATAR_HEIGHT, $_POST['w'] * $resizeRate, $_POST['h'] * $resizeRate);
-        $avatarFilename = FileModel::getInstance()->generateFilenameForAvatar($src);
-        imagejpeg($dstRes, $avatarFilename, AVATAR_QUALITY);
+        imagecopyresampled($dstRes, $imgRes, 0, 0, $_POST['x'] * $resizeRate, $_POST['y'] * $resizeRate, AVATAR_WIDTH, AVATAR_HEIGHT, $_POST['w'] * $resizeRate, $_POST['h'] * $resizeRate);
+        $avatarFilename = FileModel::getInstance()->generateFilenameForAvatar($extension);
         
+        if($extension == 'jpg'){
+            imagejpeg($dstRes, $avatarFilename, AVATAR_QUALITY);
+        }else if($extension == 'gif'){
+            imagegif($dstRes, $avatarFilename);
+        }else{
+            imagepng($dstRes, $avatarFilename);
+        }
         $ret = Storage_QiNiuCloudStorage::upload(md5($_SESSION['user_id'] . time()), $avatarFilename);
         if (empty($ret)) {
             throw new Exception("file upload failed");
         }
         return Storage_QiNiuCloudStorage::getPicUrl($ret['key']);
+    }
+
+    private function getShowAvatarSize($avatarSrc) {
+        $imgSize = getimagesize($avatarSrc);
+        $origWidth = $imgSize[0];
+        $origHeight = $imgSize[1];
+        if ($origWidth < AVATAR_CROP_WIDTH && $origHeight < AVATAR_CROP_HEIGHT) {
+            return array('width' => $origWidth, 'height' => $origHeight, 'rate' => 1);
+        }
+        $widthRate = round($origWidth / 220, 3);
+        $heightRate = round($origHeight / 220, 3);
+        if ($widthRate >= $heightRate) {
+            return array('width' => intval($origWidth / $widthRate), 'height' => intval($origHeight / $widthRate), 'rate' => $widthRate);
+        }
+        return array('width' => intval($origWidth / $heightRate), 'height' => intval($origHeight / $heightRate), 'rate' => $heightRate);
     }
 
 }
