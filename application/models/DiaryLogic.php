@@ -19,7 +19,7 @@ Class DiaryLogicModel extends BasicModel {
 
     public function fillDiaryListForHomepage($inputMonth, $inputUserId) {
         $startDate = $this->getStartDate($inputMonth);
-        $endDate = $this->getEndDate($inputMonth, $startDate);
+        $endDate = $this->getEndDate($inputMonth);
         $startDateTS = strtotime($startDate);
         $endDateTS = strtotime($endDate);
         $filledDiaryList = array();
@@ -35,7 +35,7 @@ Class DiaryLogicModel extends BasicModel {
             if (isset($diaryListByDate[$currentDate])) {
                 $filler = $diaryListByDate[$currentDate];
             } else {
-                $filler = array('date' => $i);
+                $filler = array('date_ts' => $i);
             }
             $filledDiaryList[] = $filler;
         }
@@ -48,15 +48,15 @@ Class DiaryLogicModel extends BasicModel {
         return date('Ymd', $firstDateOfMonthTS - $startDayByWeek * 86400);
     }
 
-    public function getEndDate($inputMonth, $startDate) {
+    public function getEndDate($inputMonth) {
+        
         $currentMonth = date('Ym');
 
         if ($currentMonth < $inputMonth) {
             throw new Exception_BadInput('bad input month');
         }
-        //the home page contains 42 diary (MAX);
         if ($currentMonth > $inputMonth) {
-            return date('Ymd', strtotime($startDate) + 41 * 86400);
+            return date('Ymt', strtotime($inputMonth . '01'));
         }
 
         return date('Ymd');

@@ -71,7 +71,7 @@ class LeavingmsgController extends BasicController {
             $this->userInfo['nick_name'],
             $hostId
         );
-        $redirectUri = ($hostId != $followId) ? '/msg/index/p/' . intval($hostId) : '/msg';
+        $redirectUri = ($hostId != $_SESSION['user_id']) ? '/leavingmsg/index/p/' . intval($hostId) : '/leavingmsg';
         $this->redirect($redirectUri);
     }
     public function doDelAction() {

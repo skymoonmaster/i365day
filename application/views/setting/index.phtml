@@ -146,9 +146,8 @@ $(document).ready(function() {
                 width = response.width;
                 height = response.height;
                 $('#extension').val(response.extension);
-                var imgUrl = response.pic_url + "?" + response.time;
-                var img = $('<img src="' + imgUrl + '" id="cropbox" />');
-                if (imgUrl && height && width) {
+                var img = $('<img src="' + response.pic_url + '" id="cropbox" />');
+                if (height && width) {
                     $('#cropbox_container').empty();
                         
                     $('#cropbox_container').append(img);
