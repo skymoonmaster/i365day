@@ -13,19 +13,20 @@
  * @version	$Revision: 1.1 $
  */
 class IndexController extends BasicController {
+    const COOKIE_STRING = 'i365daysh+4kFAADzgC+nx';
+
+    const LOGIN_SUCCESS_COOKIE_NAME = 'i002';
+
     public function indexAction() {
-        echo 1111;
-        var_dump($_GET['inv']);
-        var_dump($this->getOptionalParam('inv', null));
-
-        //TODO 是否携带Cookie
         //TODO 是否携带邀请码
-        $hasCookie = false;
-        if ($hasCookie) {
-            $this->redirect("/home");
-        }
+        $decodeString = Util_EncryptDecrypt::getInstance()->encryptdecrypt($_COOKIE[self::LOGIN_SUCCESS_COOKIE_NAME]);
 
-        $_SESSION['invite_code'] = $this->getOptionalParam('invite_code', null);
+        list($userId, $cookieString) = explode('@', $decodeString);
+        if ($userId == $_SESSION['user_id'] && $cookieString == self::COOKIE_STRING) {
+            $this->redirect("/home");
+
+            return ;
+        }
     }
 
 

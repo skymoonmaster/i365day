@@ -44,7 +44,7 @@ class LoginController extends BasicController {
     }
 
     private function setLoginSuccessCookie($userId) {
-        $cookieValue = Util_EncryptDecrypt::getInstance()->encryptdecrypt($userId . self::COOKIE_STRING, '');
+        $cookieValue = Util_EncryptDecrypt::getInstance()->encryptdecrypt($userId . '@' . self::COOKIE_STRING, '');
         setcookie(self::LOGIN_SUCCESS_COOKIE_NAME, $cookieValue, time() + self::LOGIN_SUCCESS_COOKIE_EXPIRE, '/', 'i365day.com', false, true);
     }
 
