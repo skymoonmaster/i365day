@@ -25,7 +25,6 @@ class HomeController extends BasicController {
             $isRecordTodayShow = $diaryInfo ? false : true;
         }
         $userInfo = UserModel::getInstance()->getUserInfoById($inputUserId);
-
         $this->getView()->assign('user', $userInfo);
         $this->getView()->assign('diary_list', $diaryList);
         $this->getView()->assign('first_date_ts', strtotime(date('Y').'-01-01'));

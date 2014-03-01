@@ -11,7 +11,7 @@
     <body>
         <section class="home-info-wrap clearfix">
             <div class="user-info-wrap clearfix">
-                <img src="{{$user.head_portrait}}" alt="头像" width="90" height="90" class="head-sculpture">
+                <img src="{{$user.avatar}}" alt="头像" width="90" height="90" class="head-sculpture">
                 <div class="user-info-innerwrap">
                     <h1 class="username">{{$user.nick_name}}</h1>
                     <p class='usercity-wrap'><span class="usercity">{{$user.city}}</span><span class="device">使用{{$user.camera}}</span></p>
@@ -22,9 +22,11 @@
                     </p>
                     {{/if}}
                     <div class="user-info-links">
-                        <a class="douban clearword" href="#" title="豆瓣">豆瓣</a>
-                        <a class="sina clearword" href="#" title="新浪微博">新浪微博</a></div>
-                    <a class="user-info-setting clearword" href="#" title="设置">设置</a>
+                        <a class="douban {{if $user.app_id ==  2}}bind{{/if}} clearword" 
+                           href="{{if $user.app_id ==  2}}http://www.douban.com{{else}}#{{/if}}" title="豆瓣">豆瓣</a>
+                        <a class="sina {{if $user.app_id ==  3}}bind{{/if}} clearword" 
+                           href="{{if $user.app_id ==  3}}http://www.weibo.com{{else}}#{{/if}}" title="新浪微博">新浪微博</a></div>
+                    <a class="user-info-setting clearword" href="/setting" title="设置">设置</a>
                 </div>
             </div>
             <div class="day-wrap">

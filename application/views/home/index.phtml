@@ -37,7 +37,12 @@
                     <div class="home-list">
                         <ul class="home-list-wrap clearfix">
                             {{foreach from=$diary_list item=diary}}
-                            {{if isset($diary.diary_id)}}
+                            {{if (date('Ym', $diary.date_ts) != $current_month)}}
+                            <li class="home-list-item note-empty">
+                                <p class="note-empty-text"></p>
+                                <a class="fill-in-note" href="/diary/create/date/{{$diary.date|date_format:"%Y%m%d"}}" title="补日记"></a>
+                            </li>
+                            {{else if isset($diary.diary_id)}}
                             <li class="home-list-item">
                                 <img src="{{$diary.thumbnail}}" alt="" class="home-note-img">
                                 <div class="home-note-link-mask"></div>
@@ -48,8 +53,8 @@
                             </li>
                             {{else}}
                             <li class="home-list-item note-empty">
-                                <p class="note-empty-text">放空的{{$diary.date|date_format:"%m月%d日"}}</p>
-                                <a class="fill-in-note" href="/diary/create/date/{{$diary.date|date_format:"%Y%m%d"}}" title="补日记">+补日记</a>
+                                <p class="note-empty-text">放空的{{$diary.date_ts|date_format:"%m月%d日"}}</p>
+                                <a class="fill-in-note" href="/diary/create/date/{{$diary.date_ts|date_format:"%Y%m%d"}}" title="补日记">+补日记</a>
                             </li>
                             {{/if}}
                             {{/foreach}}

@@ -151,6 +151,7 @@ Class DiaryModel extends BasicModel {
     public function getDiaryListExtByConditions($columnKeyToValues, $order = ''){
         $sqlFormat = "SELECT * FROM $this->table"
                 . " LEFT JOIN diary_ext ON $this->table.diary_id = diary_ext.diary_id"
+                . " LEFT JOIN user ON $this->table.user_id = user.user_id"
                 . " WHERE $this->table.status=0 ";
         foreach ($columnKeyToValues as $key => $value) {
             if (!$key) {

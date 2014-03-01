@@ -2,7 +2,7 @@ CREATE TABLE `user` (
   `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键，自增id。',
   `app_id` tinyint(2) unsigned NOT NULL COMMENT 'app_id',
   `app_uid` int(11) unsigned NOT NULL COMMENT '用户在第三方平台的唯一id',
-  `head_portrait` char(225) NOT NULL COMMENT '头像',
+  `avatar` char(225) NOT NULL COMMENT '头像',
   `email` char(255) NOT NULL COMMENT '邮箱',
   `nick_name` char(64) NOT NULL COMMENT '昵称',
   `country` char(64) NOT NULL COMMENT '国家',

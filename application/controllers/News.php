@@ -17,30 +17,30 @@ class NewsController extends BasicController {
     public function indexAction() {
         $type = $this->getOptionalParam('type', '');
         $keyword = $this->getAjaxParam('kw', '');
-        $order ="ORDER BY date DESC";
-        $conditions = array('is_admin' => 1);
-        if($type){
+        $order = " ORDER BY date DESC";
+        $conditions = array('diary.is_admin' => 1);
+        if ($type) {
             $conditions ['type'] = $type;
         }
         $diaryList = DiaryModel::getInstance()->getDiaryListExtByConditions($conditions, $order);
         $showList = array();
-        if($keyword){
-            foreach ($diaryList as $diary){
+        if ($keyword) {
+            foreach ($diaryList as $diary) {
                 $typeName = DiaryTypeModel::$diaryTypeIdToName[$diary['type']];
-                if(strpos($diary['title'], $keyword) !== false){
+                if (strpos($diary['title'], $keyword) !== false) {
                     $showList[] = $diary;
                     continue;
                 }
-                if(strpos($typeName, $keyword) !== false){
+                if (strpos($typeName, $keyword) !== false) {
                     $showList[] = $diary;
                     continue;
                 }
-                if(strpos($diary['content'], $keyword) !== false){
+                if (strpos($diary['content'], $keyword) !== false) {
                     $showList[] = $diary;
                     continue;
                 }
             }
-        }else{
+        } else {
             $showList = $diaryList;
         }
         $this->getView()->assign('diary_list', $showList);

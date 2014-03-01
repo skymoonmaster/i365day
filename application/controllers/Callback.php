@@ -34,7 +34,7 @@ class CallbackController extends BasicController {
         $userInfo = array();
         $userInfo['app_id'] = Conf_Oauth::$appIds['douban'];
         $userInfo['app_uid'] = $doubanUserInfo['id'];
-        $userInfo['head_portrait'] = $doubanUserInfo['avatar'];
+        $userInfo['avatar'] = $doubanUserInfo['avatar'];
         $userInfo['country'] = '';
         $userInfo['city'] = $doubanUserInfo['loc_name'];
         $userInfo['nick_name'] = $doubanUserInfo['name'];

@@ -416,7 +416,6 @@
     //留言板+评论的回复按钮
     $('.article-detail,.leave-message-wrap').on('click', '.reply', function(e) {
         e.preventDefault();
-        debugger;
         $('.comment-text').val('回复 ' + $(this).closest('.comment-item').find('.article-author').html());
         $('#follow_id').val($(this).attr('alt'));
     });
@@ -429,7 +428,6 @@
     //评论的删除按钮
     $('.article-detail,.leave-message-wrap').on('click', '.reply', function(e) {
         e.preventDefault();
-        debugger;
         $('.comment-text').val('回复 ' + $(this).closest('.comment-item').find('.article-author').html());
         $('#follow_id').val($(this).attr('alt'));
     });
