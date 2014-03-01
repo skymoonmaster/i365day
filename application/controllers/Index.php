@@ -19,10 +19,9 @@ class IndexController extends BasicController {
 
     public function indexAction() {
         //TODO 是否携带邀请码
-        $decodeString = Util_EncryptDecrypt::getInstance()->encryptdecrypt($_COOKIE[self::LOGIN_SUCCESS_COOKIE_NAME]);
+        list($result, $userId) = UserAuthModel::getInstance()->isLogin();
 
-        list($userId, $cookieString) = explode('@', $decodeString);
-        if ($userId == $_SESSION['user_id'] && $cookieString == self::COOKIE_STRING) {
+        if ($result) {
             $this->redirect("/home");
 
             return ;

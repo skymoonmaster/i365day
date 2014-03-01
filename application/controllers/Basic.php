@@ -136,16 +136,24 @@ class BasicController extends Yaf_Controller_Abstract {
     );
 
     protected function init() {
-        $this->isSelf = true;
-        $inputUserId = $this->getOptionalParam('p', 0, true);
-        $_SESSION['user_id'] = 1;
-        $loginUserId = (isset($_SESSION['user_id']) && intval($_SESSION['user_id']) != 0) ? $_SESSION['user_id'] : 0;
-        if ($loginUserId) {
+        list($result, $loginUserId) = UserAuthModel::getInstance()->isLogin();
+        if (!$result && ($this->getRequest()->getControllerName() != 'Index')) {
+            $this->redirect('/index');
+
+            return ;
+        }
+
+        if (empty($this->userInfo) && $loginUserId) {
+            $_SESSION['user_id'] = $loginUserId;
             $this->userInfo = UserModel::getInstance()->getUserInfoById($loginUserId);
         }
+
+        $this->isSelf = true;
+        $inputUserId = $this->getOptionalParam('p', 0, true);
         if($inputUserId && $loginUserId && $inputUserId != $loginUserId){
             $this->isSelf = false;
         }
+
         $this->getView()->assign('current_user_id', $inputUserId ? $inputUserId : $loginUserId);
         $this->getView()->assign('is_self', $this->isSelf);
         $this->getView()->assign('is_admin', $this->userInfo['is_admin']);
