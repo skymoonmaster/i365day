@@ -21,4 +21,10 @@ class Conf_Oauth {
         // 可选参数（默认为false），是否在header中发送accessToken。
         'need_permission' => true
     );
+
+    public static $weiboConf = array(
+        'client_id' => '',
+        'secret' => '',
+        'redirect_uri' => 'http://www.i365day.com/callback/weibo'
+    );
 }

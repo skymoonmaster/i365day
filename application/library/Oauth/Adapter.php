@@ -19,7 +19,7 @@ class Oauth_Adapter {
         return self::$instances;
     }
     /**
-     * @return DoubanOauth
+     * @return SaeTOAuthV2
      * @param string $type
      */
     public function createOauthModel($type){
@@ -28,6 +28,10 @@ class Oauth_Adapter {
                 require __DIR__ . '/Douban/src/DoubanOauth.php';
                 // 生成一个豆瓣Oauth类实例
                 return new DoubanOauth(Conf_Oauth::$doubanConf);
+            case 'weibo' :
+                require __DIR__ . '/Weibo/saetv2.ex.class.php';
+
+                return new SaeTOAuthV2(Conf_Oauth::$weiboConf['client_id'], Conf_Oauth::$weiboConf['secret']);
         }
     }
 }

@@ -137,13 +137,8 @@ class BasicController extends Yaf_Controller_Abstract {
 
     protected function init() {
         list($result, $loginUserId) = UserAuthModel::getInstance()->isLogin();
-        if (!$result && ($this->getRequest()->getControllerName() != 'Index')) {
-            $this->redirect('/index');
 
-            return ;
-        }
-
-        if (empty($this->userInfo) && $loginUserId) {
+        if ($loginUserId) {
             $_SESSION['user_id'] = $loginUserId;
             $this->userInfo = UserModel::getInstance()->getUserInfoById($loginUserId);
         }

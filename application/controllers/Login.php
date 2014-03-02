@@ -4,6 +4,19 @@
 
 class LoginController extends BasicController {
     public function doLoginAction() {
+        $conditions = array(
+            'app_uid' => $_SESSION['user_info']['app_uid'],
+            'app_id' => $_SESSION['user_info']['app_id']
+        );
+        $userInfo = UserModel::getInstance()->getUserInfoByConditions($conditions);
+        if (!empty($userInfo) && isset($userInfo['user_id']) && !empty($userInfo['user_id'])) {
+            $_SESSION['user_id'] = $userInfo['user_id'];
+            UserAuthModel::getInstance()->setLoginSuccessCookie($userInfo['user_id']);
+
+            $this->redirect("/home");
+            return ;
+        }
+
         //验证invite code是否合法，合法则继续绑定邮箱
         if (isset($_SESSION['invite_code'])
             && InviteCodeModel::getInstance()->isValidInviteCode($_SESSION['invite_code'])) {
@@ -14,11 +27,6 @@ class LoginController extends BasicController {
             return ;
         }
 
-        $conditions = array(
-            'app_uid' => $_SESSION['user_info']['app_uid'],
-            'app_id' => $_SESSION['user_info']['app_id']
-        );
-        $userInfo = UserModel::getInstance()->getUserInfoByConditions($conditions);
         if (empty($userInfo)) {
             //TODO 暂不执行该逻辑
             //TODO 提示用户需要申请
