@@ -20,7 +20,10 @@ class OauthController extends BasicController {
     }
 
     public function weiboAction() {
+        $oauthModel = Oauth_Adapter::getInstance()->createOauthModel('weibo');
+        $authorizeUrl = $oauthModel->getAuthorizeURL(Conf_Oauth::$weiboConf['redirect_uri']);
 
+        $this->redirect($authorizeUrl);
     }
 
 }

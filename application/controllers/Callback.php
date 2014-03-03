@@ -14,16 +14,66 @@
  */
 class CallbackController extends BasicController {
 
+    public function weiboAction() {
+        Yaf_Dispatcher::getInstance()->autoRender(false);
+
+        $code = $this->getRequiredParam('code');
+        if (empty($code)) {
+            $this->redirect('/index');
+
+            return ;
+        }
+
+        $weibo = Oauth_Adapter::getInstance()->createOauthModel('weibo');
+
+        $keys = array();
+        $keys['code'] = $_REQUEST['code'];
+        $keys['redirect_uri'] = Conf_Oauth::$weiboConf['redirect_uri'];
+        $token = $weibo->getAccessToken('code', $keys) ;
+        if (empty($token)) {
+            $this->redirect('/index');
+
+            return ;
+        }
+
+        $api = new SaeTClientV2(Conf_Oauth::$weiboConf['client_id'], Conf_Oauth::$weiboConf['secret'], $token);
+        $weiboUid = $token['uid'];
+
+        $weiboUserInfo = $api->show_user_by_id($weiboUid);
+        if (isset($weiboUserInfo['error_code']) && isset($weiboUserInfo['error'])) {
+            $this->redirect('/index');
+
+            return ;
+        }
+
+        $userInfo = array();
+        $userInfo['app_id'] = Conf_Oauth::$appIds['weibo'];
+        $userInfo['app_uid'] = $weiboUserInfo['id'];
+        $userInfo['avatar'] = $weiboUserInfo['profile_image_url'];
+        $userInfo['country'] = '';
+        $userInfo['city'] = array_shift(explode(' ', $weiboUserInfo['location']));
+        $userInfo['nick_name'] = $weiboUserInfo['screen_name'];
+        $userInfo['intro'] = $weiboUserInfo['description'];
+
+        $_SESSION['user_info'] = $userInfo;
+
+        $this->redirect("/login/doLogin");
+    }
+
     public function doubanAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);
         $douban = Oauth_Adapter::getInstance()->createOauthModel('douban');
-        // 如果没有authorizeCode，跳转到用户授权页面
-        if (!isset($_GET['code'])) {
-            $douban->requestAuthorizeCode();
-            exit;
+
+        $code = $this->getRequiredParam('code');
+
+        // 如果没有authorizeCode，跳转首页
+        if (empty($code)) {
+            $this->redirect('/index');
+
+            return ;
         }
         // 设置authorizeCode
-        $douban->setAuthorizeCode($_GET['code']);
+        $douban->setAuthorizeCode($code);
         // 通过authorizeCode获取accessToken，至此完成用户授权
         $douban->requestAccessToken();
         
