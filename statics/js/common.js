@@ -312,7 +312,9 @@
             }
             var monthAsParam = selectedDate.month > 9 ? selectedDate.month : '0' + selectedDate.month;
 
-            location.href = '/home/index/month/' + selectedDate.year + monthAsParam;
+            var isSelf = $('#is_self').val();
+            location.href = !isSelf ? '/home/index/p/' + $('#current_user_id').val() + '/month/' +  selectedDate.year + monthAsParam : '/home/index/month/' + selectedDate.year + monthAsParam;
+
 
         });
 
