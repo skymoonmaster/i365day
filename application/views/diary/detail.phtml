@@ -16,7 +16,7 @@
                     <div class="article-title-wrap">
                         <div class="note-date-label">
                             <strong class="note-date-text">DAY</strong>
-                            <em class="note-date-days">212</em>
+                            <em class="note-date-days">{{$diary.date_ts|my_days}}</em>
                         </div>
                         <div class="article-title-detail">
                             <h1 class="article-title">{{$diary.title}}</h1>
@@ -31,18 +31,35 @@
                         <img src="{{$diary.pic}}" alt="{{$diary.pic_desc}}" class="article-img">
                         <p>{{$diary.content}}</p>
                         <div class="article-label-wrap">
-
                             {{foreach from = $diary.tags item=tag}}
                             <a href="#" class="article-label" title="{{$tag}}">#{{$tag}}</a>
                             {{/foreach}}
                         </div>
-                        <a href="#" class="article-icon-zan clearword" title="赞一个" alt="{{$diary.diary_id}}">赞一个</a>
+                        <a href="#" class="article-icon-zan {{if !$is_related}}disable{{/if}} clearword"  title="赞一个" alt="{{$diary.diary_id}}" author="{{$diary.user_id}}" author-name="{{$user.nick_name}}" diary-title="{{$diary.title}}">赞一个</a>
                         <a href="#" class="article-icon-other clearword disable" title="分享">分享</a>
+                        <div class="article-opearte">
+                            <a href="/diary/edit/diary_id/{{$diary.diary_id}}" class="article-opearte-edit" title="编辑">编辑</a>
+                            <a href="#" class="article-opearte-delete" title="删除">删除</a>
+                            {{if $diary.visibility}}<a href="#" class="article-opearte-author" title="仅自己可见">仅自己可见</a>{{/if}}
+                        </div>
+                         <!-- Baidu Button BEGIN -->
+                        <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare article-share">
+                            <a class="bds_tsina"></a>
+                            <a class="bds_douban"></a>
+                            <a class="bds_qzone"></a>
+                            <a class="bds_tqq"></a>
+                            <a class="bds_renren"></a>
+                            <span class="bds_more"></span>
+                        </div>
+                        <!-- Baidu Button END -->
                     </div>
                 </article>
                 <form action="/comment/docreate" method="post">
                     <input type="hidden" name="diary_id" id="diary_id" value ="{{$diary.diary_id}}"/>
                     <input type="hidden" name="follow_id" id="follow_id"/>
+                    <input type="hidden" name="user_id" value="{{$diary.user_id}}">
+                    <input type="hidden" name="diary_title" value="{{$diary.title}}">
+
                     <div class="article-leave-message">
                         <h2 class="article-message-title">评论</h2>
                         <textarea class="comment-text" name="content" id="content" placeholder="写评论吧"></textarea>
@@ -56,16 +73,16 @@
             <section class="article-aside">
                 <aside class="article-author-info">
                     <div class="clearfix">
-                        <img src="/statics/images/home_img_head.jpg" alt="头像" width="90" height="90" class="head-sculpture">
+                        <img src="{{$user.avatar}}" alt="头像" width="90" height="90" class="head-sculpture">
                         <a class="username" href="myhome.html" title="{{$user.nick_name}}">{{$user.nick_name}}</a>
-                        <p class="detail-days">123个日子</p>
+                        <p class="detail-days">{{$diary_days}}个日子</p>
                         <p class="user-info-guanzhu">
                             <a href="#" class="guanzhu" title="关注他">关注他</a>
                             <a href="#" class="quxiao-guanzhu hide" title="取消关注">取消关注</a>
                         </p>
                     </div>
                     <p class="article-user-description">{{$user.intro}}</p>
-                    <p class="usercity">{{$user.city}}</p><p class="device">使用{{$user.camera_brand}} {{$user.camera_model}}</p>
+                    <p class="usercity">{{$user.city}}</p><p class="device">使用{{$user.camera}}</p>
                 </aside>
                 <aside class="last-year">
                     <h2 class="all-hot-title">去年今日</h2>
@@ -78,8 +95,20 @@
             </section>
         </div>
         <div class="footer-load"></div>
+        <div class="common-dialog j-delete-confirm">
+            <div class="common-dialog-title">提示</div>
+            <p class="common-dialog-text">确定要删除吗？</p>
+            <a href="#" class="common-dialog-cancel j-delete-cancel" title="取消">取消</a>
+            <a href="/diary/del/diary_id/{{$diary.diary_id}}/diary_ext_id/{{$diary.diary_ext_id}}" class="common-dialog-ok j-delete-ok" title="确定">确定</a>
+            <a href="#" class="common-dialog-close clearword j-delete-close" title="关闭">关闭</a>
+        </div>
         <script src="/statics/js/jquery-1.10.1.min.js"></script>
         <script src="/statics/js/temp-ajax-load.js"></script>
         <script src="/statics/js/common.js"></script>
+        <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=5968326" ></script>
+        <script type="text/javascript" id="bdshell_js"></script>
+        <script type="text/javascript">
+        document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+        </script>
     </body>
 </html>

@@ -1,77 +1,75 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>我的首页--365每天记</title>
-    <link rel="stylesheet" href="/statics/css/common.css">
-    <!--[if lt IE 9]>
-    <script src="/statics/js/html5shiv.js"></script>
-    <![endif]-->
-</head>
-<body>
-    <div class="header-load"></div>
-    <div class="main">
-        <div class="home-load"></div>
-        <section class="home-note-wrap">
-            <div class="home-nav-wrap clearfix">
-                <ul class="home-tab-wrap clearfix">
-                    <li class="home-tab-item current"><a href="/home" title="我的365">我的365</a></li>
-                    <li class="home-tab-item"><a href="/like" title="喜欢">喜欢</a></li>
-                    <li class="home-tab-item"><a href="/msg" title="留言板">留言板</a></li>
-                </ul>
-                {{if $is_record_today_show}}<a class="write-now clearword" href="/diary/create" title="记录今天">记录今天</a>{{/if}}
-            </div>
-            <div class="home-note-list">
-                <h2 class="home-note-month"><em></em></h2>
-                <a href="#" class="home-date-btn clearword">选择年月</a>
-                <div class="home-date-wrap">
-                    <div class="home-year-wrap">
-                        <a class="home-year-prev" href="#" title="前一年">&lt;</a>
-                        <span class="home-year-num"></span>
-                        <a class="home-year-next" href="#" title="后一年">&gt;</a>
+    <head>
+        <meta charset="UTF-8">
+        <title>我的首页--365每天记</title>
+        <link rel="stylesheet" href="/statics/css/common.css">
+        <!--[if lt IE 9]>
+        <script src="/statics/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="header-load"></div>
+        <div class="main">
+            <div class="home-load"></div>
+            <section class="home-note-wrap">
+                <div class="home-note-list">
+                    <h2 class="home-note-month"><em></em></h2>
+                    <a href="#" class="home-date-btn clearword">选择年月</a>
+                    <div class="home-date-wrap">
+                        <div class="home-year-wrap">
+                            <a class="home-year-prev" href="#" title="前一年">&lt;</a>
+                            <span class="home-year-num"></span>
+                            <a class="home-year-next" href="#" title="后一年">&gt;</a>
+                        </div>
+                        <ul class="home-month-wrap clearfix">
+                        </ul>
                     </div>
-                    <ul class="home-month-wrap clearfix">
+                    <ul class="home-week-wrap">
+                        <li class="home-week-item">SUN</li>
+                        <li class="home-week-item">MON</li>
+                        <li class="home-week-item">TUE</li>
+                        <li class="home-week-item">WED</li>
+                        <li class="home-week-item">THU</li>
+                        <li class="home-week-item">FRI</li>
+                        <li class="home-week-item">SAT</li>
                     </ul>
-                </div>
-                <ul class="home-week-wrap">
-                    <li class="home-week-item">SUN</li>
-                    <li class="home-week-item">MON</li>
-                    <li class="home-week-item">TUE</li>
-                    <li class="home-week-item">WED</li>
-                    <li class="home-week-item">THU</li>
-                    <li class="home-week-item">FRI</li>
-                    <li class="home-week-item">SAT</li>
-                </ul>
-                <div class="home-list">
-                    <ul class="home-list-wrap clearfix">
-                        {{foreach from=$diary_list item=diary}}
-                            {{if isset($diary.diary_id)}}
-                                <li class="home-list-item">
-                                    <img src="{{$diary.thumbnail}}" alt="" class="home-note-img">
-                                    <div class="home-note-link-mask"></div>
-                                    <a href="/diary/detail/diary_id/{{$diary.diary_id}}" class="home-note-link" title="查看日记">
-                                        <span class="home-note-the">第<em class="home-note-days">{{($diary.date_ts - $first_date_ts)/86400 + 1}}</em>日</span>
-                                        <time class="home-note-date">{{$diary.date_ts|date_format:"%m月%d日"}}</time>
-                                    </a>
-                                </li>
+                    <div class="home-list">
+                        <ul class="home-list-wrap clearfix">
+                            {{foreach from=$diary_list item=diary}}
+                            {{if (date('Ym', $diary.date_ts) != $current_month)}}
+                            <li class="home-list-item note-empty">
+                                <p class="note-empty-text"></p>
+                                <a class="fill-in-note" href="/diary/create/date/{{$diary.date|date_format:"%Y%m%d"}}" title="补日记"></a>
+                            </li>
+                            {{else if isset($diary.diary_id)}}
+                            <li class="home-list-item">
+                                <img src="{{$diary.thumbnail}}" alt="" class="home-note-img">
+                                <div class="home-note-link-mask"></div>
+                                <a href="/diary/detail/diary_id/{{$diary.diary_id}}" class="home-note-link" title="查看日记">
+                                    <span class="home-note-the">第<em class="home-note-days">{{$diary.date_ts|my_days}}</em>日</span>
+                                    <time class="home-note-date">{{$diary.date_ts|date_format:"%m月%d日"}}</time>
+                                </a>
+                            </li>
                             {{else}}
-                                <li class="home-list-item note-empty">
-                                    <p class="note-empty-text">放空的{{$diary.date|date_format:"%m月%d日"}}</p>
-                                    <a class="fill-in-note" href="/diary/create/date/{{$diary.date|date_format:"%Y%m%d"}}" title="补日记">+补日记</a>
-                                </li>
+                            <li class="home-list-item note-empty">
+                                <p class="note-empty-text">放空的{{$diary.date_ts|date_format:"%m月%d日"}}</p>
+                                <a class="fill-in-note" href="/diary/create/date/{{$diary.date_ts|date_format:"%Y%m%d"}}" title="补日记">+补日记</a>
+                            </li>
                             {{/if}}
-                        {{/foreach}}
-                        {{if $is_record_today_show}}<li class="home-list-item note-add" title="记录今天"><a class="clearword" href="/diary/create" title="记录今天">记录今天</a></li>{{/if}}
-                    </ul>
-                    <a href="#" class="home-list-prev clearword" title="上个月份">上个月份</a>
-                    <a href="#" class="home-list-next clearword" title="下个月份">下个月份</a>
-                </div>     
-            </div>
-        </section>
-    </div>
-    <div class="footer-load"></div>
-    <script src="/statics/js/jquery-1.10.1.min.js"></script>
-    <script src="/statics/js/temp-ajax-load.js"></script>
-    <script src="/statics/js/common.js"></script>
-</body>
+                            {{/foreach}}
+                            {{if $is_record_today_show}}<li class="home-list-item note-add" title="记录今天"><a class="clearword" href="/diary/create" title="记录今天">记录今天</a></li>{{/if}}
+                        </ul>
+                        <a href="#" class="home-list-prev clearword" title="上个月份">上个月份</a>
+                        <a href="#" class="home-list-next clearword" title="下个月份">下个月份</a>
+                    </div>     
+                </div>
+            </section>
+            <input type="hidden" id="current_month" name="current_month" value="{{$current_month}}">
+        </div>
+        <div class="footer-load"></div>
+        <script src="/statics/js/jquery-1.10.1.min.js"></script>
+        <script src="/statics/js/temp-ajax-load.js"></script>
+        <script src="/statics/js/common.js"></script>
+    </body>
 </html>

@@ -9,6 +9,7 @@ Class UserModel extends BasicModel {
     
     protected $table = 'user';
 
+    protected $primaryKey = 'user_id';
     /**
      * @return UserModel
      */
@@ -18,6 +19,7 @@ Class UserModel extends BasicModel {
         }
         return self::$instances;
     }
+
     public function getUserInfoById($userId) {
         return $this->getUserInfo('user_id', $userId);
     }
@@ -40,6 +42,13 @@ Class UserModel extends BasicModel {
         }
     }
 
+    public function getUserInfoByConditions(array $conditions) {
+        if (empty($conditions)) {
+            throw new Exception_BadInput("empty params");
+        }
+
+        return $this->getSingleDataByConditions($conditions);
+    }
 
     public function getUserInfo($columKey, $columValue) {
         $user = array();
@@ -54,6 +63,28 @@ Class UserModel extends BasicModel {
         return $user;
     }
 
+    public function getUserInfos(array $uids) {
+        if (empty($uids)) {
+            throw new Exception_BadInput("Empty params error");
+        }
+
+        $sql = "SELECT * FROM `user` WHERE `user_id` IN (";
+        $sql .= implode(',', $uids);
+        $sql .= ");";
+
+        $rows = $this->db->queryAllRows($sql);
+
+        if (empty($rows)) {
+            return array();
+        }
+
+        $userInfos = array();
+        foreach($rows as $row) {
+            $userInfos[$row['user_id']] = $row;
+        }
+
+        return $userInfos;
+    }
 }
 
 /* vim: set ts=4 sw=4 sts=4 tw=100 noet: */

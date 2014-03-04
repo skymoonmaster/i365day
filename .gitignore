@@ -28,6 +28,8 @@ local.properties
 # PDT-specific
 .buildpath
 
+/.idea/
+template_c/
 
 #################
 ## Visual Studio
@@ -140,7 +142,7 @@ csx
 AppPackages/
 
 # Others
-sql/
+
 *.Cache
 ClientBin/
 [Ss]tyle[Cc]op.*
@@ -213,3 +215,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+/nbproject/private/

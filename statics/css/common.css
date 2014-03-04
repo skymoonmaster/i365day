@@ -121,6 +121,8 @@ body{
 .info-username b,
 .note-img-icon,
 .copy-btn,
+.common-dialog-cancel,
+.common-dialog-ok,
 .write-now{
     background: url(../images/buttons.png) no-repeat;
 }
@@ -505,7 +507,7 @@ body{
 }
 .setting-head-wrap{
     width: 220px;
-    height: 165px;
+    height: 222px;
     border: 1px solid #dedede;
     margin: 20px auto 0 auto;
     position: relative;
@@ -672,7 +674,7 @@ body{
     height: 22px;
     display: block;
     position: absolute;
-    bottom: 20px;
+    bottom: 48px;
     right: 80px;
 }
 .article-icon-zan.disable{
@@ -1221,7 +1223,7 @@ body{
 /*好友的全部新鲜事*/
 #friend-content{
     width: 1080px;
-    margin: 0 auto;
+    margin: 15px auto 0 auto;
     position: relative;
 }
 .white-bg{
@@ -1977,7 +1979,7 @@ nav{
 }
 .news-wrap{
     width: 766px;
-    margin-top: 30px;
+    margin-top: 15px;
     float: left;
 }
 .news-banner{
@@ -2050,7 +2052,7 @@ nav{
 .news-aside{
     width: 253px;
     float: right;
-    margin-top: 30px;
+    margin-top: 15px;
 }
 .big-logo-wrap{
     height: 259px;
@@ -2229,4 +2231,73 @@ nav{
 }
 .otheritem{
     cursor: text;
+}
+
+/*20131129 add*/
+.article-opearte{
+    margin: 10px 10px 10px 0;
+    text-align: right;
+}
+.article-opearte a{
+    color: #999;
+    margin-right: 10px;
+}
+.common-dialog{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 400px;
+    height: 170px;
+    margin: -85px 0 0 -200px;
+    background: #fff;
+    color: #666;
+    display: none;
+    z-index: 1010;
+}
+.common-dialog-title{
+    font-family: "微软雅黑";
+    font-size: 24px;
+    margin: 20px 0 0 40px;
+}
+.common-dialog-text{
+    font-size: 14px;
+    text-align: center;   
+}
+.common-dialog-ok,
+.common-dialog-cancel{
+    width: 83px;
+    height: 30px;
+    line-height: 30px;
+    background-position: -671px -774px;
+    display: inline-block;
+    text-align: center;
+    color: #666;
+    margin: 20px 0 0 80px;
+}
+.common-dialog-ok{
+    background-position: -671px -726px;
+    color: #fff;
+}
+.common-dialog-ok:hover,
+.common-dialog-cancel:hover{
+    text-decoration: none;
+}
+.common-dialog-close{
+    width: 23px;
+    height: 23px;
+    background: url(../images/shade-close.jpg) no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.reply-quote{
+    width: 30em;
+    padding-left: 7px;
+    margin-bottom: 20px;
+    border-left: 1px solid;
+}
+.reply-to-author{
+    white-space: nowrap;
+    margin-left: 10px;
+    color: #588a11;
 }

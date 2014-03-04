@@ -19,9 +19,9 @@
                         <div class="note-date-wrap clearfix">
                             <div class="note-date-label">
                                 <strong class="note-date-text">DAY</strong>
-                                <em class="note-date-days">212</em>
+                                <em class="note-date-days">{{$duration}}</em>
                             </div>
-                            <time class="note-date">2013.7.6</time>
+                            <time class="note-date">{{$date_ts|date_format:"%Y.%m.%d"}}</time>
                         </div>
                         <div class="note-img-window">
                             <div class="note-img-tips">
@@ -43,6 +43,16 @@
                 <div class="note-btn-wrap">
                     <button class="note-send clearword" type="submit" title="写好了,发布">写好了,发布</button>
                     <label><input type="checkbox" class="note-secret" name="private" />仅自己可见</label>
+                    {{if $is_admin}}
+                        <select name="type" class="note-text-title" style="width:220px; margin-left: 20px;" >
+                            <option value="0">选择日记类型</option>
+                            <option value="1">365周报</option>
+                            <option value="2">365线下聚会</option>
+                            <option value="3">365黑板报</option>
+                            <option value="4">365明星同学</option>
+                            <option value="5">其他</option>
+                        </select>
+                    {{/if}}
                     <div class="note-sync-wrap">
                         <span class="note-sync-text">同步到:</span>
                         <a href="#" title="sina" class="login-sina">新浪登录</a>
@@ -50,8 +60,14 @@
                     </div>
                 </div>
             </div>
-            <input type ="hidden" name ='date' value ="{{$date}}"/>
+            <input type ="hidden" name ='date' value ="{{$date_ts|date_format:"%Y%m%d"}}"/>
         </form>
+    </div>
+    <div class="common-dialog j-photo-alert">
+        <div class="common-dialog-title">提示</div>
+        <p class="common-dialog-text">亲，有真相，才有亲和力哦！</p>
+        <a href="#" class="common-dialog-ok j-photo-ok" title="上传图片">上传图片</a>
+        <a href="#" class="common-dialog-close clearword j-photo-close" title="关闭">关闭</a>
     </div>
     <div class="footer-load"></div>
     <script src="/statics/js/jquery-1.10.1.min.js"></script>
