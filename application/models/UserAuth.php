@@ -20,6 +20,9 @@ Class UserAuthModel extends BasicModel {
     }
 
     public function isLogin() {
+        if(!isset($_COOKIE[self::LOGIN_SUCCESS_COOKIE_NAME])){
+            return array(false, null);
+        }
         $decodeString = Util_EncryptDecrypt::getInstance()->encryptdecrypt($_COOKIE[self::LOGIN_SUCCESS_COOKIE_NAME]);
 
         list($userId, $cookieString) = explode('@', $decodeString);

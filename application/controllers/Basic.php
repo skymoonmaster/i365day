@@ -151,7 +151,7 @@ class BasicController extends Yaf_Controller_Abstract {
 
         $this->getView()->assign('current_user_id', $inputUserId ? $inputUserId : $loginUserId);
         $this->getView()->assign('is_self', $this->isSelf);
-        $this->getView()->assign('is_admin', $this->userInfo['is_admin']);
+        $this->getView()->assign('is_admin', isset($this->userInfo['is_admin']) ? $this->userInfo['is_admin'] : 0);
     }
 
     protected function getAjaxParam($key) {

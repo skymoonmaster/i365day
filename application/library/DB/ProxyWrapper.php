@@ -165,10 +165,7 @@ class DB_ProxyWrapper extends DB_Proxy {
                 if (empty($arrData)) {
                     $ret = false;
                     break;
-                }
-                if (!strpos($sql, 'charge_statistics')) {
-                    $ret = $this->AccordingFieldDecryption($arrData);
-                } else {
+                }else {
                     $ret = $arrData;
                 }
                 break;
@@ -178,9 +175,6 @@ class DB_ProxyWrapper extends DB_Proxy {
                 if (empty($arrData)) {
                     $ret = false;
                     break;
-                }
-                if (!strpos($sql, 'charge_statistics')) {
-                    $ret = $this->AccordingFieldFirstDecryption($arrData);
                 } else {
                     $ret = $arrData;
                 }
@@ -191,10 +185,7 @@ class DB_ProxyWrapper extends DB_Proxy {
                 if (empty($arrData)) {
                     $ret = false;
                     break;
-                }
-                if (!strpos($sql, 'charge_statistics')) {
-                    $ret = $this->AccordingFieldDecryption($arrData);
-                } else {
+                }else {
                     $ret = $arrData;
                 }
                 break;

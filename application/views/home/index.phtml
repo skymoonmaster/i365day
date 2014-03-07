@@ -40,7 +40,7 @@
                             {{if (date('Ym', $diary.date_ts) != $current_month)}}
                             <li class="home-list-item note-empty">
                                 <p class="note-empty-text"></p>
-                                <a class="fill-in-note" href="/diary/create/date/{{$diary.date|date_format:"%Y%m%d"}}" title="补日记"></a>
+                                <a class="fill-in-note" href="/diary/create/date/{{$diary.date_ts|date_format:"%Y%m%d"}}" title="补日记"></a>
                             </li>
                             {{else if isset($diary.diary_id)}}
                             <li class="home-list-item">

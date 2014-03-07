@@ -51,7 +51,8 @@ class CallbackController extends BasicController {
         $userInfo['app_uid'] = $weiboUserInfo['id'];
         $userInfo['avatar'] = $weiboUserInfo['profile_image_url'];
         $userInfo['country'] = '';
-        $userInfo['city'] = array_shift(explode(' ', $weiboUserInfo['location']));
+        $locationInfo = explode(' ', $weiboUserInfo['location']);
+        $userInfo['city'] = array_shift($locationInfo);
         $userInfo['nick_name'] = $weiboUserInfo['screen_name'];
         $userInfo['intro'] = $weiboUserInfo['description'];
 
