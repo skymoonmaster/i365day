@@ -36,7 +36,7 @@ class CallbackController extends BasicController {
             return ;
         }
 
-        $api = new SaeTClientV2(Conf_Oauth::$weiboConf['client_id'], Conf_Oauth::$weiboConf['secret'], $token);
+        $api = new SaeTClientV2(Conf_Oauth::$weiboConf['client_id'], Conf_Oauth::$weiboConf['secret'], $token['access_token']);
         $weiboUid = $token['uid'];
 
         $weiboUserInfo = $api->show_user_by_id($weiboUid);
