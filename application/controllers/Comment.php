@@ -45,17 +45,19 @@ class CommentController extends BasicController {
         $this->redirect("/diary/detail/diary_id/" . intval($diaryId));
     }
 
-    public function doDelAction() {
+    public function delAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);
-        $commentId = $this->getRequiredParam('leaving_msg_id');
+        $commentId = $this->getRequiredParam('comment_id');
+        $diaryId = $this->getRequiredParam('diary_id');
         $comment = array(
-            'comment' => $commentId,
+            'comment_id' => $commentId,
             'status' => CommentModel::$statusDel
         );
-        $ret = LeavingMsgModel::getInstance()->update($comment);
+        $ret = CommentModel::getInstance()->update($comment);
         if (!$ret) {
             throw new Exception('del comment error');
         }
+        $this->redirect("/diary/detail/diary_id/" . intval($diaryId));
     }
 
 }

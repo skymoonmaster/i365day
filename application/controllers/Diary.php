@@ -44,9 +44,9 @@ class DiaryController extends BasicController {
         }
         $isRelated = UserDiaryModel::getInstance()->isRelated($_SESSION['user_id'], $diaryId);
         $diaryDays = DiaryModel::getInstance()->getDiaryAmountByUid($diaryInfo['user_id']);
-        if($_SESSION['user_id'] == $diaryInfo['user_id']){
+        if ($_SESSION['user_id'] == $diaryInfo['user_id']) {
             $userInfo = $this->userInfo;
-        }else{
+        } else {
             $userInfo = UserModel::getInstance()->getUserInfoById($diaryInfo['user_id']);
         }
         $this->getView()->assign('diary', $diaryInfo);
@@ -78,11 +78,13 @@ class DiaryController extends BasicController {
         $feedData = array(
             'user_id' => $this->userInfo['user_id'],
             'user_name' => $this->userInfo['nick_name'],
+            'avatar' => $this->userInfo['avatar'],
             'type' => FeedModel::$feedType['diary'],
             'content' => json_encode(
                     array(
                         'diary_id' => $diaryId,
                         'title' => $diaryInfo['title'],
+                        'thumbnail' => $picUrl,
                         'content' => mb_substr($diaryInfo['content'], 0, 220, 'UTF-8')
                     )
             )
@@ -108,6 +110,7 @@ class DiaryController extends BasicController {
     }
 
     public function delAction() {
+        Yaf_Dispatcher::getInstance()->autoRender(false);
         $diaryId = $this->getRequiredParam('diary_id');
         DiaryModel::getInstance()->delDiaryById($diaryId);
         $this->redirect("/home");
@@ -158,15 +161,14 @@ class DiaryController extends BasicController {
         }
         return $ret;
     }
-    
-    private function defaultTitle($dateTS){
+
+    private function defaultTitle($dateTS) {
         $firstDateTS = strtotime(date('Y', $dateTS) . '-01-01');
         $days = intval(($dateTS - $firstDateTS) / 86400 + 1);
         return $days . '/365@' . date('Y');
     }
 
-    
- }
+}
 
 /* vim: set ts=4 sw=4 sts=4 tw=100 noet: */
 ?>

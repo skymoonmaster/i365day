@@ -24,7 +24,7 @@ Class LeavingMsgModel extends BasicModel {
         if (!$hostId || intval($hostId) == 0) {
             throw new Exception_BadInput("bad input host id");
         }
-        $sqlFormat = "SELECT * FROM $this->table WHERE host_id = %d ORDER BY create_time DESC LIMIT {$offset}, {$limit}";
+        $sqlFormat = "SELECT * FROM $this->table WHERE status = 0 AND host_id = %d ORDER BY create_time DESC LIMIT {$offset}, {$limit}";
         return $this->db->queryAllRows($sqlFormat, $hostId);
     }
 
@@ -32,7 +32,7 @@ Class LeavingMsgModel extends BasicModel {
         if (!$hostId || intval($hostId) == 0) {
             throw new Exception_BadInput("bad input host id");
         }
-        $sqlFormat = "SELECT COUNT(*) as count FROM $this->table WHERE host_id = %d";
+        $sqlFormat = "SELECT COUNT(*) as count FROM $this->table WHERE status = 0 AND host_id = %d";
         $row = $this->db->queryFirstRow($sqlFormat, $hostId);
 
         return $row['count'];

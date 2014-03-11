@@ -37,11 +37,13 @@
                         </div>
                         <a href="#" class="article-icon-zan {{if !$is_related}}disable{{/if}} clearword"  title="赞一个" alt="{{$diary.diary_id}}" author="{{$diary.user_id}}" author-name="{{$user.nick_name}}" diary-title="{{$diary.title}}">赞一个</a>
                         <a href="#" class="article-icon-other clearword disable" title="分享">分享</a>
+                        {{if $is_self}}
                         <div class="article-opearte">
                             <a href="/diary/edit/diary_id/{{$diary.diary_id}}" class="article-opearte-edit" title="编辑">编辑</a>
                             <a href="#" class="article-opearte-delete" title="删除">删除</a>
                             {{if $diary.visibility}}<a href="#" class="article-opearte-author" title="仅自己可见">仅自己可见</a>{{/if}}
                         </div>
+                        {{/if}}
                          <!-- Baidu Button BEGIN -->
                         <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare article-share">
                             <a class="bds_tsina"></a>
@@ -56,6 +58,7 @@
                 </article>
                 <form action="/comment/docreate" method="post">
                     <input type="hidden" name="diary_id" id="diary_id" value ="{{$diary.diary_id}}"/>
+                    <input type="hidden" name="diary_ext_id" id="diary_ext_id" value ="{{$diary.diary_ext_id}}"/>
                     <input type="hidden" name="follow_id" id="follow_id"/>
                     <input type="hidden" name="user_id" value="{{$diary.user_id}}">
                     <input type="hidden" name="diary_title" value="{{$diary.title}}">
@@ -69,12 +72,19 @@
                         <div class="comment-load"></div>
                     </div>
                 </form>
+                <div class="common-dialog j-delete-confirm">
+                    <div class="common-dialog-title">提示</div>
+                    <p class="common-dialog-text">确定要删除吗？</p>
+                    <a href="#" class="common-dialog-cancel j-delete-cancel" title="取消">取消</a>
+                    <a href="#" class="common-dialog-ok j-delete-ok" title="确定">确定</a>
+                    <a href="#" class="common-dialog-close clearword j-delete-close" title="关闭">关闭</a>
+                </div>
             </section>
             <section class="article-aside">
                 <aside class="article-author-info">
                     <div class="clearfix">
                         <img src="{{$user.avatar}}" alt="头像" width="90" height="90" class="head-sculpture">
-                        <a class="username" href="myhome.html" title="{{$user.nick_name}}">{{$user.nick_name}}</a>
+                        <a class="username" href="/home/index/p/{{$user.user_id}}" title="{{$user.nick_name}}">{{$user.nick_name}}</a>
                         <p class="detail-days">{{$diary_days}}个日子</p>
                         <p class="user-info-guanzhu">
                             <a href="#" class="guanzhu" title="关注他">关注他</a>
@@ -95,13 +105,6 @@
             </section>
         </div>
         <div class="footer-load"></div>
-        <div class="common-dialog j-delete-confirm">
-            <div class="common-dialog-title">提示</div>
-            <p class="common-dialog-text">确定要删除吗？</p>
-            <a href="#" class="common-dialog-cancel j-delete-cancel" title="取消">取消</a>
-            <a href="/diary/del/diary_id/{{$diary.diary_id}}/diary_ext_id/{{$diary.diary_ext_id}}" class="common-dialog-ok j-delete-ok" title="确定">确定</a>
-            <a href="#" class="common-dialog-close clearword j-delete-close" title="关闭">关闭</a>
-        </div>
         <script src="/statics/js/jquery-1.10.1.min.js"></script>
         <script src="/statics/js/temp-ajax-load.js"></script>
         <script src="/statics/js/common.js"></script>

@@ -74,7 +74,7 @@ class LeavingmsgController extends BasicController {
         $redirectUri = ($hostId != $_SESSION['user_id']) ? '/leavingmsg/index/p/' . intval($hostId) : '/leavingmsg';
         $this->redirect($redirectUri);
     }
-    public function doDelAction() {
+    public function delAction() {
         Yaf_Dispatcher::getInstance()->autoRender(false);
         $leavingMsgId = $this->getRequiredParam('leaving_msg_id');
         $leavingMsg = array(
@@ -85,6 +85,7 @@ class LeavingmsgController extends BasicController {
         if (!$ret) {
             throw new Exception('del leaving leavingmsg error');
         }
+        $this->redirect('/leavingmsg');
     }
 
 }

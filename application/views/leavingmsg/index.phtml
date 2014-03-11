@@ -29,7 +29,7 @@
                                     <div class="comment-main">
                                         {{if $msg.follow_id != 0}}
                                         <div class="reply-quote">
-                                            <span>{{$leaving_msg_associate[$msg['follow_id']]['content']}}</span><a href="#" class="reply-to-author" title="{{$msg.vistor_name}}">{{$msg.vistor_name}}</a>
+                                            <span>{{$leaving_msg_associate[$msg['follow_id']]['content']}}</span><a href="#" class="reply-to-author" title="{{$leaving_msg_associate[$msg['follow_id']]['vistor_name']}}">{{$leaving_msg_associate[$msg['follow_id']]['vistor_name']}}</a>
                                         </div>
                                         {{/if}}
                                         <p class="comment-content"><a class="article-author" href="#" title="{{$msg.vistor_name}}">{{$msg.vistor_name}}:</a>{{$msg.content}}</p>
@@ -49,6 +49,13 @@
             </section>
         </div>
         <div class="footer-load"></div>
+        <div class="common-dialog j-delete-confirm">
+            <div class="common-dialog-title">提示</div>
+            <p class="common-dialog-text">确定要删除吗？</p>
+            <a href="#" class="common-dialog-cancel j-delete-cancel" title="取消">取消</a>
+            <a href="#" class="common-dialog-ok j-delete-ok" title="确定">确定</a>
+            <a href="#" class="common-dialog-close clearword j-delete-close" title="关闭">关闭</a>
+        </div>
         <script src="/statics/js/jquery-1.10.1.min.js"></script>
         <script src="/statics/js/temp-ajax-load.js"></script>
         <script src="/statics/js/common.js"></script>

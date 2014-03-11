@@ -421,17 +421,20 @@
         $('.comment-text').val('回复 ' + $(this).closest('.comment-item').find('.article-author').html());
         $('#follow_id').val($(this).attr('alt'));
     });
-    //留言板的删除按钮
-    $('.article-detail').on('click', '.delete', function(e) {
+     //文章和评论的删除按钮
+    $('.article-detail').on('click', '.article-opearte-delete', function(e) {
+        $('.common-dialog-ok').attr('href', '/diary/del/diary_id/' + $('#diary_id').val());
         e.preventDefault();
-        $('.comment-text').val('回复 ' + $(this).closest('.comment-item').find('.article-author').html());
-        $('#follow_id').val($(this).attr('alt'));
+    });
+    //留言板的删除按钮
+    $('.leave-message-wrap').on('click', '.delete', function(e) {
+       $('.common-dialog-ok').attr('href', '/leavingmsg/del/leaving_msg_id/' + $(this).attr('alt'));
+        e.preventDefault();
     });
     //评论的删除按钮
-    $('.article-detail,.leave-message-wrap').on('click', '.reply', function(e) {
+    $('.article-detail').on('click', '.delete', function(e) {
+        $('.common-dialog-ok').attr('href', '/comment/del/comment_id/' + $(this).attr('alt') + '/diary_id/' + $('#diary_id').val());
         e.preventDefault();
-        $('.comment-text').val('回复 ' + $(this).closest('.comment-item').find('.article-author').html());
-        $('#follow_id').val($(this).attr('alt'));
     });
 
 

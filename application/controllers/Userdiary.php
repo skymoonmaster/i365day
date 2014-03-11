@@ -49,11 +49,14 @@ class UserDiaryController extends BasicController {
         $feedData = array(
             'user_id' => $this->userInfo['user_id'],
             'user_name' => $this->userInfo['nick_name'],
+            'avatar' => $this->userInfo['avatar'],
             'type' => FeedModel::$feedType['likeDiary'],
             'content' =>json_encode(
                 array(
+                    'diary_id' => $diaryExt['diary_id'],
                     'authorId' => $authorId,
                     'authorName' => $authorName,
+                    'thumbnail' => $diaryExt['thumbnail'],
                     'title' => $diaryTitle,
                     'content' => mb_substr($diaryExt['content'], 0, 140, 'UTF-8')
                 )

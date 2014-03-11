@@ -39,6 +39,7 @@ class AttentionController extends BasicController {
         $feedData = array(
             'user_id' => $this->userInfo['user_id'],
             'user_name' => $this->userInfo['nick_name'],
+            'avatar' => $this->userInfo['avatar'],
             'type' => FeedModel::$feedType['beFriend'],
             'content' =>json_encode(
                 array(
