@@ -44,21 +44,21 @@ class Conf_Memcached {
     static $arrMemCacheServer = array(
         'default' => array(
             'lt' => array(
-                array('host' => 'viewmobile-memcached-01.active.tan',
+                array('host' => '127.0.0.1',
                     'port' => 11211,
                     'weight' => 1,
                 ),
-                array('host' => 'viewmobile-memcached-02.active.tan',
+                array('host' => '127.0.0.1',
                     'port' => 11211,
                     'weight' => 1,
                 ),
             ),
             'dx' => array(
-                array('host' => 'viewmobile-memcached-01.active.tan',
+                array('host' => '127.0.0.1',
                     'port' => 11211,
                     'weight' => 1,
                 ),
-                array('host' => 'viewmobile-memcached-02.active.tan',
+                array('host' => '127.0.0.1',
                     'port' => 11211,
                     'weight' => 1,
                 ),

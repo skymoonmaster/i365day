@@ -1,100 +1,166 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>个人设置--365每天记</title>
-    <link rel="stylesheet" href="/statics/css/common.css">
-    <!--[if lt IE 9]>
-    <script src="/statics/js/html5shiv.js"></script>
-    <![endif]-->
-</head>
-<body>
-    <div class="header-load"></div>
-    <div class="main">
-        <form action="">
-            <h1 class="main-title-icon settine-title">个人设置</h1>
-            <div class="setting-wrap line">
-                <ul class="setting-list clearfix">
-                    <li class="setting-item">
-                        <h2 class="setting-item-title">头像</h2>
-                        <div class="setting-item-content">
-                            <div class="setting-head-wrap">
-                                <div class="setting-head-clipwindow"></div>
-                                <img class="setting-head-image" width="222" height="167" src="/statics/images/friend.gif">
+    <head>
+        <meta charset="UTF-8">
+        <title>个人设置--365每天记</title>
+        <link rel="stylesheet" href="/statics/css/common.css">
+        <link rel="stylesheet" href="/statics/css/jquery.Jcrop.min.css">
+        <!--[if lt IE 9]>
+        <script src="/statics/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="header-load"></div>
+        <div class="main">
+            <form action="/setting/dosave" method="POST">
+
+                <h1 class="main-title-icon settine-title">个人设置</h1>
+                <div class="setting-wrap line">
+                    <ul class="setting-list clearfix">
+                        <li class="setting-item">
+                            <h2 class="setting-item-title">头像</h2>
+                            <div class="setting-item-content">
+                                <div class="setting-head-wrap" id="cropbox_container">
+                                    <img id="cropbox" {{if $width_avatar}}width="220"{{else}}height="220"{{/if}} src="{{if !$user.avatar}}/statics/images/pool.jpg{{else}}{{$user.avatar}}{{/if}}">
+                                </div>
+                                <input type="hidden" id="x" name="x" />
+                                <input type="hidden" id="y" name="y" />
+                                <input type="hidden" id="w" name="w" />
+                                <input type="hidden" id="h" name="h" />
+                                <input type="hidden" id="extension" name="extension" />
+                                <input type="file" class="setting-head-upload" id="avatar" name="avatar">
                             </div>
-                            <input type="file" class="setting-head-upload">
-                            <button class="setting-head-update clearword">更新头像</button>
-                            <button class="setting-head-cancel clearword">取消</button>
-                        </div>
-                    </li>
-                    <li class="setting-item">
-                        <h2 class="setting-item-title">个人信息</h2>
-                        <div class="setting-item-content setting-item-info">
-                            <table class="setting-form-table">
-                                <tbody>
-                                    <tr>
-                                        <td class="setting-table-name">昵称</td>
-                                        <td class="setting-table-value"><input type="text" class="setting-input" value="于蓁名字很长"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="setting-table-name">签名</td>
-                                        <td class="setting-table-value"><textarea class="setting-input setting-sign"></textarea></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="setting-table-name">城市</td>
-                                        <td class="setting-table-value"><input type="text" class="setting-input"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="setting-table-name">相机</td>
-                                        <td class="setting-table-value"><input type="text" class="setting-input"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="setting-table-name">时区</td>
-                                        <td class="setting-table-value">
-                                            <select class="setting-time-area">
-                                                <option value="8" selected>GMT+8 北京</option>
-                                                <option value="8">GMT+8 北京</option>
-                                                <option value="8">GMT+8 北京</option>
-                                                <option value="8">GMT+8 北京</option>
-                                                <option value="8">GMT+8 北京</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </li>
-                    <li class="setting-item">
-                        <h2 class="setting-item-title">帐号和第三方绑定</h2>
-                        <div class="setting-item-content setting-item-bind">
-                            <table "setting-form-table">
-                                <tbody>
-                                    <tr>
-                                        <td class="setting-table-name">邮箱</td>
-                                        <td class="setting-table-value"><input type="text" class="setting-input" value="meixiangfang@baidu.com"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="setting-table-name">新浪微博</td>
-                                        <td class="setting-table-value"><a class="setting-binded" href="#" title="fond" target="_blank">fond</a><a href="#" class="setting-cancel-bind">取消绑定</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="setting-table-name">豆瓣</td>
-                                        <td class="setting-table-value"><a href="#" class="setting-bind" title="绑定帐号">绑定帐号</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </li>
-                </ul>
-                <div class="setting-submit-wrap">
-                    <button class="setting-submit clearword" title="保存全部">保存全部</button>
+                        </li>
+                        <li class="setting-item">
+                            <h2 class="setting-item-title">个人信息</h2>
+                            <div class="setting-item-content setting-item-info">
+                                <table class="setting-form-table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="setting-table-name">昵称</td>
+                                            <td class="setting-table-value"><input type="text" name="nick_name" class="setting-input" value="{{$user.nick_name}}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="setting-table-name">签名</td>
+                                            <td class="setting-table-value"><textarea name="intro" class="setting-input setting-sign" value="{{$user.intro}}">{{$user.intro}}</textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="setting-table-name">城市</td>
+                                            <td class="setting-table-value"><input type="text" name="city" class="setting-input" value="{{$user.city}}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="setting-table-name">相机</td>
+                                            <td class="setting-table-value"><input type="text" name="camera" class="setting-input" value="{{$user.camera}}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="setting-table-name">时区</td>
+                                            <td class="setting-table-value">
+                                                <select class="setting-time-area" name="time_zone">
+                                                    {{foreach from=$time_zones item=time_zone key=label}}
+                                                    <option value="{{$label}}" {{if $label == $user.time_zone}}selected{{/if}}>{{$time_zone}}</option>
+                                                    {{/foreach}}
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="setting-item">
+                            <h2 class="setting-item-title">帐号和第三方绑定</h2>
+                            <div class="setting-item-content setting-item-bind">
+                                <table class="setting-form-table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="setting-table-name">邮箱</td>
+                                            <td class="setting-table-value"><input type="text" name="email" class="setting-input" value="{{$user.email}}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="setting-table-name">新浪微博</td>
+                                            {{if $user.app_id ==  3}}
+                                            <td class="setting-table-value">
+                                                <a class="setting-binded" href="#" title="{{$user.nick_name}}" target="_blank">{{$user.nick_name}}</a><a href="#" class="setting-cancel-bind">取消绑定</a></td>
+                                            {{else}}
+                                            <td class="setting-table-value"><a href="#" class="setting-bind" title="绑定帐号">绑定帐号</a></td>
+                                            {{/if}}
+                                        </tr>
+                                        <tr>
+                                            <td class="setting-table-name">豆瓣</td>
+                                            {{if $user.app_id ==  2}}
+                                            <td class="setting-table-value">
+                                                <a class="setting-binded" href="#" title="{{$user.nick_name}}" target="_blank">{{$user.nick_name}}</a><a href="#" class="setting-cancel-bind">取消绑定</a></td>
+                                            {{else}}
+                                            <td class="setting-table-value"><a href="#" class="setting-bind" title="绑定帐号">绑定帐号</a></td>
+                                            {{/if}}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                    </ul>
+                    <input type="hidden" name="user_id" value="{{$user.user_id}}">
+                    <div class="setting-submit-wrap">
+                        <button class="setting-submit clearword" title="保存全部">保存全部</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
-    <div class="footer-load"></div>
-    <script src="/statics/js/jquery-1.10.1.min.js"></script>
-    <script src="/statics/js/temp-ajax-load.js"></script>
-    <script src="/statics/js/common.js"></script>
-</body>
+            </form>
+        </div>
+        <div class="footer-load"></div>
+        <script src="/statics/js/jquery-1.10.1.min.js"></script>
+        <script src="/statics/js/temp-ajax-load.js"></script>
+        <script src="/statics/js/common.js"></script>
+        <script src="/statics/js/jquery.Jcrop.min.js"></script>
+        <script src="/statics/js/ajaxUpload.js"></script>
+        <script type="text/javascript">
+$(document).ready(function() {
+    function updateCoords(c)
+    {
+        $('#x').val(c.x);
+        $('#y').val(c.y);
+        $('#w').val(c.w);
+        $('#h').val(c.h);
+    }
+
+    new AjaxUpload('avatar', {
+        action: '/setting/douploadavatar',
+        responseType: 'json',
+        data: {},
+        onSubmit: function(file, ext) {
+            if (ext && /^(jpg|png|jpeg|gif)$/i.test(ext)) {
+                $("#msg").css("display", "none");
+                /* Setting data */
+                this.setData({
+                    'file': file
+                });
+
+            } else {
+                alert("Bad input file format")
+                return false;
+            }
+        },
+        onComplete: function(file, response) {
+            if (response.code != 1) {
+                alert(response.data);
+            } else {
+                // $('#loading').css("display", "none");
+                width = response.width;
+                height = response.height;
+                $('#extension').val(response.extension);
+                var img = $('<img src="' + response.pic_url + '" id="cropbox" />');
+                if (height && width) {
+                    $('#cropbox_container').empty();
+                        
+                    $('#cropbox_container').append(img);
+                    $('#cropbox').css({width: width, height: height});
+                    $('#cropbox').Jcrop({
+                        aspectRatio: 1,
+                        onSelect: updateCoords
+                    });
+                }
+            }
+        }
+    });
+});
+        </script>
+    </body>
 </html>

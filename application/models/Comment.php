@@ -23,7 +23,7 @@ Class CommentModel extends BasicModel {
         if (!$diaryId || intval($diaryId) == 0) {
             throw new Exception_BadInput("bad input diary id");
         }
-        $sqlFormat = "SELECT * FROM $this->table WHERE diary_id = %d ORDER BY create_time DESC ";
+        $sqlFormat = "SELECT * FROM $this->table WHERE status = 0 AND diary_id = %d ORDER BY create_time DESC ";
         return $this->db->queryAllRows($sqlFormat, $diaryId);
     }
 

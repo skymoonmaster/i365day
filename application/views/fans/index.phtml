@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的关注--365每天记</title>
+    <link rel="stylesheet" href="/statics/css/common.css">
+    <!--[if lt IE 9]>
+    <script src="/statics/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="header-load"></div>
+    <div class="main">
+        <div class="home-load"></div>
+
+        <section class="fans">
+            <div class="fans-title-wrap clearfix line">
+                <div class="fans-title">
+                    <a href="/follow{{if !$is_self}}/index/p/{{$userInfo.user_id}}{{/if}}" class="inline-block fans-myinterest current">{{if $is_self}}我{{else}}{{$userInfo.nick_name}}{{/if}}的关注<em>{{$userInfo.follows}}</em></a>
+                    <a href="#" class="inline-block fans-myfans">{{if $is_self}}我{{else}}{{$userInfo.nick_name}}{{/if}}的粉丝<em>{{$userInfo.fans}}</em></a>
+                </div>
+<!--                <div class="news-search">-->
+<!--                    <form>-->
+<!--                        <input type="text" placeholder="在列表中搜索朋友">-->
+<!--                        <button class="news-search-submit clearword" type="submit" title="搜索">搜索</button>-->
+<!--                    </form>-->
+<!--                </div>-->
+            </div>
+            <ul class="fans-list clearfix">
+                {{foreach from = $fans item=fan}}
+                <li class="fans-item">
+                    <a href="/home/index/p/{{$fan.user_id}}" class="fans-head" title="{{$fan.nick_name}}"><img src="/statics/images/fans_img_head.jpg" alt=""></a>
+                    <a href="/home/index/p/{{$fan.user_id}}" class="fans-name" title="{{$fan.nick_name}}">{{$fan.nick_name}}</a>
+
+                    <a href="#" class="quxiao-guanzhu cancel-attention" id="cancel-attention-{{$fan.user_id}}" title="取消关注" alt="{{$fan.user_id}}" {{if !$fan.is_follow}}style="display: none"{{/if}}>取消关注</a>
+                    <a href="#" class="guanzhu add-attention" id="add-attention-{{$fan.user_id}}" title="关注" alt="{{$fan.user_id}}" user-name="{{$fan.nick_name}}" {{if $fan.is_follow }}style="display: none"{{/if}}>关注</a>
+
+                    <div class="fans-detail">
+                        <a href="/home/index/p/{{$fan.user_id}}" class="fans-day" title="查看他的日记">{{$fan.diary_days}}个日子</a>
+                        <a href=""/fans/index/p/{{$fan.user_id}}" class="fans-fans" title="查看他的粉丝">{{$fan.fans}}个粉丝</a>
+                    </div>
+                </li>
+                {{/foreach}}
+            </ul>
+            <div class="paging-load">
+                {{include file="lib/paging.phtml" pageUrl="/fans/index/page/"}}
+            </div>
+        </section>
+    </div>
+    <div class="footer-load"></div>
+    <script src="/statics/js/jquery-1.10.1.min.js"></script>
+    <script src="/statics/js/temp-ajax-load.js"></script>
+    <script src="/statics/js/common.js"></script>
+</body>
+</html>

@@ -27,46 +27,16 @@
                 </ul>
             </div>
             <div class="news-article">
+                {{foreach from=$diary_list item=diary}}
                 <article class="clearfix">
-                    <img class="article-image" src="/statics/images/news_img_article.jpg" width="320" height="210" alt="甲方乙方：数据分析内外有别">
+                    <img class="article-image" src="{{$diary.thumbnail}}" width="320" height="210" alt="{{$diary.pic_desc}}">
                     <div class="article-wrap">
-                        <h2 class="article-title"><a href="#" title="甲方乙方：数据分析内外有别">甲方乙方：数据分析内外有别</a></h2>
-                        <a class="article-author" href="#" title="fond">fond</a><span class="article-from">发表于</span><span class="article-time">2012-11-08 21:09</span><a class="article-type" href="#">[365明星同学]</a>
-                        <p class="article-text">现在是一个大数据时代，人人嘴边都挂着数据创造价值、数据挖掘等一些热词。各公司内部也逐渐认识到数据的重要性，纷纷成立数据部门，期待数据可以真正的为业务服务。另外，也有一些专做数据服务的第三方公司不断涌现，希望能够帮助产生数据的甲方分担数据分析的担子。</p>
+                        <h2 class="article-title"><a href="/diary/detail/diary_id/{{$diary.diary_id}}" title="{{$diary.title}}">{{$diary.title}}</a></h2>
+                        <a class="article-author" href="/home/index/p/{{$diary.user_id}}" title="{{$diary.nick_name}}">{{$diary.nick_name}}</a><span class="article-from">发表于</span><span class="article-time">{{$diary.update_time|date_format:"%Y-%m-%d %H:%M"}}</span><a class="article-type" href="/news/index/type/{{$diary.type}}">[{{$diary_type_id_to_name[$diary['type']]}}]</a>
+                        <p class="article-text">{{$diary.content}}</p>
                     </div>
                 </article>
-                <article class="clearfix">
-                    <img class="article-image" src="/statics/images/news_img_article.jpg" width="320" height="210" alt="甲方乙方：数据分析内外有别">
-                    <div class="article-wrap">
-                        <h2 class="article-title"><a href="#" title="甲方乙方：数据分析内外有别">甲方乙方：数据分析内外有别</a></h2>
-                        <a class="article-author" href="#" title="fond">fond</a><span class="article-from">发表于</span><span class="article-time">2012-11-08 21:09</span><a class="article-type" href="#">[365明星同学]</a>
-                        <p class="article-text">现在是一个大数据时代，人人嘴边都挂着数据创造价值、数据挖掘等一些热词。各公司内部也逐渐认识到数据的重要性，纷纷成立数据部门，期待数据可以真正的为业务服务。另外，也有一些专做数据服务的第三方公司不断涌现，希望能够帮助产生数据的甲方分担数据分析的担子。</p>
-                    </div>
-                </article>
-                <article class="clearfix">
-                    <img class="article-image" src="/statics/images/news_img_article.jpg" width="320" height="210" alt="甲方乙方：数据分析内外有别">
-                    <div class="article-wrap">
-                        <h2 class="article-title"><a href="#" title="甲方乙方：数据分析内外有别">甲方乙方：数据分析内外有别</a></h2>
-                        <a class="article-author" href="#" title="fond">fond</a><span class="article-from">发表于</span><span class="article-time">2012-11-08 21:09</span><a class="article-type" href="#">[365明星同学]</a>
-                        <p class="article-text">现在是一个大数据时代，人人嘴边都挂着数据创造价值、数据挖掘等一些热词。各公司内部也逐渐认识到数据的重要性，纷纷成立数据部门，期待数据可以真正的为业务服务。另外，也有一些专做数据服务的第三方公司不断涌现，希望能够帮助产生数据的甲方分担数据分析的担子。</p>
-                    </div>
-                </article>
-                <article class="clearfix">
-                    <img class="article-image" src="/statics/images/news_img_article.jpg" width="320" height="210" alt="甲方乙方：数据分析内外有别">
-                    <div class="article-wrap">
-                        <h2 class="article-title"><a href="#" title="甲方乙方：数据分析内外有别">甲方乙方：数据分析内外有别</a></h2>
-                        <a class="article-author" href="#" title="fond">fond</a><span class="article-from">发表于</span><span class="article-time">2012-11-08 21:09</span><a class="article-type" href="#">[365明星同学]</a>
-                        <p class="article-text">现在是一个大数据时代，人人嘴边都挂着数据创造价值、数据挖掘等一些热词。各公司内部也逐渐认识到数据的重要性，纷纷成立数据部门，期待数据可以真正的为业务服务。另外，也有一些专做数据服务的第三方公司不断涌现，希望能够帮助产生数据的甲方分担数据分析的担子。</p>
-                    </div>
-                </article>
-                <article class="clearfix">
-                    <img class="article-image" src="/statics/images/news_img_article.jpg" width="320" height="210" alt="甲方乙方：数据分析内外有别">
-                    <div class="article-wrap">
-                        <h2 class="article-title"><a href="#" title="甲方乙方：数据分析内外有别">甲方乙方：数据分析内外有别</a></h2>
-                        <a class="article-author" href="#" title="fond">fond</a><span class="article-from">发表于</span><span class="article-time">2012-11-08 21:09</span><a class="article-type" href="#">[365明星同学]</a>
-                        <p class="article-text">现在是一个大数据时代，人人嘴边都挂着数据创造价值、数据挖掘等一些热词。各公司内部也逐渐认识到数据的重要性，纷纷成立数据部门，期待数据可以真正的为业务服务。另外，也有一些专做数据服务的第三方公司不断涌现，希望能够帮助产生数据的甲方分担数据分析的担子。</p>
-                    </div>
-                </article>
+                {{/foreach}}
                 <div class="paging-load"></div>
             </div>
         </section>
@@ -83,23 +53,23 @@
                 <p>365是个“每日一片”的网络联盟，通过每天一张的照片，记录分享生活</p>
                 <p>我们的口号——请看我漂亮的坚持！</p>
                 <p class="news-about-tips">这是个温暖的小集体，各位玩得开心点 :)</p>
-                <p class="news-about-know-wrap"><a class="news-know-about clearword" href="about.html" title="了解365">了解365</a><a class="news-leave-a-message clearword" href="message.html" title="给我们留言">给我们留言</a></p>
+                <p class="news-about-know-wrap"><a class="news-know-about clearword" href="/about" title="了解365">了解365</a><a class="news-leave-a-message clearword" href="mailto:i365day@qq.com" title="给我们留言">给我们留言</a></p>
                 <p><a class="news-subscribe clearword" href="#" title="订阅365新鲜事">订阅365新鲜事</a></p>
                 <ul class="news-about-list">
-                    <li class="news-about-item"><a href="#" title="365周报">365周报</a></li>
+                    <li class="news-about-item"><a href="/news/index/type/1" title="365周报">365周报</a></li>
                     <li class="new-about-sep"></li>
-                    <li class="news-about-item"><a href="#" title="365线下聚会">365线下聚会</a></li>
+                    <li class="news-about-item"><a href="/news/index/type/2" title="365线下聚会">365线下聚会</a></li>
                     <li class="new-about-sep"></li>
-                    <li class="news-about-item"><a href="#" title="365黑板报">365黑板报</a></li>
+                    <li class="news-about-item"><a href="/news/index/type/3" title="365黑板报">365黑板报</a></li>
                     <li class="new-about-sep"></li>
-                    <li class="news-about-item"><a href="#" title="365明星同学">365明星同学</a></li>
+                    <li class="news-about-item"><a href="/news/index/type/4" title="365明星同学">365明星同学</a></li>
                     <li class="new-about-sep"></li>
-                    <li class="news-about-item"><a href="#" title="其他">其他</a></li>
+                    <li class="news-about-item"><a href="/news/index/type/5" title="其他">其他</a></li>
                 </ul>
             </aside>
             <aside class="news-search">
-                <form>
-                    <input type="text" placeholder="搜索新鲜事">
+                <form action="/news/index">
+                    <input type="text" name="kw" value="{{$kw|escape}}" placeholder="搜索新鲜事">
                     <button class="news-search-submit clearword" type="submit" title="搜索">搜索</button>
                 </form>
             </aside>

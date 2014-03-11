@@ -12,16 +12,6 @@
         <div class="header-load"></div>
         <div class="main">
             <div class="home-load"></div>
-            <section class="home-note-wrap">
-                <div class="home-nav-wrap clearfix">
-                    <ul class="home-tab-wrap clearfix">
-                        <li class="home-tab-item"><a href="/home" title="我的365">我的365</a></li>
-                        <li class="home-tab-item current"><a href="/like" title="喜欢">喜欢</a></li>
-                        <li class="home-tab-item"><a href="/msg" title="留言板">留言板</a></li>
-                    </ul>
-                    <a class="write-now clearword" href="newnote.html" title="记录今天">记录今天</a>
-                </div>
-            </section>
             <section class="like">
                 <ul class="like-list clearfix">
                     {{foreach from=$user_diary_list item=diary}}
@@ -47,7 +37,9 @@
 
                 </ul>
             </section>
-            <div class="paging-load"></div>
+            <div class="paging-load">
+                {{include file="lib/paging.phtml" pageUrl="/like/index/page/"}}
+            </div>
         </div>
         <div class="footer-load"></div>
         <script src="/statics/js/jquery-1.10.1.min.js"></script>

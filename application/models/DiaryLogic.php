@@ -19,21 +19,23 @@ Class DiaryLogicModel extends BasicModel {
 
     public function fillDiaryListForHomepage($inputMonth, $inputUserId) {
         $startDate = $this->getStartDate($inputMonth);
-        $endDate = $this->getEndDate($inputMonth, $startDate);
+        $endDate = $this->getEndDate($inputMonth);
         $startDateTS = strtotime($startDate);
         $endDateTS = strtotime($endDate);
         $filledDiaryList = array();
-        $condition = array('user_id', $inputUserId);
+        $condition = array('user_id' => $inputUserId);
         $diaryList = DiaryModel::getInstance()->getDataListByDateSectionAndConditions($condition, $startDate, $endDate);
-        foreach ($diaryList as $diary) {
-            $diaryListByDate[$diary['date']] = $diary;
+        if(is_array($diaryList) && count($diaryList) > 0){
+            foreach ($diaryList as $diary) {
+                $diaryListByDate[$diary['date']] = $diary;
+            }
         }
         for ($i = $startDateTS; $i <= $endDateTS; $i = $i + 86400 ) {
             $currentDate = date('Ymd', $i);
             if (isset($diaryListByDate[$currentDate])) {
                 $filler = $diaryListByDate[$currentDate];
             } else {
-                $filler = array('date' => $i);
+                $filler = array('date_ts' => $i);
             }
             $filledDiaryList[] = $filler;
         }
@@ -46,15 +48,15 @@ Class DiaryLogicModel extends BasicModel {
         return date('Ymd', $firstDateOfMonthTS - $startDayByWeek * 86400);
     }
 
-    public function getEndDate($inputMonth, $startDate) {
+    public function getEndDate($inputMonth) {
+        
         $currentMonth = date('Ym');
 
         if ($currentMonth < $inputMonth) {
             throw new Exception_BadInput('bad input month');
         }
-        //the home page contains 42 diary (MAX);
         if ($currentMonth > $inputMonth) {
-            return date('Ymd', strtotime($startDate) + 41 * 86400);
+            return date('Ymt', strtotime($inputMonth . '01'));
         }
 
         return date('Ymd');

@@ -9,6 +9,7 @@ Class UserDiaryModel extends BasicModel {
     protected $table = 'user_diary';
     protected $primaryKey = 'user_diary_id';
 
+    const DEFAULT_LIMIT = 8;
     /**
      * @return UserDiaryModel
      */
@@ -32,12 +33,30 @@ Class UserDiaryModel extends BasicModel {
             return $this->update($inputUserDiary);
         }
     }
-    public function getListExtByUserId($userId){
+
+    public function getListExtByUserId($userId, $offset, $limit = self::DEFAULT_LIMIT){
         $sqlFormat = "SELECT * FROM $this->table 
             LEFT JOIN diary ON $this->table.diary_id = diary.diary_id
             LEFT JOIN user ON $this->table.user_id = user.user_id
-            WHERE $this->table.user_id = %d";
+            WHERE $this->table.user_id = %d LIMIT {$offset}, {$limit}" ;
         return $this->db->queryAllRows($sqlFormat, $userId);
+    }
+
+    public function getLikeDiaryCount($userId) {
+        $sqlFormat = "SELECT COUNT(*) AS count FROM $this->table
+            LEFT JOIN diary ON $this->table.diary_id = diary.diary_id
+            LEFT JOIN user ON $this->table.user_id = user.user_id
+            WHERE $this->table.user_id = %d";
+
+        $row = $this->db->queryFirstRow($sqlFormat, $userId);
+
+        return $row['count'];
+    }
+
+    public function isRelated($userId, $diaryId){
+        $sqlFormat = "SELECT * FROM $this->table WHERE $this->table.user_id = %d AND $this->table.diary_id = %d";
+        $ret = $this->db->queryFirstRow($sqlFormat, $userId, $diaryId);
+        return $ret ? true : false;
     }
 }
 

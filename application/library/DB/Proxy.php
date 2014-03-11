@@ -247,9 +247,6 @@ class DB_Proxy {
         $strValues = '';
         $needComma = false;
 
-        if (in_array($table, Util_EncryptDecrypt::$encryptTable)) {
-            $arrFields['secret_key'] = Util_EncryptDecrypt::KEY;
-        }
         foreach ($arrFields as $field => $value) {
             if ($needComma) {
                 $this->lastSql .= ',';
@@ -257,9 +254,6 @@ class DB_Proxy {
             }
             $needComma = true;
             $this->lastSql .= '`' . $field . '`';
-            if (in_array($field, Util_EncryptDecrypt::$arrEncryptField) && in_array($table, Util_EncryptDecrypt::$encryptTable)) {
-                $value = Util_EncryptDecrypt::getInstance()->encryptdecrypt($value, 'ENCODE', Util_EncryptDecrypt::KEY, 0);
-            }
             $strValues .= "'" . mysqli_real_escape_string($this->mysqli, $value) . "'";
         }
         $this->lastSql .= ') VALUES (' . $strValues . ')';
@@ -608,9 +602,6 @@ class DB_Proxy {
             }
             $needComma = true;
             $strSql .= '`' . $field . '`';
-            if (in_array($field, Util_EncryptDecrypt::$arrEncryptField) && in_array($table, Util_EncryptDecrypt::$encryptTable)) {
-                $value = Util_EncryptDecrypt::getInstance()->encryptdecrypt($value, 'ENCODE', Util_EncryptDecrypt::KEY, 0);
-            }
             if (is_string($value)) {
                 $strValues .= "'" . mysqli_real_escape_string($this->mysqli, $value) . "'";
             } elseif (is_array($value) || is_object($value) || is_null($value)) {
@@ -646,9 +637,6 @@ class DB_Proxy {
             $needComma = true;
             $strSql .= '`' . $field . '`=';
 
-            if (in_array($field, Util_EncryptDecrypt::$arrEncryptField) && in_array($table, Util_EncryptDecrypt::$encryptTable)) {
-                $value = Util_EncryptDecrypt::getInstance()->encryptdecrypt($value, 'ENCODE', Util_EncryptDecrypt::KEY, 0);
-            }
             if (is_string($value)) {
                 $strSql .= "'" . mysqli_real_escape_string($this->mysqli, $value) . "'";
             } elseif (is_array($value) || is_object($value) || is_null($value)) {
@@ -728,28 +716,6 @@ class DB_Proxy {
             return false;
         }
         return true;
-    }
-
-    public function AccordingFieldDecryption($ret) {
-        foreach ($ret as $key => $value) {
-            $arrField = array_keys($value);
-            foreach ($arrField as $data) {
-                if (in_array($data, Util_EncryptDecrypt::$arrEncryptField)) {
-                    $ret[$key][$data] = Util_EncryptDecrypt::getInstance()->encryptdecrypt($value[$data], 'DECODE', isset($value['secret_key']) && $value['secret_key'] ? $value['secret_key'] : Util_EncryptDecrypt::KEY, 0);
-                }
-            }
-        }
-        return $ret;
-    }
-
-    public function AccordingFieldFirstDecryption($ret) {
-        $arrField = array_keys($ret);
-        foreach ($arrField as $data) {
-            if (in_array($data, Util_EncryptDecrypt::$arrEncryptField)) {
-                $ret[$data] = Util_EncryptDecrypt::getInstance()->encryptdecrypt($ret[$data], 'DECODE', isset($ret['secret_key']) && $ret['secret_key'] ? $ret['secret_key'] : Util_EncryptDecrypt::KEY, 0);
-            }
-        }
-        return $ret;
     }
 
 }
